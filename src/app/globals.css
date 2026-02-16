@@ -17,9 +17,15 @@ html {
 body {
   font-family: var(--font-inter), sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.5s ease, color 0.4s ease;
 }
 
-/* Custom scrollbar — adapts to dark/light via transparency */
+/* Smooth theme transitions on all themed elements */
+section, div, a, span, p, h1, h2, h3, button {
+  transition: background-color 0.5s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -37,7 +43,15 @@ body {
   background: rgba(128, 128, 128, 0.5);
 }
 
-/* Selection — neutral, works on both dark and light */
+/* Selection adapts via currentColor */
+::selection {
+  background: currentColor;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  opacity: 0.2;
+}
+
+/* Fallback: semi-transparent neutral */
 ::selection {
   background: rgba(128, 128, 128, 0.3);
 }
