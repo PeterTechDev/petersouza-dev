@@ -1,0 +1,121 @@
+export interface Theme {
+  id: string;
+  name: string;
+  emoji: string;
+  colors: {
+    bg: string;
+    bgSecondary: string;
+    text: string;
+    textMuted: string;
+    accent: string;
+    accentHover: string;
+    card: string;
+    cardBorder: string;
+    gradient: string;
+  };
+  particles: {
+    color: string;
+    count: number;
+    speed: number;
+    shape: "sphere" | "star" | "cube";
+  };
+  font: {
+    heading: string;
+    body: string;
+  };
+}
+
+export const themes: Record<string, Theme> = {
+  basketball: {
+    id: "basketball",
+    name: "Court",
+    emoji: "🏀",
+    colors: {
+      bg: "#0a0a0a",
+      bgSecondary: "#141414",
+      text: "#ffffff",
+      textMuted: "#a0a0a0",
+      accent: "#ff6b2b",
+      accentHover: "#ff8c57",
+      card: "rgba(255, 107, 43, 0.05)",
+      cardBorder: "rgba(255, 107, 43, 0.2)",
+      gradient: "linear-gradient(135deg, #ff6b2b 0%, #ff2b6b 100%)",
+    },
+    particles: { color: "#ff6b2b", count: 80, speed: 0.3, shape: "sphere" },
+    font: { heading: "'Inter', sans-serif", body: "'Inter', sans-serif" },
+  },
+  starwars: {
+    id: "starwars",
+    name: "Galaxy",
+    emoji: "⚔️",
+    colors: {
+      bg: "#000000",
+      bgSecondary: "#0a0a14",
+      text: "#ffe81f",
+      textMuted: "#8b8b6a",
+      accent: "#ffe81f",
+      accentHover: "#fff44f",
+      card: "rgba(255, 232, 31, 0.05)",
+      cardBorder: "rgba(255, 232, 31, 0.2)",
+      gradient: "linear-gradient(135deg, #ffe81f 0%, #ff6b2b 100%)",
+    },
+    particles: { color: "#ffe81f", count: 200, speed: 0.1, shape: "star" },
+    font: { heading: "'Inter', sans-serif", body: "'Inter', sans-serif" },
+  },
+  minimal: {
+    id: "minimal",
+    name: "Clean",
+    emoji: "◻️",
+    colors: {
+      bg: "#fafafa",
+      bgSecondary: "#ffffff",
+      text: "#111111",
+      textMuted: "#666666",
+      accent: "#111111",
+      accentHover: "#333333",
+      card: "rgba(0, 0, 0, 0.02)",
+      cardBorder: "rgba(0, 0, 0, 0.1)",
+      gradient: "linear-gradient(135deg, #111111 0%, #444444 100%)",
+    },
+    particles: { color: "#cccccc", count: 30, speed: 0.1, shape: "sphere" },
+    font: { heading: "'Inter', sans-serif", body: "'Inter', sans-serif" },
+  },
+  corporate: {
+    id: "corporate",
+    name: "LinkedIn",
+    emoji: "💼",
+    colors: {
+      bg: "#f3f2ef",
+      bgSecondary: "#ffffff",
+      text: "#191919",
+      textMuted: "#666666",
+      accent: "#0a66c2",
+      accentHover: "#004182",
+      card: "rgba(10, 102, 194, 0.03)",
+      cardBorder: "rgba(10, 102, 194, 0.15)",
+      gradient: "linear-gradient(135deg, #0a66c2 0%, #004182 100%)",
+    },
+    particles: { color: "#0a66c2", count: 40, speed: 0.15, shape: "cube" },
+    font: { heading: "'Inter', sans-serif", body: "'Inter', sans-serif" },
+  },
+  cyberpunk: {
+    id: "cyberpunk",
+    name: "Neon",
+    emoji: "🌆",
+    colors: {
+      bg: "#0a0014",
+      bgSecondary: "#120020",
+      text: "#00fff5",
+      textMuted: "#7b68ee",
+      accent: "#ff00ff",
+      accentHover: "#ff44ff",
+      card: "rgba(255, 0, 255, 0.05)",
+      cardBorder: "rgba(255, 0, 255, 0.3)",
+      gradient: "linear-gradient(135deg, #ff00ff 0%, #00fff5 100%)",
+    },
+    particles: { color: "#ff00ff", count: 120, speed: 0.5, shape: "star" },
+    font: { heading: "'Inter', sans-serif", body: "'Inter', sans-serif" },
+  },
+};
+
+export const defaultTheme = "basketball";
