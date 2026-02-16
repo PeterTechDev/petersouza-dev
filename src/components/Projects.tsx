@@ -13,6 +13,7 @@ const projects = [
     url: "https://auto-vendas.vercel.app",
     status: "Live",
     highlight: true,
+    gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
   },
   {
     title: "Video Automation Platform",
@@ -20,6 +21,7 @@ const projects = [
     tags: ["Remotion", "React", "FFmpeg", "TypeScript"],
     icon: Film,
     status: "Coming Soon",
+    gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
   },
   {
     title: "Átrias Wiki",
@@ -27,6 +29,7 @@ const projects = [
     tags: ["Next.js", "Sanity CMS", "AI", "Three.js"],
     icon: Swords,
     status: "In Progress",
+    gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
   },
   {
     title: "NBA Live Feed",
@@ -34,6 +37,7 @@ const projects = [
     tags: ["Next.js", "REST APIs", "Real-time", "Vercel"],
     icon: BarChart3,
     status: "Live",
+    gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
   },
 ];
 
@@ -79,6 +83,15 @@ export default function Projects() {
               whileHover={{ y: -4 }}
               onClick={() => project.url && window.open(project.url, "_blank")}
             >
+              {/* Gradient thumbnail */}
+              <div
+                className="w-full h-32 rounded-xl mb-6 flex items-center justify-center overflow-hidden relative"
+                style={{ background: project.gradient }}
+              >
+                <project.icon size={40} className="text-white/80 relative z-10" />
+                <div className="absolute inset-0 bg-black/10" />
+              </div>
+
               {/* Status badge */}
               <div className="flex items-center justify-between mb-4">
                 <project.icon size={28} style={{ color: theme.colors.accent }} />

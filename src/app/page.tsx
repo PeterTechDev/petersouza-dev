@@ -8,6 +8,7 @@ import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import KonamiCode from "@/components/KonamiCode";
+import ThemeDecorations from "@/components/ThemeDecorations";
 
 const ParticleField = dynamic(() => import("@/components/ParticleField"), {
   ssr: false,
@@ -17,6 +18,7 @@ export default function Home() {
   return (
     <ThemeProvider>
       <ParticleField />
+      <ThemeDecorations />
       <main className="relative">
         <Hero />
         <About />

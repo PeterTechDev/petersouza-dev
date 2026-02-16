@@ -2,6 +2,8 @@
 
 :root {
   --font-inter: "Inter", sans-serif;
+  --theme-heading-font: var(--font-inter);
+  --theme-body-font: var(--font-inter);
 }
 
 * {
@@ -15,9 +17,13 @@ html {
 }
 
 body {
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--theme-body-font), sans-serif;
   overflow-x: hidden;
   transition: background-color 0.5s ease, color 0.4s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--theme-heading-font), sans-serif;
 }
 
 /* Smooth theme transitions on all themed elements */
@@ -45,13 +51,58 @@ section, div, a, span, p, h1, h2, h3, button {
 
 /* Selection adapts via currentColor */
 ::selection {
-  background: currentColor;
-  -webkit-background-clip: initial;
-  background-clip: initial;
-  opacity: 0.2;
+  background: rgba(128, 128, 128, 0.3);
 }
 
-/* Fallback: semi-transparent neutral */
-::selection {
-  background: rgba(128, 128, 128, 0.3);
+/* Scanlines overlay for cyberpunk */
+.decoration-scanlines::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+}
+
+/* Court lines for basketball */
+.decoration-court::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(transparent 49.5%, rgba(255, 107, 43, 0.06) 49.5%, rgba(255, 107, 43, 0.06) 50.5%, transparent 50.5%),
+    linear-gradient(90deg, transparent 49.5%, rgba(255, 107, 43, 0.06) 49.5%, rgba(255, 107, 43, 0.06) 50.5%, transparent 50.5%);
+}
+
+.decoration-court::after {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(50vw, 400px);
+  height: min(50vw, 400px);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 107, 43, 0.08);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Clean borders for corporate */
+.decoration-borders::before {
+  content: "";
+  position: fixed;
+  inset: 24px;
+  z-index: 0;
+  pointer-events: none;
+  border: 1px solid rgba(10, 102, 194, 0.1);
+  border-radius: 8px;
 }

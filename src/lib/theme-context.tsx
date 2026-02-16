@@ -44,6 +44,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const t = themes[themeId];
     document.body.style.backgroundColor = t.colors.bg;
     document.body.style.color = t.colors.text;
+    document.documentElement.style.setProperty("--theme-heading-font", t.font.heading);
+    document.documentElement.style.setProperty("--theme-body-font", t.font.body);
   }, [themeId]);
 
   return (

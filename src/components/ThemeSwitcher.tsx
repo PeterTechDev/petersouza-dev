@@ -22,6 +22,7 @@ export default function ThemeSwitcher() {
         }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
+        aria-label="Switch theme"
       >
         <Palette size={24} />
       </motion.button>

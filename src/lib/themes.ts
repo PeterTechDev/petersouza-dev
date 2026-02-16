@@ -17,12 +17,14 @@ export interface Theme {
     color: string;
     count: number;
     speed: number;
-    shape: "sphere" | "star" | "cube";
+    shape: "sphere" | "star" | "cube" | "dot" | "diamond";
   };
   font: {
     heading: string;
     body: string;
+    cssVar: string;
   };
+  decoration: "court" | "starfield" | "none" | "borders" | "scanlines";
 }
 
 export const themes: Record<string, Theme> = {
@@ -42,7 +44,8 @@ export const themes: Record<string, Theme> = {
       gradient: "linear-gradient(135deg, #ff6b2b 0%, #ff2b6b 100%)",
     },
     particles: { color: "#ff6b2b", count: 80, speed: 0.3, shape: "sphere" },
-    font: { heading: "'Inter', sans-serif", body: "'Inter', sans-serif" },
+    font: { heading: "var(--font-bebas)", body: "var(--font-inter)", cssVar: "--font-bebas" },
+    decoration: "court",
   },
   starwars: {
     id: "starwars",
@@ -60,7 +63,8 @@ export const themes: Record<string, Theme> = {
       gradient: "linear-gradient(135deg, #ffe81f 0%, #ff6b2b 100%)",
     },
     particles: { color: "#ffe81f", count: 200, speed: 0.1, shape: "star" },
-    font: { heading: "'Inter', sans-serif", body: "'Inter', sans-serif" },
+    font: { heading: "var(--font-orbitron)", body: "var(--font-dm-sans)", cssVar: "--font-orbitron" },
+    decoration: "starfield",
   },
   minimal: {
     id: "minimal",
@@ -77,8 +81,9 @@ export const themes: Record<string, Theme> = {
       cardBorder: "rgba(0, 0, 0, 0.1)",
       gradient: "linear-gradient(135deg, #111111 0%, #444444 100%)",
     },
-    particles: { color: "#cccccc", count: 30, speed: 0.1, shape: "sphere" },
-    font: { heading: "'Inter', sans-serif", body: "'Inter', sans-serif" },
+    particles: { color: "#cccccc", count: 30, speed: 0.1, shape: "dot" },
+    font: { heading: "var(--font-dm-sans)", body: "var(--font-dm-sans)", cssVar: "--font-dm-sans" },
+    decoration: "none",
   },
   corporate: {
     id: "corporate",
@@ -95,8 +100,9 @@ export const themes: Record<string, Theme> = {
       cardBorder: "rgba(10, 102, 194, 0.15)",
       gradient: "linear-gradient(135deg, #0a66c2 0%, #004182 100%)",
     },
-    particles: { color: "#0a66c2", count: 40, speed: 0.15, shape: "cube" },
-    font: { heading: "'Inter', sans-serif", body: "'Inter', sans-serif" },
+    particles: { color: "#0a66c2", count: 40, speed: 0.15, shape: "diamond" },
+    font: { heading: "var(--font-playfair)", body: "var(--font-inter)", cssVar: "--font-playfair" },
+    decoration: "borders",
   },
   cyberpunk: {
     id: "cyberpunk",
@@ -113,8 +119,9 @@ export const themes: Record<string, Theme> = {
       cardBorder: "rgba(255, 0, 255, 0.3)",
       gradient: "linear-gradient(135deg, #ff00ff 0%, #00fff5 100%)",
     },
-    particles: { color: "#ff00ff", count: 120, speed: 0.5, shape: "star" },
-    font: { heading: "'Inter', sans-serif", body: "'Inter', sans-serif" },
+    particles: { color: "#ff00ff", count: 120, speed: 0.5, shape: "cube" },
+    font: { heading: "var(--font-space-mono)", body: "var(--font-space-mono)", cssVar: "--font-space-mono" },
+    decoration: "scanlines",
   },
 };
 
