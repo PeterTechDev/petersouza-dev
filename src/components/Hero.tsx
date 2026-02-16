@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
@@ -156,5 +157,3 @@ function RoleSwitcher({ roles, accent }: { roles: string[]; accent: string }) {
     </motion.span>
   );
 }
-
-import { useState, useEffect } from "react";

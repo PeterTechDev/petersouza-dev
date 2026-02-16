@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const KONAMI = [
@@ -18,20 +18,18 @@ const EASTER_EGGS = [
 ];
 
 export default function KonamiCode() {
-  const [keys, setKeys] = useState<string[]>([]);
+  const keysRef = useRef<string[]>([]);
   const [message, setMessage] = useState<string | null>(null);
 
   const handleKey = useCallback((e: KeyboardEvent) => {
-    setKeys((prev) => {
-      const next = [...prev, e.key].slice(-KONAMI.length);
-      if (next.join(",") === KONAMI.join(",")) {
-        const msg = EASTER_EGGS[Math.floor(Math.random() * EASTER_EGGS.length)];
-        setMessage(msg);
-        setTimeout(() => setMessage(null), 4000);
-        return [];
-      }
-      return next;
-    });
+    const next = [...keysRef.current, e.key].slice(-KONAMI.length);
+    keysRef.current = next;
+    if (next.join(",") === KONAMI.join(",")) {
+      const msg = EASTER_EGGS[Math.floor(Math.random() * EASTER_EGGS.length)];
+      setMessage(msg);
+      setTimeout(() => setMessage(null), 4000);
+      keysRef.current = [];
+    }
   }, []);
 
   useEffect(() => {

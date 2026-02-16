@@ -19,7 +19,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar — adapts to dark/light via transparency */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -29,16 +29,15 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(128, 128, 128, 0.3);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(128, 128, 128, 0.5);
 }
 
-/* Selection */
+/* Selection — neutral, works on both dark and light */
 ::selection {
-  background: rgba(255, 107, 43, 0.3);
-  color: #fff;
+  background: rgba(128, 128, 128, 0.3);
 }
