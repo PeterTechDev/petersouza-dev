@@ -35,6 +35,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://petersouza.dev"),
   title: "Peter Souza — Software Engineer & AI Builder",
   description:
     "Building AI-first products that solve real problems. Software Engineer from Brazil.",
@@ -44,6 +45,7 @@ export const metadata: Metadata = {
     url: "https://petersouza.dev",
     siteName: "Peter Souza",
     locale: "en_US",
+    alternateLocale: ["pt_BR"],
     type: "website",
     images: [
       {
@@ -62,6 +64,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://petersouza.dev",
+    languages: {
+      en: "https://petersouza.dev/?lang=en",
+      "pt-BR": "https://petersouza.dev/?lang=pt-BR",
+    },
   },
 };
 

@@ -3,21 +3,17 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
+import { useLocale } from "@/lib/i18n-context";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
-
-const roles = [
-  "Software Engineer",
-  "AI Builder",
-  "Problem Solver",
-  "Full-Stack Developer",
-];
 
 export default function Hero() {
   const { theme } = useTheme();
+  const { t } = useLocale();
+  const roles = t<string[]>("hero.roles");
 
   return (
     <section
-      className="min-h-screen flex flex-col items-center justify-center px-6 relative"
+      className="min-h-screen flex flex-col items-center justify-center px-5 sm:px-6 relative"
       style={{ color: theme.colors.text }}
     >
       <motion.div
@@ -34,7 +30,7 @@ export default function Hero() {
           className="text-sm tracking-[0.3em] uppercase mb-6 font-medium"
           style={{ color: theme.colors.accent }}
         >
-          Hello, world
+          {t<string>("hero.greeting")}
         </motion.p>
 
         {/* Name */}
@@ -42,7 +38,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-6xl md:text-8xl font-black tracking-tight mb-4"
+          className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tight mb-4 leading-[0.95]"
         >
           Peter{" "}
           <span
@@ -61,7 +57,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="text-xl md:text-2xl mb-8 h-8"
+          className="text-lg sm:text-xl md:text-2xl mb-8 min-h-[2rem] sm:min-h-[2.25rem]"
           style={{ color: theme.colors.textMuted }}
         >
           <RoleSwitcher roles={roles} accent={theme.colors.accent} />
@@ -72,12 +68,14 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9 }}
-          className="text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed"
+          className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed"
           style={{ color: theme.colors.textMuted }}
         >
-          Building products that solve real problems.
+          {t<string>("hero.tagline.line1")}
           <br />
-          From <strong style={{ color: theme.colors.accent }}>Brazil</strong> to the world.
+          {t<string>("hero.tagline.line2Prefix")}
+          <strong style={{ color: theme.colors.accent }}>{t<string>("hero.tagline.country")}</strong>
+          {t<string>("hero.tagline.line2Suffix")}
         </motion.p>
 
         {/* Social links */}
@@ -85,7 +83,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1 }}
-          className="flex gap-4 justify-center mb-16"
+          className="flex gap-3 sm:gap-4 justify-center mb-16"
         >
           {[
             { icon: Github, href: "https://github.com/PeterTechDev", label: "GitHub" },
@@ -97,7 +95,7 @@ export default function Hero() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-12 h-12 rounded-full flex items-center justify-center border transition-all"
+              className="w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border transition-all"
               style={{
                 borderColor: theme.colors.cardBorder,
                 color: theme.colors.textMuted,

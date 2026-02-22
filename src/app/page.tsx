@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { ThemeProvider } from "@/lib/theme-context";
+import { I18nProvider } from "@/lib/i18n-context";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
@@ -17,16 +18,18 @@ const ParticleField = dynamic(() => import("@/components/ParticleField"), {
 export default function Home() {
   return (
     <ThemeProvider>
-      <ParticleField />
-      <ThemeDecorations />
-      <main className="relative">
-        <Hero />
-        <About />
-        <Projects />
-        <Contact />
-      </main>
-      <ThemeSwitcher />
-      <KonamiCode />
+      <I18nProvider>
+        <ParticleField />
+        <ThemeDecorations />
+        <main className="relative">
+          <Hero />
+          <About />
+          <Projects />
+          <Contact />
+        </main>
+        <ThemeSwitcher />
+        <KonamiCode />
+      </I18nProvider>
     </ThemeProvider>
   );
 }
