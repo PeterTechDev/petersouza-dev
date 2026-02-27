@@ -50,6 +50,8 @@ export const messages: Record<Locale, Messages> = {
       },
       p3:
         "When I'm not coding, I'm playing basketball, running D&D campaigns, or chasing my daughter around the house. I'm a firm believer that the best engineers are the ones who never stop being curious.",
+      p4:
+        "I left law school with one conviction: the world doesn't need more arguments, it needs more people who build things. Four years in tech later, I haven't changed my mind.",
       stats: {
         yearsLabel: "Years in Tech",
         yearsValue: "4+",
@@ -136,6 +138,8 @@ export const messages: Record<Locale, Messages> = {
       },
       p3:
         "Quando não estou codando, estou jogando basquete, mestrando campanhas de D&D ou correndo atrás da minha filha pela casa. Acredito de verdade que os melhores engenheiros são os que nunca param de ser curiosos.",
+      p4:
+        "Saí da faculdade de Direito com uma convicção: o mundo não precisa de mais argumentos, precisa de mais gente que constrói coisas. Quatro anos em tech depois, não mudei de ideia.",
       stats: {
         yearsLabel: "Anos em Tech",
         yearsValue: "4+",

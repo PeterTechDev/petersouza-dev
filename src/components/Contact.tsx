@@ -62,6 +62,32 @@ export default function Contact() {
         >
           {t<string>("contact.footer", { year: new Date().getFullYear() })}
         </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+          className="mt-8 flex items-center gap-2"
+        >
+          <span className="text-xs" style={{ color: theme.colors.textMuted + "60" }}>
+            Supported by
+          </span>
+          <a
+            href="https://elevenlabs.io/startup-grants"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={theme.name === "light"
+                ? "https://eleven-public-cdn.elevenlabs.io/payloadcms/pwsc4vchsqt-ElevenLabsGrants.webp"
+                : "https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp"
+              }
+              alt="ElevenLabs Grants"
+              style={{ width: "150px" }}
+            />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

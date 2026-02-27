@@ -36,12 +36,34 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://petersouza.dev"),
-  title: "Peter Souza — Software Engineer & AI Builder",
+  title: {
+    default: "Peter Souza — Software Engineer & AI Builder",
+    template: "%s — Peter Souza",
+  },
   description:
-    "Building AI-first products that solve real problems. Software Engineer from Brazil.",
+    "Peter Souza is a Software Engineer and AI builder from Brazil. He builds AI-first products including AutoVendas (multi-agent WhatsApp CRM) and autonomous agent infrastructure. SDET at NDG Communications.",
+  keywords: [
+    "Peter Souza",
+    "software engineer",
+    "AI builder",
+    "multi-agent AI",
+    "WhatsApp AI",
+    "AutoVendas",
+    "Brazil developer",
+    "Next.js",
+    "TypeScript",
+    "SDET",
+    "full-stack developer",
+    "AI agent systems",
+    "OpenAI",
+    "Supabase",
+  ],
+  authors: [{ name: "Peter Souza", url: "https://petersouza.dev" }],
+  creator: "Peter Souza",
   openGraph: {
     title: "Peter Souza — Software Engineer & AI Builder",
-    description: "Building AI-first products that solve real problems.",
+    description:
+      "Building AI-first products that solve real problems. Multi-agent systems, WhatsApp AI, and autonomous agent infrastructure. From Brazil to the world.",
     url: "https://petersouza.dev",
     siteName: "Peter Souza",
     locale: "en_US",
@@ -59,8 +81,20 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Peter Souza — Software Engineer & AI Builder",
-    description: "Building AI-first products that solve real problems.",
+    description: "Building AI-first products that solve real problems. From Brazil.",
     images: ["https://petersouza.dev/og-image.png"],
+    creator: "@petersouza",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   alternates: {
     canonical: "https://petersouza.dev",
@@ -71,6 +105,33 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Peter Souza",
+  url: "https://petersouza.dev",
+  jobTitle: "Software Engineer & AI Builder",
+  description:
+    "Software Engineer from Brazil specializing in AI-first products, multi-agent systems, and full-stack development.",
+  sameAs: [
+    "https://github.com/PeterTechDev",
+    "https://linkedin.com/in/petersouza",
+  ],
+  knowsAbout: [
+    "Artificial Intelligence",
+    "Multi-Agent Systems",
+    "Next.js",
+    "TypeScript",
+    "Software Engineering",
+    "WhatsApp Business API",
+    "OpenAI API",
+  ],
+  worksFor: {
+    "@type": "Organization",
+    name: "NDG Communications",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -78,6 +139,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={`${inter.variable} ${bebasNeue.variable} ${orbitron.variable} ${playfair.variable} ${spaceMono.variable} ${dmSans.variable} font-sans antialiased`}>
         {children}
       </body>

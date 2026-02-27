@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
-import { ExternalLink, Bot, Film, Swords, BarChart3 } from "lucide-react";
+import { ExternalLink, Bot, Film, Swords, BarChart3, ArrowRight } from "lucide-react";
 
 type ProjectStatusKey = "live" | "comingSoon" | "inProgress";
 
@@ -13,6 +14,7 @@ const projects = [
     tags: ["Next.js", "OpenAI", "Twilio", "Supabase", "Multi-Agent"],
     icon: Bot,
     url: "https://auto-vendas.vercel.app",
+    caseStudyUrl: "/case-study/autovendas/",
     statusKey: "live" as const,
     highlight: true,
     gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
@@ -28,6 +30,7 @@ const projects = [
     id: "atriasWiki",
     tags: ["Next.js", "Sanity CMS", "AI", "Three.js"],
     icon: Swords,
+    caseStudyUrl: "/case-study/atrias-wiki/",
     statusKey: "inProgress" as const,
     gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
   },
@@ -52,19 +55,30 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 sm:mb-16"
         >
-          <p
-            className="text-sm tracking-[0.3em] uppercase mb-4 font-medium"
+          <div>
+            <p
+              className="text-sm tracking-[0.3em] uppercase mb-4 font-medium"
+              style={{ color: theme.colors.accent }}
+            >
+              {t<string>("projects.kicker")}
+            </p>
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl font-black"
+              style={{ color: theme.colors.text }}
+            >
+              {t<string>("projects.title")}
+            </h2>
+          </div>
+          <Link
+            href="/blog/"
+            className="inline-flex items-center gap-1.5 text-sm font-medium shrink-0"
             style={{ color: theme.colors.accent }}
           >
-            {t<string>("projects.kicker")}
-          </p>
-          <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-black mb-10 sm:mb-16"
-            style={{ color: theme.colors.text }}
-          >
-            {t<string>("projects.title")}
-          </h2>
+            Read the blog
+            <ArrowRight size={14} />
+          </Link>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -120,9 +134,22 @@ export default function Projects() {
                 )}
               </h3>
 
-              <p className="mb-6 leading-relaxed text-sm sm:text-base" style={{ color: theme.colors.textMuted }}>
+              <p className="mb-5 leading-relaxed text-sm sm:text-base" style={{ color: theme.colors.textMuted }}>
                 {t<string>(`projects.items.${project.id}.description`)}
               </p>
+
+              {/* Case study link (stops propagation so card click still works) */}
+              {project.caseStudyUrl && (
+                <Link
+                  href={project.caseStudyUrl}
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold mb-5 transition-opacity hover:opacity-70"
+                  style={{ color: theme.colors.accent }}
+                >
+                  View case study
+                  <ArrowRight size={12} />
+                </Link>
+              )}
 
               <div className="flex flex-wrap gap-2">
                 {project.tags.map((tag) => (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
@@ -11,6 +11,18 @@ export default function ThemeSwitcher() {
   const { themeId, setTheme, theme } = useTheme();
   const { locale, toggleLocale, t } = useLocale();
   const [open, setOpen] = useState(false);
+  const menuId = useId();
+
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   return (
     <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 items-end">
@@ -36,6 +48,7 @@ export default function ThemeSwitcher() {
       </motion.button>
 
       <motion.button
+        type="button"
         onClick={() => setOpen(!open)}
         className="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-sm border transition-all"
         style={{
@@ -46,6 +59,8 @@ export default function ThemeSwitcher() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         aria-label="Switch theme"
+        aria-expanded={open}
+        aria-controls={menuId}
       >
         <Palette size={24} />
       </motion.button>
@@ -53,6 +68,9 @@ export default function ThemeSwitcher() {
       <AnimatePresence>
         {open && (
           <motion.div
+            id={menuId}
+            role="menu"
+            aria-label="Select theme"
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
@@ -65,6 +83,9 @@ export default function ThemeSwitcher() {
             {Object.values(themes).map((t) => (
               <motion.button
                 key={t.id}
+                type="button"
+                role="menuitemradio"
+                aria-checked={themeId === t.id}
                 onClick={() => {
                   setTheme(t.id);
                   setOpen(false);

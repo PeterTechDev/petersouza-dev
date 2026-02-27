@@ -106,3 +106,49 @@ section, div, a, span, p, h1, h2, h3, button {
   border: 1px solid rgba(10, 102, 194, 0.1);
   border-radius: 8px;
 }
+
+/* Prose-like styles for blog post content */
+.prose-like h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  font-family: var(--theme-heading-font), sans-serif;
+}
+
+.prose-like p {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+.prose-like ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1.25rem;
+}
+
+.prose-like ul li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.6rem;
+  line-height: 1.7;
+}
+
+.prose-like ul li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.prose-like strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.prose-like em {
+  font-style: italic;
+}

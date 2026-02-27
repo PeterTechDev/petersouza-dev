@@ -6,6 +6,7 @@ import { I18nProvider } from "@/lib/i18n-context";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
+import AIAgents from "@/components/AIAgents";
 import Contact from "@/components/Contact";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import KonamiCode from "@/components/KonamiCode";
@@ -25,6 +26,7 @@ export default function Home() {
           <Hero />
           <About />
           <Projects />
+          <AIAgents />
           <Contact />
         </main>
         <ThemeSwitcher />
