@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/lib/theme-context";
 import { I18nProvider } from "@/lib/i18n-context";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
 import AIAgents from "@/components/AIAgents";
 import Contact from "@/components/Contact";
@@ -25,6 +26,7 @@ export default function Home() {
         <main className="relative">
           <Hero />
           <About />
+          <Skills />
           <Projects />
           <AIAgents />
           <Contact />

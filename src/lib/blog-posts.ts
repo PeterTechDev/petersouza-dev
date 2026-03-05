@@ -49,26 +49,42 @@ export const blogPosts: BlogPost[] = [
     description:
       "The decision that changed everything: trading contracts for components, arguments for algorithms. An honest look at the path less traveled.",
     date: "2025-11-20",
-    readingTime: "5 min read",
+    readingTime: "7 min read",
     category: "Personal",
-    tags: ["Career", "Story", "Mindset"],
+    tags: ["Career", "Story", "Mindset", "AI"],
     content: `
 <h2>The Moment I Knew</h2>
-<p>I was in my second year of law school when I first wrote a script that automated something I'd been doing manually for three hours every week. It was 40 lines of Python. It was the most satisfying thing I'd ever created.</p>
-<p>Law school had taught me to argue persuasively. But that script <em>did</em> something. It moved atoms. It saved time. It existed in the world as a fact, not an opinion. I couldn't stop thinking about it.</p>
+<p>I was in my second year of law school when I first wrote a script that automated something I'd been doing manually for three hours every week. It was 40 lines of Python. Ugly code. No error handling. It ran on my laptop and nowhere else. But it was the most satisfying thing I'd ever created.</p>
+<p>Law school had taught me to argue persuasively. I could dissect a contract, build a case, and present it to a room full of people who were paid to disagree with me. But that script <em>did</em> something. It moved atoms. It saved real time. It existed in the world as a fact, not an opinion. I couldn't stop thinking about it.</p>
+<p>I spent the next two weeks writing more scripts. Automating class notes. Scraping case law databases. Building a janky calculator for legal deadlines. Each one was terrible by any engineering standard. Each one felt more meaningful than anything I'd written in three semesters of legal briefs.</p>
 
 <h2>The Fear</h2>
-<p>Dropping out of law school in Brazil isn't nothing. Law is a prestige career. My family didn't fully understand software engineering — "you want to work with computers?" There was a real cost to walking away from the credential, the network, the clear path.</p>
-<p>What tipped me over: I realized I was already spending my law school free time building things. Not studying. Building. The decision had already been made by my actions; I just hadn't said it out loud yet.</p>
+<p>Dropping out of law school in Brazil isn't nothing. Law is a prestige career. It's the kind of degree your family celebrates at dinner. My parents didn't fully understand software engineering — "you want to work with computers?" — and I couldn't blame them. I barely understood it myself.</p>
+<p>There was a real cost to walking away from the credential, the network, the clear path. Law school gives you a roadmap: pass the bar, join a firm, build a practice. Software engineering in 2021 gave me a blank terminal and a blinking cursor. No roadmap. No safety net.</p>
+<p>What tipped me over: I realized I was already spending my law school free time building things. Not studying case law. Not preparing for moot court. Building. The decision had already been made by my actions; I just hadn't said it out loud yet.</p>
+<p>So I said it out loud. And then I left.</p>
 
 <h2>The First Two Years Were Hard</h2>
-<p>Self-taught is romanticized. The reality: lots of tutorial hell, lots of projects I abandoned, lots of not knowing what I didn't know. The turning point was getting my first real job — not a freelance gig, a real engineering position where other engineers would read my code and tell me when it was wrong.</p>
-<p>Code review humbles you fast. And fast humbling is the fastest growth.</p>
+<p>Self-taught is romanticized on the internet. The reality: tutorial hell, abandoned projects, and the crushing feeling of not knowing what you don't know. I'd finish a course, feel like I understood JavaScript, then try to build something real and realize I understood nothing.</p>
+<p>The turning point was getting my first real job in 2022 — not a freelance gig, not a personal project, but a real engineering position where other engineers would read my code and tell me, politely but firmly, when it was wrong.</p>
+<p>Code review humbles you fast. And fast humbling is the fastest growth. In six months, I learned more than I had in a year of self-study. I learned that writing code is the easy part. The hard part is writing code that other people can read, maintain, and trust.</p>
+<p>By 2023, I'd become an SDET — Software Development Engineer in Test. It was the perfect role for someone who cared about quality and correctness. I shipped six products that year, including AutoVendas, an AI-powered CRM for car dealerships that would become my most ambitious project to date.</p>
+
+<h2>The AI Turning Point</h2>
+<p>When I first started experimenting with large language models in late 2023, something clicked. The same feeling from that first Python script came back, amplified by a thousand. Here was a technology that could understand natural language, reason about problems, and generate solutions — and it was accessible to anyone willing to learn how to use it.</p>
+<p>I went deep. Multi-agent architectures. Prompt engineering in Portuguese (harder than English — the nuance in sales language doesn't translate directly). Voice synthesis with ElevenLabs. Real-time speech processing with Whisper. Each project taught me something new about what AI can and can't do.</p>
+<p>The most important lesson: AI is a tool, not a replacement. The best systems I've built are the ones where AI handles the repetitive cognitive work and humans handle the judgment calls. AutoVendas doesn't replace salespeople — it makes sure no lead waits six hours for a reply at 2 AM.</p>
 
 <h2>Four Years Later</h2>
-<p>I'm an SDET at an international company. I've shipped production AI systems. I have a company of my own. I'm a main provider for my family. None of this was visible from the law school dropout point.</p>
-<p>The law school training wasn't wasted, by the way. Learning to structure arguments, read critically, and present evidence clearly — that's just good engineering communication with different vocabulary.</p>
-<p>If you're at the fork, here's my honest advice: don't decide based on prestige or fear. Decide based on which path you find yourself choosing with your free time when no one is watching.</p>
+<p>I'm an SDET at an international company, working remotely from Brazil for a US-based team. I've shipped production AI systems that handle real customer conversations. I have a company of my own. I'm a main provider for my family — my daughter, who I chase around the house when I close my laptop.</p>
+<p>None of this was visible from the law school dropout point. When I walked out of that building in 2021, I couldn't have told you where I'd be in four years. I just knew I'd rather fail at building things than succeed at arguing about them.</p>
+<p>The law school training wasn't wasted, by the way. Learning to structure arguments, read critically, and present evidence clearly — that's just good engineering communication with different vocabulary. Every design doc I write, every bug report I file, every stakeholder conversation I have — the legal training shows up in ways I didn't expect.</p>
+
+<h2>AI Is the Great Equalizer</h2>
+<p>Here's what I believe: AI is the most democratizing technology since the internet itself. A developer in Brazil with a laptop and an API key can build systems that compete with products from teams of fifty. Geography matters less. Credentials matter less. What matters is whether you can identify a real problem and build a real solution.</p>
+<p>I'm not saying it's easy. It's not. The barrier to entry is lower, but the barrier to excellence is just as high as it's ever been. You still need to understand systems. You still need to write clean code. You still need to test your assumptions against reality.</p>
+<p>But the opportunity is there in a way it wasn't five years ago. If you're standing at a fork like I was — wondering whether to leave the safe path for the uncertain one — look at what you do with your free time when no one is watching. That's your answer.</p>
+<p>I left law school with one conviction: the world doesn't need more arguments. It needs more people who build things. Four years and a lot of coffee later, I haven't changed my mind.</p>
     `.trim(),
   },
   {

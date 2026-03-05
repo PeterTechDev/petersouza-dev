@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
-import { ExternalLink, Bot, Film, Swords, BarChart3, ArrowRight } from "lucide-react";
+import { ExternalLink, Bot, Swords, BarChart3, ArrowRight } from "lucide-react";
 
 type ProjectStatusKey = "live" | "comingSoon" | "inProgress";
 
@@ -19,14 +19,7 @@ const projects = [
     highlight: true,
     gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
   },
-  {
-    id: "videoAutomation",
-    tags: ["Remotion", "React", "FFmpeg", "TypeScript"],
-    icon: Film,
-    statusKey: "comingSoon" as const,
-    gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-  },
-  {
+{
     id: "atriasWiki",
     tags: ["Next.js", "Sanity CMS", "AI", "Three.js"],
     icon: Swords,

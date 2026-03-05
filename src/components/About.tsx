@@ -9,8 +9,8 @@ const timelineItems = [
   { year: "2021", event: "Left law school. First real commit pushed." },
   { year: "2022", event: "First engineering job. Code review humbled me fast." },
   { year: "2023", event: "Became SDET. Shipped 6+ products including AutoVendas." },
-  { year: "2025", event: "Full-time at NDG Communications (remote, international)." },
-  { year: "2026", event: "Building AI infrastructure. The journey continues." },
+  { year: "2025", event: "Full-time at NDG Communications (remote, USA)." },
+  { year: "2026", event: "Building AI-first products. Expanding globally." },
 ];
 
 export default function About() {

@@ -83,7 +83,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1 }}
-          className="flex gap-3 sm:gap-4 justify-center mb-16"
+          className="flex gap-3 sm:gap-4 justify-center mb-8"
         >
           {[
             { icon: Github, href: "https://github.com/PeterTechDev", label: "GitHub" },
@@ -110,6 +110,32 @@ export default function Hero() {
               <Icon size={20} />
             </motion.a>
           ))}
+        </motion.div>
+
+        {/* CTA Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.3 }}
+          className="mb-16"
+        >
+          <motion.a
+            href="#projects"
+            onClick={(e) => {
+              e.preventDefault();
+              document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-sm sm:text-base transition-all"
+            style={{
+              background: theme.colors.gradient,
+              color: theme.colors.bg === "#fafafa" || theme.colors.bg === "#f3f2ef" ? "#ffffff" : theme.colors.bg,
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ArrowDown size={18} />
+            View My Work
+          </motion.a>
         </motion.div>
       </motion.div>
 

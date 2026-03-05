@@ -27,12 +27,12 @@ export const messages: Record<Locale, Messages> = {
   en: {
     hero: {
       greeting: "Hello, world",
-      roles: ["Software Engineer", "AI Builder", "Problem Solver", "Full-Stack Developer"],
+      roles: ["AI Systems Builder", "SDET & Quality Engineer", "Full-Stack Developer", "Automation Specialist"],
       tagline: {
-        line1: "Building products that solve real problems.",
-        line2Prefix: "From ",
-        country: "Brazil",
-        line2Suffix: " to the world.",
+        line1: "From law school dropout to AI engineer.",
+        line2Prefix: "",
+        country: "",
+        line2Suffix: "",
       },
     },
     about: {
@@ -114,12 +114,12 @@ export const messages: Record<Locale, Messages> = {
   "pt-BR": {
     hero: {
       greeting: "Olá, mundo",
-      roles: ["Engenheiro de Software", "Construtor de IA", "Resolvedor de Problemas", "Full-Stack Developer"],
+      roles: ["Construtor de Sistemas IA", "SDET & Engenheiro de Qualidade", "Full-Stack Developer", "Especialista em Automação"],
       tagline: {
-        line1: "Criando produtos que resolvem problemas reais.",
-        line2Prefix: "Do ",
-        country: "Brasil",
-        line2Suffix: " para o mundo.",
+        line1: "De desistente de Direito a engenheiro de IA.",
+        line2Prefix: "",
+        country: "",
+        line2Suffix: "",
       },
     },
     about: {

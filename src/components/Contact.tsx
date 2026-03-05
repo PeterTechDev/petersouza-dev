@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
-import { Send } from "lucide-react";
+import { Send, Github, Linkedin } from "lucide-react";
 
 export default function Contact() {
   const { theme } = useTheme();
@@ -37,19 +37,51 @@ export default function Contact() {
             {t<string>("contact.subtitle")}
           </p>
 
-          <motion.a
-            href="mailto:peterleite.dev@gmail.com"
-            className="inline-flex items-center gap-3 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-bold text-base sm:text-lg transition-all"
-            style={{
-              background: theme.colors.gradient,
-              color: theme.colors.bg === "#fafafa" || theme.colors.bg === "#f3f2ef" ? "#ffffff" : theme.colors.bg,
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Send size={20} />
-            {t<string>("contact.cta")}
-          </motion.a>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <motion.a
+              href="mailto:peterleite.dev@gmail.com"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
+              style={{
+                borderColor: theme.colors.cardBorder,
+                color: theme.colors.text,
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Send size={18} />
+              {t<string>("contact.cta")}
+            </motion.a>
+            <motion.a
+              href="https://github.com/PeterTechDev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
+              style={{
+                borderColor: theme.colors.cardBorder,
+                color: theme.colors.text,
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Github size={18} />
+              GitHub
+            </motion.a>
+            <motion.a
+              href="https://linkedin.com/in/petersouza"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
+              style={{
+                borderColor: theme.colors.cardBorder,
+                color: theme.colors.text,
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Linkedin size={18} />
+              LinkedIn
+            </motion.a>
+          </div>
         </motion.div>
 
         <motion.p
