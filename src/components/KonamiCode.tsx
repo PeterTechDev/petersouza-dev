@@ -21,7 +21,7 @@ const LONG_PRESS_MS = 1500;
 const SHAKE_THRESHOLD = 25;
 const SHAKE_COUNT_NEEDED = 3;
 
-export default function KonamiCode() {
+export function KonamiCode() {
   const keysRef = useRef<string[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);

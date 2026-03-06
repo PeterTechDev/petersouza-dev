@@ -6,7 +6,7 @@ import { useTheme } from "@/lib/theme-context";
 import { blogPosts } from "@/lib/blog-posts";
 import { ArrowLeft, ArrowRight, Clock, Tag } from "lucide-react";
 
-export default function BlogIndex() {
+export function BlogIndex() {
   const { theme } = useTheme();
 
   return (

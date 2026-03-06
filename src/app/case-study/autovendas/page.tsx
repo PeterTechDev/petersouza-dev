@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import PageWrapper from "@/components/PageWrapper";
-import AutoVendasCaseStudy from "@/components/case-studies/AutoVendasCaseStudy";
+import { PageWrapper } from "@/components/PageWrapper";
+import { AutoVendasCaseStudy } from "@/components/case-studies/AutoVendasCaseStudy";
 
 export const metadata: Metadata = {
   title: "AutoVendas Case Study — Peter Souza",

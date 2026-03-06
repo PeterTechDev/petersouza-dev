@@ -6,7 +6,7 @@ import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 
-export default function Hero() {
+export function Hero() {
   const { theme } = useTheme();
   const { t } = useLocale();
   const roles = t<string[]>("hero.roles");
@@ -89,6 +89,7 @@ export default function Hero() {
             <motion.a
               key={label}
               href={href}
+              aria-label={label}
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-full flex items-center justify-center border transition-all"
@@ -124,7 +125,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-sm sm:text-base transition-all"
             style={{
               background: theme.colors.gradient,
-              color: theme.colors.bg === "#fafafa" || theme.colors.bg === "#f3f2ef" ? "#ffffff" : theme.colors.bg,
+              color: theme.isDark ? theme.colors.bg : "#ffffff",
             }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

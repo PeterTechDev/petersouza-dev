@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import PageWrapper from "@/components/PageWrapper";
-import AtriasCaseStudy from "@/components/case-studies/AtriasCaseStudy";
+import { PageWrapper } from "@/components/PageWrapper";
+import { AtriasCaseStudy } from "@/components/case-studies/AtriasCaseStudy";
 
 export const metadata: Metadata = {
   title: "Átrias Wiki Case Study — Peter Souza",

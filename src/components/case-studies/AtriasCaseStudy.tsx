@@ -55,7 +55,7 @@ const archLines = [
   "   (GM view / Player view)",
 ];
 
-export default function AtriasCaseStudy() {
+export function AtriasCaseStudy() {
   const { theme } = useTheme();
 
   return (

@@ -28,7 +28,7 @@ const categories = [
   },
 ];
 
-export default function Skills() {
+export function Skills() {
   const { theme } = useTheme();
   const { t } = useLocale();
 

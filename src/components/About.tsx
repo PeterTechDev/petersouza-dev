@@ -7,7 +7,7 @@ import { Code2, Trophy, Dices, Bot, BookOpen } from "lucide-react";
 
 const interestIcons = [Trophy, Dices, Bot, BookOpen];
 
-export default function About() {
+export function About() {
   const { theme } = useTheme();
   const { t } = useLocale();
 

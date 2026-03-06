@@ -8,35 +8,46 @@ import { ExternalLink, Bot, Swords, BarChart3, ArrowRight } from "lucide-react";
 
 type ProjectStatusKey = "live" | "comingSoon" | "inProgress";
 
-const projects = [
+interface Project {
+  id: string;
+  tags: string[];
+  icon: typeof Bot;
+  url?: string;
+  caseStudyUrl?: string;
+  statusKey: ProjectStatusKey;
+  highlight?: boolean;
+  gradient: string;
+}
+
+const projects: Project[] = [
   {
     id: "autovendas",
     tags: ["Next.js", "OpenAI", "Twilio", "Supabase", "Multi-Agent"],
     icon: Bot,
     url: "https://auto-vendas.vercel.app",
     caseStudyUrl: "/case-study/autovendas/",
-    statusKey: "live" as const,
+    statusKey: "live",
     highlight: true,
     gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
   },
-{
+  {
     id: "atriasWiki",
     tags: ["Next.js", "Sanity CMS", "AI", "Three.js"],
     icon: Swords,
     caseStudyUrl: "/case-study/atrias-wiki/",
-    statusKey: "inProgress" as const,
+    statusKey: "inProgress",
     gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
   },
   {
     id: "nbaLiveFeed",
     tags: ["Next.js", "REST APIs", "Real-time", "Vercel"],
     icon: BarChart3,
-    statusKey: "live" as const,
+    statusKey: "live",
     gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
   },
 ];
 
-export default function Projects() {
+export function Projects() {
   const { theme } = useTheme();
   const { t } = useLocale();
 
@@ -109,7 +120,7 @@ export default function Projects() {
                     color: project.statusKey === "live" ? theme.colors.accent : theme.colors.textMuted,
                   }}
                 >
-                  {t<string>(`projects.status.${project.statusKey as ProjectStatusKey}`)}
+                  {t<string>(`projects.status.${project.statusKey}`)}
                 </span>
               </div>
 

@@ -124,6 +124,10 @@ function Particles() {
   const texture = useMemo(() => getTextureForShape(theme.particles.shape), [theme.particles.shape]);
 
   useEffect(() => {
+    return () => { texture?.dispose(); };
+  }, [texture]);
+
+  useEffect(() => {
     const data = createParticles(theme.particles.count, theme.particles.speed);
     velocitiesRef.current = data.velocities;
     if (meshRef.current) {
@@ -179,10 +183,8 @@ function Particles() {
     meshRef.current.rotation.y = state.clock.elapsedTime * 0.02;
   });
 
-  const initialData = useMemo(
-    () => createParticles(theme.particles.count, theme.particles.speed),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+  const [initialData] = useState(
+    () => createParticles(theme.particles.count, theme.particles.speed)
   );
 
   return (
@@ -214,6 +216,10 @@ function MobileParticles() {
   const velocitiesRef = useRef<Float32Array>(new Float32Array(0));
 
   const texture = useMemo(() => getTextureForShape(theme.particles.shape), [theme.particles.shape]);
+
+  useEffect(() => {
+    return () => { texture?.dispose(); };
+  }, [texture]);
 
   const mobileCount = Math.min(theme.particles.count, 30);
   const [initialData] = useState(
