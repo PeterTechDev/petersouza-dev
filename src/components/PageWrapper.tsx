@@ -3,13 +3,13 @@
 import dynamic from "next/dynamic";
 import { ThemeProvider } from "@/lib/theme-context";
 import { I18nProvider } from "@/lib/i18n-context";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 const ParticleField = dynamic(() => import("@/components/ParticleField"), {
   ssr: false,
 });
 
-export default function PageWrapper({ children }: { children: React.ReactNode }) {
+export function PageWrapper({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <I18nProvider>

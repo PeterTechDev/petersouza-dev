@@ -6,7 +6,7 @@ import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 
-export default function Hero() {
+export function Hero() {
   const { theme } = useTheme();
   const { t } = useLocale();
   const roles = t<string[]>("hero.roles");

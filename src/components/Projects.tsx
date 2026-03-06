@@ -47,7 +47,7 @@ const projects: Project[] = [
   },
 ];
 
-export default function Projects() {
+export function Projects() {
   const { theme } = useTheme();
   const { t } = useLocale();
 

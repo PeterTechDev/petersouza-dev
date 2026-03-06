@@ -5,7 +5,7 @@ import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
 import { Send, Github, Linkedin } from "lucide-react";
 
-export default function Contact() {
+export function Contact() {
   const { theme } = useTheme();
   const { t } = useLocale();
 

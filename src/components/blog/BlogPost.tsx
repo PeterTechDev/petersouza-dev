@@ -6,7 +6,7 @@ import { useTheme } from "@/lib/theme-context";
 import { type BlogPost } from "@/lib/blog-posts";
 import { ArrowLeft, Clock, Tag } from "lucide-react";
 
-export default function BlogPostView({ post }: { post: BlogPost }) {
+export function BlogPostView({ post }: { post: BlogPost }) {
   const { theme } = useTheme();
 
   return (

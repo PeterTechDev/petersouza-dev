@@ -44,7 +44,7 @@ const architectureLines = [
   "          └── Review Agent                 ",
 ];
 
-export default function AIAgents() {
+export function AIAgents() {
   const { theme } = useTheme();
   const { t } = useLocale();
   const [showDetails, setShowDetails] = useState(false);

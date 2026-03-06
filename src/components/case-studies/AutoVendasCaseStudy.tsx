@@ -57,7 +57,7 @@ const archLines = [
   "   (CRM + Vehicles + Leads)",
 ];
 
-export default function AutoVendasCaseStudy() {
+export function AutoVendasCaseStudy() {
   const { theme } = useTheme();
 
   return (

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import PageWrapper from "@/components/PageWrapper";
-import BlogIndex from "@/components/blog/BlogIndex";
+import { PageWrapper } from "@/components/PageWrapper";
+import { BlogIndex } from "@/components/blog/BlogIndex";
 
 export const metadata: Metadata = {
   title: "Blog — Peter Souza",

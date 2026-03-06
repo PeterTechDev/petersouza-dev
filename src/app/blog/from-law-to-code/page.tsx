@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import PageWrapper from "@/components/PageWrapper";
-import BlogPostView from "@/components/blog/BlogPost";
+import { PageWrapper } from "@/components/PageWrapper";
+import { BlogPostView } from "@/components/blog/BlogPost";
 import { blogPosts } from "@/lib/blog-posts";
 
 const post = blogPosts.find((p) => p.slug === "from-law-to-code")!;

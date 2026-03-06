@@ -7,7 +7,7 @@ import { useLocale } from "@/lib/i18n-context";
 import { themes } from "@/lib/themes";
 import { Palette } from "lucide-react";
 
-export default function ThemeSwitcher() {
+export function ThemeSwitcher() {
   const { themeId, setTheme, theme } = useTheme();
   const { locale, toggleLocale, t } = useLocale();
   const [open, setOpen] = useState(false);

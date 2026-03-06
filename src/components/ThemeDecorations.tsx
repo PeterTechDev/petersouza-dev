@@ -3,7 +3,7 @@
 import { useTheme } from "@/lib/theme-context";
 import { useEffect } from "react";
 
-export default function ThemeDecorations() {
+export function ThemeDecorations() {
   const { theme } = useTheme();
 
   useEffect(() => {
