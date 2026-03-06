@@ -22,10 +22,11 @@ export default function About() {
   const interests = t<string[]>("about.interests");
 
   return (
-    <section className="py-20 sm:py-28 lg:py-32 px-5 sm:px-6" id="about">
+    <section className="py-20 sm:py-28 lg:py-32 px-6 sm:px-10 lg:px-16" id="about">
       <div className="max-w-5xl mx-auto">
         {/* Section header */}
         <motion.div
+          className="text-center mb-10 sm:mb-14"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -38,7 +39,7 @@ export default function About() {
             {t<string>("about.kicker")}
           </p>
           <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-black mb-10 sm:mb-14"
+            className="text-3xl sm:text-4xl md:text-5xl font-black"
             style={{ color: theme.colors.text }}
           >
             {t<string>("about.title")}

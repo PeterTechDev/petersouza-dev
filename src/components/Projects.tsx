@@ -41,7 +41,7 @@ export default function Projects() {
   const { t } = useLocale();
 
   return (
-    <section className="py-20 sm:py-28 lg:py-32 px-5 sm:px-6" id="projects">
+    <section className="py-20 sm:py-28 lg:py-32 px-6 sm:px-10 lg:px-16" id="projects">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
