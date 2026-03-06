@@ -13,7 +13,7 @@ export function Hero() {
 
   return (
     <section
-      className="py-24 sm:py-32 lg:py-40 flex flex-col items-center justify-center px-6 md:px-12 lg:px-20 relative"
+      className="min-h-screen py-24 sm:py-32 lg:py-40 flex flex-col items-center justify-center px-6 md:px-12 lg:px-20 relative"
       style={{ color: theme.colors.text }}
     >
       <motion.div
