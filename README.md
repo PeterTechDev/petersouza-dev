@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# petersouza.dev
 
-## Getting Started
+> *"The world doesn't need more arguments. It needs more people who build things."*
 
-First, run the development server:
+Personal portfolio of **Peter Souza** — AI systems builder, SDET, and full-stack developer from Brazil.
+
+Live at → **[petersouza.dev](https://petersouza.dev)**
+
+---
+
+## What's Inside
+
+- **Multi-theme system** — Basketball, Galaxy, LinkedIn, Clean. Pick your vibe.
+- **AI Agents showcase** — Real architecture diagrams of the multi-agent systems I've built
+- **Case studies** — AutoVendas & Átrias Wiki with technical deep-dives
+- **Blog** — Engineering lessons from shipping real products to real users
+- **PT-BR / EN i18n** — Because Brazil is home
+
+---
+
+## Stack
+
+| Layer | Tech |
+|-------|------|
+| Framework | Next.js 16 (App Router, static export) |
+| Styling | Tailwind CSS |
+| Animation | Framer Motion |
+| 3D | Three.js (particle field) |
+| Icons | Lucide React |
+| Deploy | Vercel |
+
+---
+
+## Featured Projects
+
+**[AutoVendas](https://auto-vendas.vercel.app)** — AI-powered CRM for Brazilian car dealerships. Multi-agent WhatsApp assistant that qualifies leads and closes deals 24/7.
+
+**[Átrias Wiki](https://atrias-wiki.vercel.app)** — Interactive encyclopedia for a 7-year D&D campaign. 176 entities, AI narrator, relationship graph.
+
+**[NBA Live Feed](https://my-nba-feed.vercel.app)** — Real-time scores, standings, player comparisons, Reddit social feed.
+
+---
+
+## Running Locally
 
 ```bash
+git clone https://github.com/PeterTechDev/petersouza-dev.git
+cd petersouza-dev
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## The Story
 
-## Learn More
+Dropped out of law school in 2021 with one conviction: the world needs builders, not just arguers. Four years later — 4+ years in tech, SDET at an international company, AI products in production, and still going.
 
-To learn more about Next.js, take a look at the following resources:
+Currently building in Brazil. Eyeing the world.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+<p align="center">
+  <a href="https://petersouza.dev">Portfolio</a> ·
+  <a href="https://github.com/PeterTechDev">GitHub</a> ·
+  <a href="https://linkedin.com/in/petersouza">LinkedIn</a>
+</p>
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<p align="center">
+  <sub>Supported by <a href="https://elevenlabs.io/startup-grants">ElevenLabs Grants</a></sub>
+</p>
