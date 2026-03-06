@@ -67,7 +67,7 @@ export function Contact() {
               GitHub
             </motion.a>
             <motion.a
-              href="https://linkedin.com/in/petersouza"
+              href="https://www.linkedin.com/in/petertechdev/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"

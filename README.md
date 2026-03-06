@@ -33,7 +33,7 @@ Live at → **[petersouza.dev](https://petersouza.dev)**
 
 ## Featured Projects
 
-**[AutoVendas](https://auto-vendas.vercel.app)** — AI-powered CRM for Brazilian car dealerships. Multi-agent WhatsApp assistant that qualifies leads and closes deals 24/7.
+**[AutoVendas](https://autovendas.vercel.app)** — AI-powered CRM for Brazilian car dealerships. Multi-agent WhatsApp assistant that qualifies leads and closes deals 24/7.
 
 **[Átrias Wiki](https://atrias-wiki.vercel.app)** — Interactive encyclopedia for a 7-year D&D campaign. 176 entities, AI narrator, relationship graph.
 
@@ -65,7 +65,7 @@ Currently building in Brazil. Eyeing the world.
 <p align="center">
   <a href="https://petersouza.dev">Portfolio</a> ·
   <a href="https://github.com/PeterTechDev">GitHub</a> ·
-  <a href="https://linkedin.com/in/petersouza">LinkedIn</a>
+  <a href="https://www.linkedin.com/in/petertechdev/">LinkedIn</a>
 </p>
 
 <p align="center">

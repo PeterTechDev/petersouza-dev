@@ -130,7 +130,7 @@ export function AutoVendasCaseStudy() {
             </div>
 
             <a
-              href="https://auto-vendas.vercel.app"
+              href="https://autovendas.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium"

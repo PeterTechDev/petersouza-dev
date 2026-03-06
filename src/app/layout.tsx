@@ -115,7 +115,7 @@ const jsonLd = {
     "Software Engineer from Brazil specializing in AI-first products, multi-agent systems, and full-stack development.",
   sameAs: [
     "https://github.com/PeterTechDev",
-    "https://linkedin.com/in/petersouza",
+    "https://www.linkedin.com/in/petertechdev/",
   ],
   knowsAbout: [
     "Artificial Intelligence",

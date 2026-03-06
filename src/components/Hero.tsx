@@ -83,7 +83,7 @@ export function Hero() {
         >
           {[
             { icon: Github, href: "https://github.com/PeterTechDev", label: "GitHub" },
-            { icon: Linkedin, href: "https://linkedin.com/in/petersouza", label: "LinkedIn" },
+            { icon: Linkedin, href: "https://www.linkedin.com/in/petertechdev/", label: "LinkedIn" },
             { icon: Mail, href: "mailto:peterleite.dev@gmail.com", label: "Email" },
           ].map(({ icon: Icon, href, label }) => (
             <motion.a
