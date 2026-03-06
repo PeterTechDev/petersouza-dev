@@ -2,26 +2,27 @@
 
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
+import { useLocale } from "@/lib/i18n-context";
 import { TestTube2, Brain, Monitor, Server } from "lucide-react";
 
 const categories = [
   {
-    name: "Quality Engineering",
+    nameKey: "qualityEngineering",
     icon: TestTube2,
     techs: ["Playwright", "TypeScript", "Cypress", "Postman", "Selenium", "Jest"],
   },
   {
-    name: "AI & Automation",
+    nameKey: "aiAutomation",
     icon: Brain,
     techs: ["OpenAI API", "LangChain", "Multi-Agent Systems", "Whisper", "ElevenLabs"],
   },
   {
-    name: "Frontend",
+    nameKey: "frontend",
     icon: Monitor,
     techs: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "Three.js"],
   },
   {
-    name: "Backend & Cloud",
+    nameKey: "backendCloud",
     icon: Server,
     techs: ["Supabase", "Node.js", "Vercel", "Twilio", "PostgreSQL", "Sentry"],
   },
@@ -29,6 +30,7 @@ const categories = [
 
 export default function Skills() {
   const { theme } = useTheme();
+  const { t } = useLocale();
 
   return (
     <section className="py-20 sm:py-28 lg:py-32 px-5 sm:px-6" id="skills">
@@ -43,20 +45,20 @@ export default function Skills() {
             className="text-sm tracking-[0.3em] uppercase mb-4 font-medium"
             style={{ color: theme.colors.accent }}
           >
-            What I Work With
+            {t<string>("skills.kicker")}
           </p>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl font-black mb-10 sm:mb-16"
             style={{ color: theme.colors.text }}
           >
-            Skills & Tech
+            {t<string>("skills.title")}
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {categories.map((cat, i) => (
             <motion.div
-              key={cat.name}
+              key={cat.nameKey}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -73,7 +75,7 @@ export default function Skills() {
                   className="text-lg font-bold"
                   style={{ color: theme.colors.text }}
                 >
-                  {cat.name}
+                  {t<string>(`skills.categories.${cat.nameKey}`)}
                 </h3>
               </div>
               <div className="flex flex-wrap gap-2">

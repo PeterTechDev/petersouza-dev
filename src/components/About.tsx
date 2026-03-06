@@ -3,15 +3,9 @@
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
-import { MapPin, Briefcase, Cpu, Heart, Code2, BookOpen } from "lucide-react";
+import { MapPin, Briefcase, Cpu, Heart, Code2, BookOpen, Trophy, Dices, Bot } from "lucide-react";
 
-const timelineItems = [
-  { year: "2021", event: "Left law school. First real commit pushed." },
-  { year: "2022", event: "First engineering job. Code review humbled me fast." },
-  { year: "2023", event: "Became SDET. Shipped 6+ products including AutoVendas." },
-  { year: "2025", event: "Full-time at NDG Communications (remote, USA)." },
-  { year: "2026", event: "Building AI-first products. Expanding globally." },
-];
+const interestIcons = [Trophy, Dices, Bot, BookOpen];
 
 export default function About() {
   const { theme } = useTheme();
@@ -24,12 +18,8 @@ export default function About() {
     { label: t<string>("about.stats.drivenLabel"), value: t<string>("about.stats.drivenValue"), icon: Heart },
   ];
 
-  const interests = [
-    { icon: "🏀", label: "Basketball (LeBron stan, Celtics fan — yes, both)" },
-    { icon: "🎲", label: "D&D Game Master (4-year campaign, Átrias world)" },
-    { icon: "🤖", label: "AI systems & autonomous agents" },
-    { icon: "📚", label: "Continuous learning — always mid-book" },
-  ];
+  const timelineItems = t<{ year: string; event: string }[]>("about.timeline");
+  const interests = t<string[]>("about.interests");
 
   return (
     <section className="py-20 sm:py-28 lg:py-32 px-5 sm:px-6" id="about">
@@ -148,18 +138,21 @@ export default function About() {
                   className="text-xs font-bold tracking-[0.2em] uppercase"
                   style={{ color: theme.colors.accent }}
                 >
-                  Outside the Code
+                  {t<string>("about.outsideCode")}
                 </p>
               </div>
               <div className="space-y-3">
-                {interests.map((item) => (
-                  <div key={item.label} className="flex items-start gap-3">
-                    <span className="text-lg leading-none mt-0.5">{item.icon}</span>
-                    <p className="text-sm leading-relaxed" style={{ color: theme.colors.textMuted }}>
-                      {item.label}
-                    </p>
-                  </div>
-                ))}
+                {interests.map((label, idx) => {
+                  const Icon = interestIcons[idx];
+                  return (
+                    <div key={label} className="flex items-start gap-3">
+                      <Icon size={18} className="mt-0.5 shrink-0" style={{ color: theme.colors.accent }} />
+                      <p className="text-sm leading-relaxed" style={{ color: theme.colors.textMuted }}>
+                        {label}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
@@ -184,7 +177,7 @@ export default function About() {
                   className="text-xs font-bold tracking-[0.2em] uppercase"
                   style={{ color: theme.colors.accent }}
                 >
-                  Career Timeline
+                  {t<string>("about.careerTimeline")}
                 </p>
               </div>
               <div className="space-y-4">

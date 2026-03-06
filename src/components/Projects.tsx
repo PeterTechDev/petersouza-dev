@@ -69,7 +69,7 @@ export default function Projects() {
             className="inline-flex items-center gap-1.5 text-sm font-medium shrink-0"
             style={{ color: theme.colors.accent }}
           >
-            Read the blog
+            {t<string>("projects.blogLink")}
             <ArrowRight size={14} />
           </Link>
         </motion.div>
@@ -82,7 +82,7 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className={`group relative rounded-2xl p-6 sm:p-8 border transition-all duration-300 ${project.url ? "cursor-pointer" : ""}`}
+              className={`group relative rounded-2xl p-6 sm:p-8 border transition-all duration-300 ${project.url ? "cursor-pointer" : ""} ${i === projects.length - 1 ? "md:col-span-2" : ""}`}
               style={{
                 background: theme.colors.card,
                 borderColor: project.highlight ? theme.colors.accent + "40" : theme.colors.cardBorder,
@@ -139,7 +139,7 @@ export default function Projects() {
                   className="inline-flex items-center gap-1.5 text-xs font-bold mb-5 transition-opacity hover:opacity-70"
                   style={{ color: theme.colors.accent }}
                 >
-                  View case study
+                  {t<string>("projects.caseStudyLink")}
                   <ArrowRight size={12} />
                 </Link>
               )}

@@ -40,10 +40,10 @@ export default function Contact() {
           <div className="flex flex-wrap gap-3 justify-center">
             <motion.a
               href="mailto:peterleite.dev@gmail.com"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm sm:text-base transition-all"
               style={{
-                borderColor: theme.colors.cardBorder,
-                color: theme.colors.text,
+                background: theme.colors.gradient,
+                color: theme.colors.bg === "#fafafa" || theme.colors.bg === "#f3f2ef" ? "#ffffff" : theme.colors.bg,
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -100,7 +100,7 @@ export default function Contact() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
-          className="mt-8 flex items-center gap-2"
+          className="mt-8 pb-24 flex items-center justify-center gap-2"
         >
           <span className="text-xs" style={{ color: theme.colors.textMuted + "60" }}>
             Supported by

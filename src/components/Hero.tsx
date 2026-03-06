@@ -69,13 +69,9 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9 }}
           className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed"
-          style={{ color: theme.colors.textMuted }}
+          style={{ color: theme.colors.text }}
         >
           {t<string>("hero.tagline.line1")}
-          <br />
-          {t<string>("hero.tagline.line2Prefix")}
-          <strong style={{ color: theme.colors.accent }}>{t<string>("hero.tagline.country")}</strong>
-          {t<string>("hero.tagline.line2Suffix")}
         </motion.p>
 
         {/* Social links */}
@@ -134,7 +130,7 @@ export default function Hero() {
             whileTap={{ scale: 0.95 }}
           >
             <ArrowDown size={18} />
-            View My Work
+            {t<string>("hero.cta")}
           </motion.a>
         </motion.div>
       </motion.div>

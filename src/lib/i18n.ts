@@ -28,16 +28,16 @@ export const messages: Record<Locale, Messages> = {
     hero: {
       greeting: "Hello, world",
       roles: ["AI Systems Builder", "SDET & Quality Engineer", "Full-Stack Developer", "Automation Specialist"],
+      cta: "View My Work",
       tagline: {
         line1: "From law school dropout to AI engineer.",
-        line2Prefix: "",
-        country: "",
-        line2Suffix: "",
       },
     },
     about: {
       kicker: "Who I Am",
       title: "About",
+      careerTimeline: "Career Timeline",
+      outsideCode: "Outside the Code",
       p1: {
         beforeEm: "I'm a software engineer from Brazil who believes technology should solve real problems for real people. I dropped out of law school because I wanted to ",
         em: "build things",
@@ -62,10 +62,35 @@ export const messages: Record<Locale, Messages> = {
         drivenLabel: "Driven By",
         drivenValue: "Family",
       },
+      timeline: [
+        { year: "2021", event: "Left law school. First real commit pushed." },
+        { year: "2022", event: "First engineering job. Code review humbled me fast." },
+        { year: "2023", event: "Became SDET. Shipped 6+ products including AutoVendas." },
+        { year: "2025", event: "Full-time at NDG Communications (remote, USA)." },
+        { year: "2026", event: "Building AI-first products. Expanding globally." },
+      ],
+      interests: [
+        "Basketball (LeBron stan, Celtics fan — yes, both)",
+        "D&D Game Master (4-year campaign, Átrias world)",
+        "AI systems & autonomous agents",
+        "Continuous learning — always mid-book",
+      ],
+    },
+    skills: {
+      kicker: "What I Work With",
+      title: "Skills & Tech",
+      categories: {
+        qualityEngineering: "Quality Engineering",
+        aiAutomation: "AI & Automation",
+        frontend: "Frontend",
+        backendCloud: "Backend & Cloud",
+      },
     },
     projects: {
       kicker: "What I'm Building",
       title: "Projects",
+      blogLink: "Read the blog",
+      caseStudyLink: "View case study",
       status: {
         live: "Live",
         comingSoon: "Coming Soon",
@@ -76,11 +101,6 @@ export const messages: Record<Locale, Messages> = {
           title: "AutoVendas",
           description:
             "AI-powered CRM for Brazilian car dealerships. Multi-agent WhatsApp assistant that qualifies leads, answers inventory questions, and closes deals 24/7.",
-        },
-        videoAutomation: {
-          title: "Video Automation Platform",
-          description:
-            "Programmatic video generation for social media. Automated templates, batch rendering, multi-language support.",
         },
         atriasWiki: {
           title: "Átrias Wiki",
@@ -115,16 +135,16 @@ export const messages: Record<Locale, Messages> = {
     hero: {
       greeting: "Olá, mundo",
       roles: ["Construtor de Sistemas IA", "SDET & Engenheiro de Qualidade", "Full-Stack Developer", "Especialista em Automação"],
+      cta: "Ver Meu Trabalho",
       tagline: {
         line1: "De desistente de Direito a engenheiro de IA.",
-        line2Prefix: "",
-        country: "",
-        line2Suffix: "",
       },
     },
     about: {
       kicker: "Quem sou",
       title: "Sobre",
+      careerTimeline: "Trajetória",
+      outsideCode: "Fora do Código",
       p1: {
         beforeEm:
           "Sou um engenheiro de software do Brasil e acredito que tecnologia deve resolver problemas reais para pessoas reais. Saí da faculdade de Direito porque eu queria ",
@@ -150,10 +170,35 @@ export const messages: Record<Locale, Messages> = {
         drivenLabel: "Motivado por",
         drivenValue: "Família",
       },
+      timeline: [
+        { year: "2021", event: "Saí da faculdade de Direito. Primeiro commit real." },
+        { year: "2022", event: "Primeiro emprego em engenharia. Code review me humilhou rápido." },
+        { year: "2023", event: "Virei SDET. Lancei 6+ produtos incluindo o AutoVendas." },
+        { year: "2025", event: "Full-time na NDG Communications (remoto, EUA)." },
+        { year: "2026", event: "Construindo produtos AI-first. Expandindo globalmente." },
+      ],
+      interests: [
+        "Basquete (fã do LeBron e dos Celtics — sim, os dois)",
+        "Mestre de D&D (campanha de 4 anos, mundo Átrias)",
+        "Sistemas de IA e agentes autônomos",
+        "Aprendizado contínuo — sempre lendo algum livro",
+      ],
+    },
+    skills: {
+      kicker: "Com o que trabalho",
+      title: "Habilidades & Tecnologias",
+      categories: {
+        qualityEngineering: "Engenharia de Qualidade",
+        aiAutomation: "IA & Automação",
+        frontend: "Frontend",
+        backendCloud: "Backend & Cloud",
+      },
     },
     projects: {
       kicker: "O que estou construindo",
       title: "Projetos",
+      blogLink: "Leia o blog",
+      caseStudyLink: "Ver case study",
       status: {
         live: "No ar",
         comingSoon: "Em breve",
@@ -164,11 +209,6 @@ export const messages: Record<Locale, Messages> = {
           title: "AutoVendas",
           description:
             "CRM com IA para concessionárias no Brasil. Assistente multiagente no WhatsApp que qualifica leads, responde dúvidas de estoque e fecha negócios 24/7.",
-        },
-        videoAutomation: {
-          title: "Plataforma de Automação de Vídeo",
-          description:
-            "Geração programática de vídeos para redes sociais. Templates automatizados, renderização em lote e suporte a múltiplos idiomas.",
         },
         atriasWiki: {
           title: "Átrias Wiki",
