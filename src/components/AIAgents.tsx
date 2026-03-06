@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
+import { useLocale } from "@/lib/i18n-context";
 import {
   Brain,
   Layers,
@@ -14,43 +15,13 @@ import {
   ChevronUp,
 } from "lucide-react";
 
-const capabilities = [
-  {
-    icon: Brain,
-    title: "Persistent Memory",
-    description:
-      "Structured file-based memory that survives session boundaries. Context about projects, decisions, and patterns persists across restarts — no re-explaining required.",
-  },
-  {
-    icon: Layers,
-    title: "Multi-Agent Orchestration",
-    description:
-      "Complex tasks spawn specialized sub-agents: one researches, one codes, one reviews. The main agent coordinates, delegates, and synthesizes results.",
-  },
-  {
-    icon: Wrench,
-    title: "Tool Integration",
-    description:
-      "Web search, code execution, file system access, messaging, and external APIs. Agents pick the right tool for each step rather than guessing from memory.",
-  },
-  {
-    icon: GitBranch,
-    title: "Autonomous Coding",
-    description:
-      "Coding tasks run in isolated sessions with full codebase access. Agents explore, modify, test, and iterate — delivering working code, not just suggestions.",
-  },
-  {
-    icon: MessageSquare,
-    title: "Cross-Channel Awareness",
-    description:
-      "Integrated with Telegram for real-time communication. Agents surface updates, ask clarifying questions, and deliver results directly in-chat.",
-  },
-  {
-    icon: Zap,
-    title: "Progressive Delegation",
-    description:
-      "From answering a quick question to managing a full sprint independently. The system scales from single-turn to multi-day autonomous workflows.",
-  },
+const capabilityKeys = [
+  { icon: Brain, key: "persistentMemory" },
+  { icon: Layers, key: "multiAgent" },
+  { icon: Wrench, key: "toolIntegration" },
+  { icon: GitBranch, key: "autonomousCoding" },
+  { icon: MessageSquare, key: "crossChannel" },
+  { icon: Zap, key: "progressiveDelegation" },
 ];
 
 const architectureLines = [
@@ -75,6 +46,7 @@ const architectureLines = [
 
 export default function AIAgents() {
   const { theme } = useTheme();
+  const { t } = useLocale();
   const [showDetails, setShowDetails] = useState(false);
 
   return (
@@ -90,19 +62,19 @@ export default function AIAgents() {
             className="text-sm tracking-[0.3em] uppercase mb-4 font-medium"
             style={{ color: theme.colors.accent }}
           >
-            How I Work
+            {t<string>("aiAgents.kicker")}
           </p>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl font-black mb-4"
             style={{ color: theme.colors.text }}
           >
-            AI Infrastructure
+            {t<string>("aiAgents.title")}
           </h2>
           <p
             className="text-base sm:text-lg leading-relaxed max-w-2xl mb-8 md:mb-16"
             style={{ color: theme.colors.textMuted }}
           >
-            I've built a personal AI system that runs alongside my development workflow — not a tool I use occasionally, but infrastructure I operate daily. Here's how it works.
+            {t<string>("aiAgents.subtitle")}
           </p>
         </motion.div>
 
@@ -115,7 +87,7 @@ export default function AIAgents() {
             borderColor: theme.colors.accent + "40",
           }}
         >
-          {showDetails ? "Hide Details" : "Show Details"}
+          {showDetails ? t<string>("aiAgents.hideDetails") : t<string>("aiAgents.showDetails")}
           {showDetails ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
 
@@ -137,7 +109,7 @@ export default function AIAgents() {
               className="text-xs font-bold tracking-[0.2em] uppercase mb-4"
               style={{ color: theme.colors.accent }}
             >
-              System Architecture
+              {t<string>("aiAgents.architectureLabel")}
             </p>
             <pre
               className="text-xs sm:text-sm leading-relaxed font-mono whitespace-pre"
@@ -149,9 +121,9 @@ export default function AIAgents() {
 
           {/* Capability cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {capabilities.map((cap, i) => (
+            {capabilityKeys.map((cap, i) => (
               <motion.div
-                key={cap.title}
+                key={cap.key}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -171,13 +143,13 @@ export default function AIAgents() {
                   className="text-base font-bold mb-2"
                   style={{ color: theme.colors.text }}
                 >
-                  {cap.title}
+                  {t<string>(`aiAgents.capabilities.${cap.key}.title`)}
                 </h3>
                 <p
                   className="text-sm leading-relaxed"
                   style={{ color: theme.colors.textMuted }}
                 >
-                  {cap.description}
+                  {t<string>(`aiAgents.capabilities.${cap.key}.description`)}
                 </p>
               </motion.div>
             ))}
@@ -193,7 +165,7 @@ export default function AIAgents() {
           className="mt-12 text-sm text-center"
           style={{ color: theme.colors.textMuted }}
         >
-          The system runs on Anthropic Claude with a custom orchestration layer. No vendor lock-in on the AI layer — just clean interfaces.
+          {t<string>("aiAgents.bottomNote")}
         </motion.p>
       </div>
     </section>

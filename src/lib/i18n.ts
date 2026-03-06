@@ -123,6 +123,41 @@ export const messages: Record<Locale, Messages> = {
       footer: "© {year} Peter Souza. Built with Next.js, Three.js & a lot of coffee.",
       toggleShort: "EN",
     },
+    aiAgents: {
+      kicker: "How I Work",
+      title: "AI Infrastructure",
+      subtitle: "I've built a personal AI system that runs alongside my development workflow — not a tool I use occasionally, but infrastructure I operate daily. Here's how it works.",
+      showDetails: "Show Details",
+      hideDetails: "Hide Details",
+      architectureLabel: "System Architecture",
+      bottomNote: "The system runs on Anthropic Claude with a custom orchestration layer. No vendor lock-in on the AI layer — just clean interfaces.",
+      capabilities: {
+        persistentMemory: {
+          title: "Persistent Memory",
+          description: "Structured file-based memory that survives session boundaries. Context about projects, decisions, and patterns persists across restarts — no re-explaining required.",
+        },
+        multiAgent: {
+          title: "Multi-Agent Orchestration",
+          description: "Complex tasks spawn specialized sub-agents: one researches, one codes, one reviews. The main agent coordinates, delegates, and synthesizes results.",
+        },
+        toolIntegration: {
+          title: "Tool Integration",
+          description: "Web search, code execution, file system access, messaging, and external APIs. Agents pick the right tool for each step rather than guessing from memory.",
+        },
+        autonomousCoding: {
+          title: "Autonomous Coding",
+          description: "Coding tasks run in isolated sessions with full codebase access. Agents explore, modify, test, and iterate — delivering working code, not just suggestions.",
+        },
+        crossChannel: {
+          title: "Cross-Channel Awareness",
+          description: "Integrated with Telegram for real-time communication. Agents surface updates, ask clarifying questions, and deliver results directly in-chat.",
+        },
+        progressiveDelegation: {
+          title: "Progressive Delegation",
+          description: "From answering a quick question to managing a full sprint independently. The system scales from single-turn to multi-day autonomous workflows.",
+        },
+      },
+    },
     ui: {
       language: {
         enShort: "EN",
@@ -230,6 +265,41 @@ export const messages: Record<Locale, Messages> = {
       cta: "Diga oi",
       footer: "© {year} Peter Souza. Feito com Next.js, Three.js e muito café.",
       toggleShort: "PT",
+    },
+    aiAgents: {
+      kicker: "Como Trabalho",
+      title: "Infraestrutura de IA",
+      subtitle: "Construí um sistema de IA pessoal que roda junto com meu fluxo de desenvolvimento — não é uma ferramenta que uso de vez em quando, mas infraestrutura que opero diariamente. Veja como funciona.",
+      showDetails: "Ver Detalhes",
+      hideDetails: "Esconder Detalhes",
+      architectureLabel: "Arquitetura do Sistema",
+      bottomNote: "O sistema roda no Anthropic Claude com uma camada de orquestração personalizada. Sem vendor lock-in na camada de IA — apenas interfaces limpas.",
+      capabilities: {
+        persistentMemory: {
+          title: "Memória Persistente",
+          description: "Memória estruturada baseada em arquivos que sobrevive entre sessões. Contexto sobre projetos, decisões e padrões persiste entre reinicializações — sem necessidade de re-explicar.",
+        },
+        multiAgent: {
+          title: "Orquestração Multi-Agente",
+          description: "Tarefas complexas geram sub-agentes especializados: um pesquisa, um codifica, um revisa. O agente principal coordena, delega e sintetiza resultados.",
+        },
+        toolIntegration: {
+          title: "Integração de Ferramentas",
+          description: "Busca na web, execução de código, acesso ao sistema de arquivos, mensagens e APIs externas. Agentes escolhem a ferramenta certa para cada etapa.",
+        },
+        autonomousCoding: {
+          title: "Codificação Autônoma",
+          description: "Tarefas de codificação rodam em sessões isoladas com acesso total ao codebase. Agentes exploram, modificam, testam e iteram — entregando código funcional, não apenas sugestões.",
+        },
+        crossChannel: {
+          title: "Consciência Multi-Canal",
+          description: "Integrado com Telegram para comunicação em tempo real. Agentes enviam atualizações, fazem perguntas e entregam resultados diretamente no chat.",
+        },
+        progressiveDelegation: {
+          title: "Delegação Progressiva",
+          description: "De responder uma pergunta rápida a gerenciar uma sprint inteira de forma independente. O sistema escala de single-turn a workflows autônomos de vários dias.",
+        },
+      },
     },
     ui: {
       language: {
