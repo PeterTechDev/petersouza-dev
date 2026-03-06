@@ -48,50 +48,65 @@ export default function Skills() {
             {t<string>("skills.kicker")}
           </p>
           <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-black mb-10 sm:mb-16"
+            className="text-3xl sm:text-4xl md:text-5xl font-black mb-10 sm:mb-14"
             style={{ color: theme.colors.text }}
           >
             {t<string>("skills.title")}
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="flex flex-col">
           {categories.map((cat, i) => (
             <motion.div
               key={cat.nameKey}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="rounded-2xl border p-6 sm:p-8"
-              style={{
-                background: theme.colors.card,
-                borderColor: theme.colors.cardBorder,
-              }}
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+              className="group"
             >
-              <div className="flex items-center gap-3 mb-5">
-                <cat.icon size={22} style={{ color: theme.colors.accent }} />
-                <h3
-                  className="text-lg font-bold"
-                  style={{ color: theme.colors.text }}
-                >
-                  {t<string>(`skills.categories.${cat.nameKey}`)}
-                </h3>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {cat.techs.map((tech) => (
-                  <span
-                    key={tech}
-                    className="text-sm px-3 py-1.5 rounded-full font-medium"
-                    style={{
-                      background: theme.colors.accent + "15",
-                      color: theme.colors.accent,
-                    }}
+              <div
+                className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-0 py-5 sm:py-6 px-4 sm:px-6 rounded-lg transition-colors duration-200"
+                style={{
+                  borderLeft: `4px solid ${theme.colors.accent}`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = theme.colors.card;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                }}
+              >
+                <div className="flex items-center gap-3 sm:w-[200px] shrink-0">
+                  <cat.icon size={20} style={{ color: theme.colors.accent }} />
+                  <h3
+                    className="text-base font-bold"
+                    style={{ color: theme.colors.text }}
                   >
-                    {tech}
-                  </span>
-                ))}
+                    {t<string>(`skills.categories.${cat.nameKey}`)}
+                  </h3>
+                </div>
+                <div className="flex flex-wrap gap-2 sm:ml-4">
+                  {cat.techs.map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-sm px-3 py-1.5 rounded-full font-medium"
+                      style={{
+                        background: theme.colors.accent + "15",
+                        color: theme.colors.accent,
+                      }}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
+              {i < categories.length - 1 && (
+                <div
+                  className="h-px mx-4 sm:mx-6"
+                  style={{ background: theme.colors.cardBorder }}
+                />
+              )}
             </motion.div>
           ))}
         </div>
