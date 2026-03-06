@@ -25,6 +25,7 @@ export interface Theme {
     cssVar: string;
   };
   decoration: "court" | "starfield" | "none" | "borders" | "scanlines";
+  isDark: boolean;
 }
 
 export const themes: Record<string, Theme> = {
@@ -46,6 +47,7 @@ export const themes: Record<string, Theme> = {
     particles: { color: "#ff6b2b", count: 80, speed: 0.3, shape: "sphere" },
     font: { heading: "var(--font-bebas)", body: "var(--font-inter)", cssVar: "--font-bebas" },
     decoration: "court",
+    isDark: true,
   },
   starwars: {
     id: "starwars",
@@ -65,6 +67,7 @@ export const themes: Record<string, Theme> = {
     particles: { color: "#ffe81f", count: 200, speed: 0.1, shape: "star" },
     font: { heading: "var(--font-orbitron)", body: "var(--font-dm-sans)", cssVar: "--font-orbitron" },
     decoration: "starfield",
+    isDark: true,
   },
   minimal: {
     id: "minimal",
@@ -84,6 +87,7 @@ export const themes: Record<string, Theme> = {
     particles: { color: "#cccccc", count: 30, speed: 0.1, shape: "dot" },
     font: { heading: "var(--font-dm-sans)", body: "var(--font-dm-sans)", cssVar: "--font-dm-sans" },
     decoration: "none",
+    isDark: false,
   },
   corporate: {
     id: "corporate",
@@ -103,6 +107,7 @@ export const themes: Record<string, Theme> = {
     particles: { color: "#0a66c2", count: 40, speed: 0.15, shape: "diamond" },
     font: { heading: "var(--font-playfair)", body: "var(--font-inter)", cssVar: "--font-playfair" },
     decoration: "borders",
+    isDark: false,
   },
   cyberpunk: {
     id: "cyberpunk",
@@ -122,6 +127,7 @@ export const themes: Record<string, Theme> = {
     particles: { color: "#ff00ff", count: 120, speed: 0.5, shape: "cube" },
     font: { heading: "var(--font-space-mono)", body: "var(--font-space-mono)", cssVar: "--font-space-mono" },
     decoration: "scanlines",
+    isDark: true,
   },
 };
 

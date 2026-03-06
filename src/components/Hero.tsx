@@ -124,7 +124,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-sm sm:text-base transition-all"
             style={{
               background: theme.colors.gradient,
-              color: theme.colors.bg === "#fafafa" || theme.colors.bg === "#f3f2ef" ? "#ffffff" : theme.colors.bg,
+              color: theme.isDark ? theme.colors.bg : "#ffffff",
             }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

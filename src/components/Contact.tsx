@@ -43,7 +43,7 @@ export default function Contact() {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm sm:text-base transition-all"
               style={{
                 background: theme.colors.gradient,
-                color: theme.colors.bg === "#fafafa" || theme.colors.bg === "#f3f2ef" ? "#ffffff" : theme.colors.bg,
+                color: theme.isDark ? theme.colors.bg : "#ffffff",
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -111,9 +111,9 @@ export default function Contact() {
             rel="noopener noreferrer"
           >
             <img
-              src={theme.name === "light"
-                ? "https://eleven-public-cdn.elevenlabs.io/payloadcms/pwsc4vchsqt-ElevenLabsGrants.webp"
-                : "https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp"
+              src={theme.isDark
+                ? "https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp"
+                : "https://eleven-public-cdn.elevenlabs.io/payloadcms/pwsc4vchsqt-ElevenLabsGrants.webp"
               }
               alt="ElevenLabs Grants"
               style={{ width: "150px" }}
