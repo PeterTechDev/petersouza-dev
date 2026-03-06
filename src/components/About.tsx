@@ -22,7 +22,7 @@ export function About() {
   const interests = t<string[]>("about.interests");
 
   return (
-    <section className="py-20 sm:py-28 lg:py-32 px-6 sm:px-8" id="about">
+    <section className="py-24 sm:py-32 lg:py-40 px-6 md:px-12 lg:px-20" id="about">
       {/* Section header — centered */}
       <motion.div
         className="text-center mb-12"
@@ -47,7 +47,7 @@ export function About() {
 
       {/* Stats row — centered, max-w-3xl */}
       <motion.div
-        className="max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-4 mb-14"
+        className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 mb-14"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -105,7 +105,7 @@ export function About() {
       </motion.div>
 
       {/* Timeline + Interests side by side — max-w-4xl */}
-      <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6 mb-10">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6 mb-10">
         {/* Timeline */}
         <motion.div
           className="rounded-2xl border p-6 sm:p-8"

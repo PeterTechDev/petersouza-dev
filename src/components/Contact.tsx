@@ -10,8 +10,8 @@ export function Contact() {
   const { t } = useLocale();
 
   return (
-    <section className="py-20 sm:py-28 lg:py-32 px-6 sm:px-10 lg:px-16" id="contact">
-      <div className="max-w-3xl mx-auto text-center">
+    <section className="py-24 sm:py-32 lg:py-40 px-6 md:px-12 lg:px-20" id="contact">
+      <div className="max-w-6xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
