@@ -23,7 +23,7 @@ export default function About() {
 
   return (
     <section className="py-20 sm:py-28 lg:py-32 px-5 sm:px-6" id="about">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -47,42 +47,44 @@ export default function About() {
 
         {/* Stats row */}
         <motion.div
-          className="flex flex-wrap items-start justify-between gap-y-6 mb-14 sm:mb-20"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-0 mb-14 sm:mb-20 py-8 rounded-2xl border"
+          style={{ borderColor: theme.colors.cardBorder, background: theme.colors.card }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.15, duration: 0.6 }}
         >
           {stats.map((stat, i) => (
-            <div key={stat.label} className="flex items-start">
-              <div className="text-center px-2 sm:px-4 md:px-6">
-                <p
-                  className="text-3xl sm:text-4xl font-black leading-none"
-                  style={{ color: theme.colors.text }}
-                >
-                  {stat.value}
-                </p>
-                <p
-                  className="text-xs sm:text-sm mt-1.5 font-medium"
-                  style={{ color: theme.colors.textMuted }}
-                >
-                  {stat.label}
-                </p>
-              </div>
+            <div
+              key={stat.label}
+              className="text-center px-4 relative"
+            >
               {i < stats.length - 1 && (
                 <div
-                  className="hidden sm:block w-px h-12 self-center ml-2 sm:ml-4 md:ml-6"
+                  className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 w-px h-10"
                   style={{ background: theme.colors.cardBorder }}
                 />
               )}
+              <p
+                className="text-3xl sm:text-4xl font-black leading-none"
+                style={{ color: theme.colors.text }}
+              >
+                {stat.value}
+              </p>
+              <p
+                className="text-xs sm:text-sm mt-1.5 font-medium"
+                style={{ color: theme.colors.textMuted }}
+              >
+                {stat.label}
+              </p>
             </div>
           ))}
         </motion.div>
 
         {/* Two-column: bio + timeline */}
-        <div className="grid md:grid-cols-5 gap-10 lg:gap-14 mb-14 sm:mb-20">
+        <div className="grid md:grid-cols-2 gap-10 lg:gap-14 mb-14 sm:mb-20">
           <motion.div
-            className="md:col-span-3 space-y-5"
+            className="space-y-5"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -106,7 +108,7 @@ export default function About() {
           </motion.div>
 
           <motion.div
-            className="md:col-span-2"
+            className=""
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}

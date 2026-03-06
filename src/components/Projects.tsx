@@ -42,7 +42,7 @@ export default function Projects() {
 
   return (
     <section className="py-20 sm:py-28 lg:py-32 px-5 sm:px-6" id="projects">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
