@@ -82,7 +82,7 @@ export default function Skills() {
                 {cat.techs.map((tech) => (
                   <span
                     key={tech}
-                    className="text-xs px-3 py-1.5 rounded-full font-medium"
+                    className="text-sm px-3 py-1.5 rounded-full font-medium"
                     style={{
                       background: theme.colors.accent + "15",
                       color: theme.colors.accent,

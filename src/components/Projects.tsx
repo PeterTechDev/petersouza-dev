@@ -74,7 +74,7 @@ export default function Projects() {
           </Link>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, i) => (
             <motion.div
               key={project.id}
@@ -82,7 +82,7 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className={`group relative rounded-2xl p-6 sm:p-8 border transition-all duration-300 ${project.url ? "cursor-pointer" : ""} ${i === projects.length - 1 ? "md:col-span-2" : ""}`}
+              className={`group relative rounded-2xl p-6 sm:p-8 border transition-all duration-300 ${project.url ? "cursor-pointer" : ""}`}
               style={{
                 background: theme.colors.card,
                 borderColor: project.highlight ? theme.colors.accent + "40" : theme.colors.cardBorder,

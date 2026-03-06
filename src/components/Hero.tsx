@@ -13,7 +13,7 @@ export default function Hero() {
 
   return (
     <section
-      className="min-h-screen flex flex-col items-center justify-center px-5 sm:px-6 relative"
+      className="py-32 md:py-40 flex flex-col items-center justify-center px-5 sm:px-6 relative"
       style={{ color: theme.colors.text }}
     >
       <motion.div
@@ -91,7 +91,7 @@ export default function Hero() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border transition-all"
+              className="w-12 h-12 rounded-full flex items-center justify-center border transition-all"
               style={{
                 borderColor: theme.colors.cardBorder,
                 color: theme.colors.textMuted,

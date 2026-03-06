@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import {
@@ -9,6 +10,8 @@ import {
   GitBranch,
   MessageSquare,
   Zap,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 const capabilities = [
@@ -72,6 +75,7 @@ const architectureLines = [
 
 export default function AIAgents() {
   const { theme } = useTheme();
+  const [showDetails, setShowDetails] = useState(false);
 
   return (
     <section className="py-20 sm:py-28 lg:py-32 px-5 sm:px-6" id="ai-agents">
@@ -95,73 +99,89 @@ export default function AIAgents() {
             AI Infrastructure
           </h2>
           <p
-            className="text-base sm:text-lg leading-relaxed max-w-2xl mb-16"
+            className="text-base sm:text-lg leading-relaxed max-w-2xl mb-8 md:mb-16"
             style={{ color: theme.colors.textMuted }}
           >
             I've built a personal AI system that runs alongside my development workflow — not a tool I use occasionally, but infrastructure I operate daily. Here's how it works.
           </p>
         </motion.div>
 
-        {/* Architecture diagram */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="rounded-2xl border p-6 sm:p-8 mb-16 overflow-x-auto"
+        {/* Mobile toggle */}
+        <button
+          onClick={() => setShowDetails(!showDetails)}
+          className="flex items-center gap-2 mb-6 md:hidden text-sm font-bold tracking-wider uppercase px-4 py-2 rounded-full border"
           style={{
-            background: theme.colors.card,
-            borderColor: theme.colors.cardBorder,
+            color: theme.colors.accent,
+            borderColor: theme.colors.accent + "40",
           }}
         >
-          <p
-            className="text-xs font-bold tracking-[0.2em] uppercase mb-4"
-            style={{ color: theme.colors.accent }}
-          >
-            System Architecture
-          </p>
-          <pre
-            className="text-xs sm:text-sm leading-relaxed font-mono whitespace-pre"
-            style={{ color: theme.colors.textMuted }}
-          >
-            {architectureLines.join("\n")}
-          </pre>
-        </motion.div>
+          {showDetails ? "Hide Details" : "Show Details"}
+          {showDetails ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+        </button>
 
-        {/* Capability cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {capabilities.map((cap, i) => (
-            <motion.div
-              key={cap.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.5 }}
-              className="rounded-2xl border p-5 sm:p-6"
-              style={{
-                background: theme.colors.card,
-                borderColor: theme.colors.cardBorder,
-              }}
+        {/* Detailed content — always visible on md+, toggled on mobile */}
+        <div className={`${showDetails ? "block" : "hidden"} md:block`}>
+          {/* Architecture diagram */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="rounded-2xl border p-6 sm:p-8 mb-16 overflow-x-auto"
+            style={{
+              background: theme.colors.card,
+              borderColor: theme.colors.cardBorder,
+            }}
+          >
+            <p
+              className="text-xs font-bold tracking-[0.2em] uppercase mb-4"
+              style={{ color: theme.colors.accent }}
             >
-              <cap.icon
-                size={22}
-                className="mb-4"
-                style={{ color: theme.colors.accent }}
-              />
-              <h3
-                className="text-base font-bold mb-2"
-                style={{ color: theme.colors.text }}
+              System Architecture
+            </p>
+            <pre
+              className="text-xs sm:text-sm leading-relaxed font-mono whitespace-pre"
+              style={{ color: theme.colors.textMuted }}
+            >
+              {architectureLines.join("\n")}
+            </pre>
+          </motion.div>
+
+          {/* Capability cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {capabilities.map((cap, i) => (
+              <motion.div
+                key={cap.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.5 }}
+                className="rounded-2xl border p-5 sm:p-6"
+                style={{
+                  background: theme.colors.card,
+                  borderColor: theme.colors.cardBorder,
+                }}
               >
-                {cap.title}
-              </h3>
-              <p
-                className="text-sm leading-relaxed"
-                style={{ color: theme.colors.textMuted }}
-              >
-                {cap.description}
-              </p>
-            </motion.div>
-          ))}
+                <cap.icon
+                  size={22}
+                  className="mb-4"
+                  style={{ color: theme.colors.accent }}
+                />
+                <h3
+                  className="text-base font-bold mb-2"
+                  style={{ color: theme.colors.text }}
+                >
+                  {cap.title}
+                </h3>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: theme.colors.textMuted }}
+                >
+                  {cap.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* Bottom callout */}
