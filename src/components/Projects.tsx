@@ -120,7 +120,7 @@ export function Projects() {
                     color: project.statusKey === "live" ? theme.colors.accent : theme.colors.textMuted,
                   }}
                 >
-                  {t<string>(`projects.status.${project.statusKey as ProjectStatusKey}`)}
+                  {t<string>(`projects.status.${project.statusKey}`)}
                 </span>
               </div>
 
