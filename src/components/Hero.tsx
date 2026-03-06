@@ -13,14 +13,14 @@ export function Hero() {
 
   return (
     <section
-      className="py-32 md:py-40 flex flex-col items-center justify-center px-5 sm:px-6 relative"
+      className="py-24 sm:py-32 lg:py-40 flex flex-col items-center justify-center px-6 md:px-12 lg:px-20 relative"
       style={{ color: theme.colors.text }}
     >
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-center max-w-4xl"
+        className="text-center max-w-6xl"
       >
         {/* Greeting */}
         <motion.p

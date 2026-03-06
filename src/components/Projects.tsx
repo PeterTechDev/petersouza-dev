@@ -52,8 +52,8 @@ export function Projects() {
   const { t } = useLocale();
 
   return (
-    <section className="py-20 sm:py-28 lg:py-32 px-6 sm:px-10 lg:px-16" id="projects">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-24 sm:py-32 lg:py-40 px-6 md:px-12 lg:px-20" id="projects">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -85,7 +85,7 @@ export function Projects() {
           </Link>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project, i) => (
             <motion.div
               key={project.id}
