@@ -100,7 +100,7 @@ export function Contact() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
-          className="mt-8 pb-24 flex items-center justify-center gap-2"
+          className="mt-8 pb-8 flex items-center justify-center gap-2"
         >
           <span className="text-xs" style={{ color: theme.colors.textMuted + "60" }}>
             Supported by
