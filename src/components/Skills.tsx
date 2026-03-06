@@ -34,7 +34,7 @@ export default function Skills() {
 
   return (
     <section className="py-20 sm:py-28 lg:py-32 px-6 sm:px-10 lg:px-16" id="skills">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <motion.div
           className="text-center mb-10 sm:mb-14"
           initial={{ opacity: 0, y: 20 }}

@@ -79,7 +79,7 @@ export default function AIAgents() {
 
   return (
     <section className="py-20 sm:py-28 lg:py-32 px-6 sm:px-10 lg:px-16" id="ai-agents">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
