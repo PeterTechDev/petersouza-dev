@@ -13,7 +13,7 @@ export function Hero() {
 
   return (
     <section
-      className="min-h-screen py-24 sm:py-32 lg:py-40 flex flex-col items-center justify-center px-6 md:px-12 lg:px-20 relative"
+      className="min-h-[80vh] py-20 sm:py-24 flex flex-col items-center justify-center px-6 md:px-12 lg:px-20 relative"
       style={{ color: theme.colors.text }}
     >
       <motion.div
@@ -146,9 +146,9 @@ export function Hero() {
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
-          style={{ color: theme.colors.textMuted }}
+          style={{ color: theme.colors.accent, opacity: 0.75 }}
         >
-          <ArrowDown size={20} />
+          <ArrowDown size={22} />
         </motion.div>
       </motion.div>
     </section>

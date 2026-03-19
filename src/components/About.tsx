@@ -22,7 +22,7 @@ export function About() {
   const interests = t<string[]>("about.interests");
 
   return (
-    <section className="py-24 sm:py-32 lg:py-40 px-6 md:px-12 lg:px-20" id="about">
+    <section className="py-16 sm:py-20 lg:py-24 px-6 md:px-12 lg:px-20" id="about">
       {/* Section header — centered */}
       <motion.div
         className="text-center mb-12"
