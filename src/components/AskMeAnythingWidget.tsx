@@ -290,42 +290,70 @@ export function AskMeAnythingWidget() {
         )}
       </AnimatePresence>
 
-      {/* Floating bubble button */}
-      <motion.button
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
+      {/* Floating bubble button with label */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 1.5, type: "spring", stiffness: 200, damping: 15 }}
-        onClick={() => setOpen((prev) => !prev)}
-        className="fixed bottom-6 right-4 sm:right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
-        style={{ backgroundColor: COLORS.accent }}
-        aria-label={open ? "Close chat" : "Open Ask Me Anything chat"}
+        className="fixed bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end gap-2"
       >
-        <AnimatePresence mode="wait">
-          {open ? (
+        {/* "Ask me anything" label — only visible when closed */}
+        <AnimatePresence>
+          {!open && (
             <motion.div
-              key="close"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 10 }}
+              transition={{ delay: 2.5, duration: 0.3 }}
+              className="px-3 py-1.5 rounded-full text-xs font-medium text-white shadow-lg pointer-events-none select-none"
+              style={{ backgroundColor: COLORS.accent }}
             >
-              <X className="w-6 h-6 text-white" />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="open"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            >
-              <MessageCircle className="w-6 h-6 text-white" />
+              Ask me anything ✨
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.button>
+
+        {/* Pulse ring behind button */}
+        {!open && (
+          <span
+            className="absolute bottom-0 right-0 w-16 h-16 rounded-full animate-ping opacity-30"
+            style={{ backgroundColor: COLORS.accent }}
+          />
+        )}
+
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setOpen((prev) => !prev)}
+          className="relative w-16 h-16 rounded-full flex items-center justify-center shadow-xl"
+          style={{ backgroundColor: COLORS.accent }}
+          aria-label={open ? "Close chat" : "Open Ask Me Anything chat"}
+        >
+          <AnimatePresence mode="wait">
+            {open ? (
+              <motion.div
+                key="close"
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <X className="w-7 h-7 text-white" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="open"
+                initial={{ rotate: 90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: -90, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <MessageCircle className="w-7 h-7 text-white" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.button>
+      </motion.div>
     </>
   );
 }
