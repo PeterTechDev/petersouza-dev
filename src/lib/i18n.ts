@@ -91,26 +91,85 @@ export const messages: Record<Locale, Messages> = {
       title: "Projects",
       blogLink: "Read the blog",
       caseStudyLink: "View case study",
+      expandDetails: "Click to see details",
+      collapseDetails: "Collapse",
+      visitProject: "Visit project",
+      caseStudy: {
+        problem: "Problem",
+        solution: "Solution",
+        keyFeatures: "Key Features",
+        results: "Results / Status",
+      },
       status: {
         live: "Live",
         comingSoon: "Coming Soon",
         inProgress: "In Progress",
+        beta: "Beta",
       },
       items: {
         autovendas: {
           title: "AutoVendas",
           description:
             "AI-powered CRM for Brazilian car dealerships. Multi-agent WhatsApp assistant that qualifies leads, answers inventory questions, and closes deals 24/7.",
+          problem:
+            "Brazilian used car dealerships lose leads because they can't respond to WhatsApp messages fast enough.",
+          solution:
+            "AI-powered WhatsApp assistant that qualifies leads, answers inventory questions, and routes hot leads to salespeople — all without human intervention.",
+          features: [
+            "Multi-tenant CRM with per-dealership configuration",
+            "AI lead qualification and intent scoring",
+            "Real-time inventory sync via WhatsApp",
+            "Escalation workflows to human agents",
+          ],
+          statusText: "Live with paying client · B2B SaaS model",
         },
-        atriasWiki: {
-          title: "Átrias Wiki",
+        vover: {
+          title: "Vover",
           description:
-            "Interactive D&D world encyclopedia. 176 entities, 7 continents, AI narrator. A love letter to collaborative storytelling.",
+            "Netflix-style social platform for movie and TV tracking with friends. Rate, discover, and share what you're watching.",
+          problem:
+            "There's no good social movie/TV tracking app built for friend groups — just isolated lists with no social layer.",
+          solution:
+            "A Netflix-style social platform where friends track, rate, and discover shows together. Built with a rich activity feed and smart recommendations based on friend preferences.",
+          features: [
+            "Social watchlist — see what friends are watching",
+            "Friend activity feed with ratings and reviews",
+            "Personalized recommendations based on social graph",
+            "Invite system with private group rooms",
+          ],
+          statusText: "In development · Invite-only beta",
         },
-        nbaLiveFeed: {
-          title: "NBA Live Feed",
+        mindPalace: {
+          title: "Mind Palace",
           description:
-            "Real-time NBA scores, standings, player comparisons, and social feed powered by Reddit integration.",
+            "Visual knowledge base and AI agent dashboard. Reads markdown brain docs, visualizes connections, and surfaces insights from your personal knowledge graph.",
+          problem:
+            "Knowledge gets scattered across markdown files, notes, and docs with no unified view or way to navigate the graph.",
+          solution:
+            "A visual knowledge base + AI agent dashboard that reads markdown brain docs directly from the file system, providing structured browsing, graph visualization, and daily journaling.",
+          features: [
+            "Brain doc viewer with full markdown rendering",
+            "AI agent monitoring and output display",
+            "Daily entry interface for continuous capture",
+            "Graph visualization of linked concepts",
+          ],
+          statusText: "Live · Personal daily use",
+        },
+        openclawAgents: {
+          title: "OpenClaw Multi-Agent System",
+          description:
+            "8 specialized AI agents orchestrated through OpenClaw — each with its own personality, memory, and skill set — running research, coding, QA, and content in parallel.",
+          problem:
+            "A solo developer can't do research, build features, run QA, and produce content simultaneously without dropping something.",
+          solution:
+            "8 specialized AI agents orchestrated through OpenClaw — each with its own personality, memory, and skill set — handling parallel workstreams while the developer stays in control.",
+          features: [
+            "Parallel agent spawning for simultaneous workstreams",
+            "Skill enforcement protocol preventing hallucinated implementations",
+            "Self-improving memory via GROWTH.md and mission logs",
+            "Content intelligence pipeline powering all other projects",
+          ],
+          statusText: "Live · Daily use · Powers all other projects",
         },
       },
     },
@@ -234,26 +293,85 @@ export const messages: Record<Locale, Messages> = {
       title: "Projetos",
       blogLink: "Leia o blog",
       caseStudyLink: "Ver case study",
+      expandDetails: "Clique para ver detalhes",
+      collapseDetails: "Recolher",
+      visitProject: "Visitar projeto",
+      caseStudy: {
+        problem: "Problema",
+        solution: "Solução",
+        keyFeatures: "Funcionalidades",
+        results: "Resultados / Status",
+      },
       status: {
         live: "No ar",
         comingSoon: "Em breve",
         inProgress: "Em andamento",
+        beta: "Beta",
       },
       items: {
         autovendas: {
           title: "AutoVendas",
           description:
             "CRM com IA para concessionárias no Brasil. Assistente multiagente no WhatsApp que qualifica leads, responde dúvidas de estoque e fecha negócios 24/7.",
+          problem:
+            "Concessionárias de carros usados no Brasil perdem leads porque não conseguem responder mensagens no WhatsApp rápido o suficiente.",
+          solution:
+            "Assistente de WhatsApp com IA que qualifica leads, responde dúvidas de estoque e direciona os contatos quentes para os vendedores — sem intervenção humana.",
+          features: [
+            "CRM multi-tenant com configuração por concessionária",
+            "Qualificação de leads e pontuação de intenção com IA",
+            "Sincronização de estoque em tempo real via WhatsApp",
+            "Fluxos de escalonamento para agentes humanos",
+          ],
+          statusText: "No ar com cliente pagante · Modelo B2B SaaS",
         },
-        atriasWiki: {
-          title: "Átrias Wiki",
+        vover: {
+          title: "Vover",
           description:
-            "Enciclopédia interativa de um mundo de D&D. 176 entidades, 7 continentes, narrador com IA. Uma carta de amor à narrativa colaborativa.",
+            "Plataforma social estilo Netflix para rastrear filmes e séries com amigos. Avalie, descubra e compartilhe o que está assistindo.",
+          problem:
+            "Não existe um bom app social de rastreamento de filmes/séries feito para grupos de amigos — só listas isoladas sem camada social.",
+          solution:
+            "Plataforma social estilo Netflix onde amigos rastreiam, avaliam e descobrem séries juntos. Construída com feed de atividade rico e recomendações baseadas no grafo social.",
+          features: [
+            "Watchlist social — veja o que seus amigos estão assistindo",
+            "Feed de atividade com avaliações e reviews",
+            "Recomendações personalizadas baseadas no grafo social",
+            "Sistema de convites com salas privadas de grupo",
+          ],
+          statusText: "Em desenvolvimento · Beta por convite",
         },
-        nbaLiveFeed: {
-          title: "NBA Live Feed",
+        mindPalace: {
+          title: "Mind Palace",
           description:
-            "Placar e estatísticas da NBA em tempo real, classificação, comparativos de jogadores e feed social com integração ao Reddit.",
+            "Base de conhecimento visual e dashboard de agentes IA. Lê docs markdown do brain, visualiza conexões e exibe insights do grafo de conhecimento pessoal.",
+          problem:
+            "O conhecimento se fragmenta em arquivos markdown, notas e docs sem visão unificada ou forma de navegar o grafo.",
+          solution:
+            "Base de conhecimento visual + dashboard de agentes IA que lê docs markdown diretamente do sistema de arquivos, com navegação estruturada, visualização em grafo e journaling diário.",
+          features: [
+            "Visualizador de brain docs com renderização markdown completa",
+            "Monitoramento de agentes IA e exibição de outputs",
+            "Interface de entrada diária para captura contínua",
+            "Visualização em grafo de conceitos linkados",
+          ],
+          statusText: "No ar · Uso pessoal diário",
+        },
+        openclawAgents: {
+          title: "OpenClaw Multi-Agent System",
+          description:
+            "8 agentes IA especializados orquestrados via OpenClaw — cada um com personalidade, memória e skills próprias — rodando pesquisa, código, QA e conteúdo em paralelo.",
+          problem:
+            "Um desenvolvedor solo não consegue fazer pesquisa, construir features, rodar QA e produzir conteúdo simultaneamente sem deixar algo cair.",
+          solution:
+            "8 agentes IA especializados orquestrados via OpenClaw — cada um com personalidade, memória e skill set próprios — gerenciando workstreams paralelos enquanto o desenvolvedor mantém o controle.",
+          features: [
+            "Spawn de agentes em paralelo para workstreams simultâneos",
+            "Protocolo de enforcement de skills prevenindo implementações alucinadas",
+            "Memória auto-evolutiva via GROWTH.md e logs de missão",
+            "Pipeline de inteligência de conteúdo alimentando todos os outros projetos",
+          ],
+          statusText: "No ar · Uso diário · Alimenta todos os outros projetos",
         },
       },
     },
