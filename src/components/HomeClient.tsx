@@ -13,7 +13,6 @@ import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { KonamiCode } from "@/components/KonamiCode";
 import { ThemeDecorations } from "@/components/ThemeDecorations";
 import { GitHubActivityStrip } from "@/components/GitHubActivityStrip";
-import { ChatWidget } from "@/components/ChatWidget";
 import { GitHubActivity } from "@/lib/github-activity";
 
 const ParticleField = dynamic(() => import("@/components/ParticleField"), {
@@ -41,7 +40,6 @@ export function HomeClient({ githubActivity }: HomeClientProps) {
         </main>
         <ThemeSwitcher />
         <KonamiCode />
-        <ChatWidget />
       </I18nProvider>
     </ThemeProvider>
   );
