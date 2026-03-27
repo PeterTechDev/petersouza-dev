@@ -62,6 +62,17 @@ export function AskMeAnythingWidget() {
     }
   }, [open]);
 
+  // Close panel on Escape key
+  useEffect(() => {
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key === "Escape" && open) {
+        setOpen(false);
+      }
+    }
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [open]);
+
   const sendMessage = useCallback(async () => {
     const text = input.trim();
     if (!text || loading || limitReached) return;
@@ -269,6 +280,7 @@ export function AskMeAnythingWidget() {
                 placeholder={
                   limitReached ? "Session limit reached" : "Ask about Peter…"
                 }
+                maxLength={500}
                 className="flex-1 bg-transparent text-sm outline-none placeholder:opacity-40 disabled:opacity-40"
                 style={{ color: COLORS.text }}
               />
