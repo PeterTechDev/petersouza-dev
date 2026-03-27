@@ -26,8 +26,8 @@ const COLORS = {
   border: "#334155",     // slate-700
   text: "#f1f5f9",       // slate-100
   textMuted: "#94a3b8",  // slate-400
-  accent: "#3b82f6",     // blue-500
-  accentHover: "#2563eb",// blue-600
+  accent: "#ff6b2b",     // orange-coral (matches site accent)
+  accentHover: "#ff8c57",// orange-coral hover
 };
 
 function getOrCreateSessionId(): string {
@@ -316,7 +316,7 @@ export function AskMeAnythingWidget() {
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 10 }}
-              transition={{ delay: 2.5, duration: 0.3 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
               className="px-3 py-1.5 rounded-full text-xs font-medium text-white shadow-lg pointer-events-none select-none"
               style={{ backgroundColor: COLORS.accent }}
             >
@@ -328,7 +328,7 @@ export function AskMeAnythingWidget() {
         {/* Pulse ring behind button */}
         {!open && (
           <span
-            className="absolute bottom-0 right-0 w-16 h-16 rounded-full animate-ping opacity-30"
+            className="absolute bottom-0 right-0 w-16 h-16 rounded-full motion-safe:animate-ping opacity-30"
             style={{ backgroundColor: COLORS.accent }}
           />
         )}
