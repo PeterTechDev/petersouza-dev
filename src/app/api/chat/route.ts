@@ -43,27 +43,99 @@ const PETER_CONTEXT = `You are a helpful AI assistant on Peter Souza's personal 
 - GitHub: github.com/devsavisado
 - Instagram: @devsavisado`;
 
-const MAX_MESSAGES_PER_SESSION = 10;
+// ── Server-side IP rate limiting ──────────────────────────────────────────────
+// Simple in-memory store: ip → { count, windowStart }
+// Resets per IP after RATE_WINDOW_MS (1 hour).
+const RATE_LIMIT = 20;
+const RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+interface RateEntry {
+  count: number;
+  windowStart: number;
+}
+
+const rateLimitMap = new Map<string, RateEntry>();
+
+function getClientIp(req: NextRequest): string {
+  // Vercel / most proxies set x-forwarded-for
+  const forwarded = req.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  // Fall back to a placeholder — unknown IPs still share a bucket
+  return "unknown";
+}
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now - entry.windowStart > RATE_WINDOW_MS) {
+    // New window
+    rateLimitMap.set(ip, { count: 1, windowStart: now });
+    return true; // allowed
+  }
+
+  if (entry.count >= RATE_LIMIT) {
+    return false; // blocked
+  }
+
+  entry.count += 1;
+  return true; // allowed
+}
+
+// ── Message length constraint ─────────────────────────────────────────────────
+const MAX_MESSAGE_LENGTH = 500;
+
+// ── Route handlers ────────────────────────────────────────────────────────────
+
+// Return 405 for GET requests instead of falling through to a 500
+export async function GET() {
+  return NextResponse.json(
+    { error: "Method not allowed" },
+    {
+      status: 405,
+      headers: { Allow: "POST" },
+    }
+  );
+}
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { messages, sessionCount } = body as {
-      messages: Array<{ role: string; content: string }>;
-      sessionCount: number;
-    };
-
-    // Rate limit check
-    if (sessionCount >= MAX_MESSAGES_PER_SESSION) {
+    // ── IP-based rate limiting (server-enforced) ──────────────────────────────
+    const ip = getClientIp(req);
+    if (!checkRateLimit(ip)) {
       return NextResponse.json(
-        { error: "Session limit reached. Please refresh to start a new conversation." },
+        {
+          error:
+            "You've sent too many messages. Please wait a while before trying again.",
+        },
         { status: 429 }
       );
     }
 
-    // Validate messages
+    const body = await req.json();
+    const { messages } = body as {
+      messages: Array<{ role: string; content: string }>;
+    };
+    // Note: sessionCount from the client is intentionally ignored — we enforce
+    // limits server-side via IP tracking above.
+
+    // ── Validate messages ─────────────────────────────────────────────────────
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json({ error: "Invalid messages" }, { status: 400 });
+    }
+
+    // ── Validate message length ───────────────────────────────────────────────
+    const lastMessage = messages[messages.length - 1];
+    if (
+      lastMessage?.content &&
+      lastMessage.content.length > MAX_MESSAGE_LENGTH
+    ) {
+      return NextResponse.json(
+        {
+          error: `Message too long. Please keep messages under ${MAX_MESSAGE_LENGTH} characters.`,
+        },
+        { status: 400 }
+      );
     }
 
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
