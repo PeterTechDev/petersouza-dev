@@ -11,6 +11,74 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "why-i-built-a-multi-agent-ai-team",
+    title: "Why I Built a Multi-Agent AI Team",
+    description:
+      "Running 8 specialized AI agents simultaneously — why one AI assistant wasn't enough, and how OpenClaw changed the way I work.",
+    date: "2026-03-20",
+    readingTime: "4 min read",
+    category: "AI",
+    tags: ["AI", "Agents", "OpenClaw"],
+    content: `
+<h2>One AI Wasn't Enough</h2>
+<p>For a while, I used a single AI assistant for everything: drafting emails, debugging code, planning architecture, reviewing PRs. It worked. But it had a problem: context collapse. Every new task meant switching mental models, re-explaining the codebase, re-establishing tone. The AI had no memory of what it had done five minutes ago in a different window.</p>
+<p>The solution isn't a better memory system for a single agent. The solution is specialization.</p>
+
+<h2>The Team I Built</h2>
+<p>Using OpenClaw, I run 8 agents simultaneously, each with a distinct role:</p>
+<ul>
+  <li><strong>T-800</strong> — The code builder. Touches no code without reading the project context first. Ships, verifies, commits.</li>
+  <li><strong>Marvin</strong> — QA. Reviews every PR T-800 opens. Runs tests. Blocks merges if something smells wrong.</li>
+  <li><strong>Ego</strong> — UI/UX reviewer. Screenshots every component. Compares against design intent. Catches visual regressions.</li>
+  <li><strong>Kuroko</strong> — The orchestrator. Breaks big tasks into subtasks, assigns agents, monitors completion.</li>
+  <li><strong>Jarvis</strong> — Architecture advisor. Reads the codebase and proposes refactors with seams and rollback points.</li>
+  <li><strong>Ghost</strong> — Research. Reads docs, compares libraries, returns structured findings.</li>
+  <li><strong>Phantom</strong> — DevOps. Handles deployments, environment configs, CI/CD pipeline changes.</li>
+  <li><strong>Oracle</strong> — Data. Schema design, query optimization, RLS policies.</li>
+</ul>
+
+<h2>Why This Works</h2>
+<p>Each agent has a narrow skill profile: a curated set of SKILL.md files it reads before any task. T-800 reads backend patterns before touching an API route. Ego reads the frontend design guide before reviewing a component. The skills encode the conventions that would otherwise live only in my head.</p>
+<p>The result: I can delegate a feature and get back working, tested, committed code without babysitting the process. The agents hand off to each other — T-800 builds, Marvin reviews, Ego checks the UI — without me in the loop for every step.</p>
+
+<h2>What I Learned</h2>
+<p>Specialization beats generalization when the task boundary is clear. A single "do everything" agent has no strong priors for any domain. An agent that only does code review develops sharp instincts about what bad code looks like.</p>
+<p>The other lesson: skills are the real asset. The agents are infrastructure. The SKILL.md files — encoding architecture patterns, design conventions, test standards — are the actual intellectual property. Build those first.</p>
+<p>If you're building with AI and feeling like you're doing too much manual coordination, you're probably one abstraction layer below where you should be.</p>
+    `.trim(),
+  },
+  {
+    slug: "from-qa-to-ai",
+    title: "From QA to AI: My Journey",
+    description:
+      "How I went from law school dropout to SDET to AI systems builder — the non-linear path, the pivots, and what I'd tell my 2021 self.",
+    date: "2026-02-10",
+    readingTime: "4 min read",
+    category: "Personal",
+    tags: ["Career", "Journey", "AI"],
+    content: `
+<h2>The Part Nobody Talks About</h2>
+<p>Career change stories on the internet always have a clean arc: I hated my old life, I discovered coding, I got a job, now I'm happy. The messy middle gets edited out. Here's the messy middle.</p>
+<p>I left law school in 2021 after two years. Not because I had a plan. Because I couldn't stop writing Python scripts when I should have been reading contracts. The decision was obvious in retrospect, terrifying in real time.</p>
+
+<h2>The Self-Taught Trap</h2>
+<p>The first year was tutorial hell. I'd finish a JavaScript course and feel ready to build something, then stare at a blank file and realize I had no idea where to start. YouTube makes coding look frictionless. The reality is that you spend 80% of your time confused and 20% of your time feeling like a genius.</p>
+<p>What broke the loop was getting a real job where other engineers could read my code. Code review is brutal and educational. My first PR review had 23 comments. I went home convinced I'd made a mistake. I came back the next morning and fixed all 23. That was the actual turning point.</p>
+
+<h2>Why QA Was the Right Next Step</h2>
+<p>In 2022 I became an SDET — Software Development Engineer in Test. People sometimes treat QA as a lesser engineering role. It's not. QA forces you to think adversarially about your own code: what breaks? Under what conditions? What edge cases did you not consider?</p>
+<p>An engineer who can build AND break things is twice as valuable as one who can only build. I shipped six products that year. I caught bugs that would have cost real money in production. I also built AutoVendas, an AI CRM for car dealerships, and got my first taste of what AI in production actually looks like.</p>
+
+<h2>The AI Shift</h2>
+<p>Late 2023: I started taking large language models seriously as an engineering primitive, not a toy. My SDET instincts kicked in immediately — I started stress-testing prompts, edge-casing AI responses, building evals for model output. Quality engineering transfers directly to AI systems engineering.</p>
+<p>By 2024 I was building multi-agent architectures, running AI in production for real dealership customers, and learning Portuguese-language prompt engineering (harder than it sounds — tone matters enormously in sales contexts). By 2025 I had a team of 8 AI agents running on my own infrastructure.</p>
+
+<h2>What I'd Tell 2021 Peter</h2>
+<p>The path from law school to AI systems builder is not a straight line. There's no certification for it. Nobody hands you the roadmap. But the skills compound in ways you don't expect — legal training taught me to structure arguments clearly, which made me a better technical communicator. QA taught me adversarial thinking, which made me better at AI evals. Every pivot added something.</p>
+<p>If I had one piece of advice: don't wait until you feel ready to build something real. Build something bad. Ship it. Break it. Fix it. The gap between knowing and doing is the only gap that matters.</p>
+    `.trim(),
+  },
+  {
     slug: "building-ai-first-products",
     title: "Building AI-First Products: Lessons from AutoVendas",
     description:

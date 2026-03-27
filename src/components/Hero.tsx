@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
-import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
+import Link from "next/link";
+import { ArrowDown, Github, Linkedin, Mail, BookOpen } from "lucide-react";
 
 export function Hero() {
   const { theme } = useTheme();
@@ -116,23 +117,39 @@ export function Hero() {
           transition={{ delay: 1.3 }}
           className="mb-16"
         >
-          <motion.a
-            href="#projects"
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-sm sm:text-base transition-all"
-            style={{
-              background: theme.colors.gradient,
-              color: theme.isDark ? theme.colors.bg : "#ffffff",
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <ArrowDown size={18} />
-            {t<string>("hero.cta")}
-          </motion.a>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <motion.a
+              href="#projects"
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-sm sm:text-base transition-all"
+              style={{
+                background: theme.colors.gradient,
+                color: theme.isDark ? theme.colors.bg : "#ffffff",
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ArrowDown size={18} />
+              {t<string>("hero.cta")}
+            </motion.a>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href="/blog/"
+                className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-sm sm:text-base border transition-all"
+                style={{
+                  color: theme.colors.accent,
+                  borderColor: theme.colors.accent + "40",
+                  background: theme.colors.accent + "10",
+                }}
+              >
+                <BookOpen size={18} />
+                Writing
+              </Link>
+            </motion.div>
+          </div>
         </motion.div>
       </motion.div>
 

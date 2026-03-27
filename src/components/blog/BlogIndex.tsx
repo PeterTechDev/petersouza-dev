@@ -62,7 +62,7 @@ export function BlogIndex() {
       {/* Post list */}
       <section className="px-5 sm:px-6 pb-24">
         <div className="max-w-3xl mx-auto space-y-6">
-          {blogPosts.map((post, i) => (
+          {[...blogPosts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((post, i) => (
             <motion.article
               key={post.slug}
               initial={{ opacity: 0, y: 16 }}
