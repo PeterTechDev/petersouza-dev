@@ -1,0 +1,68 @@
+# Peter Souza — AI Systems Builder & SDET
+
+> Full-stack developer and AI specialist from Brazil. Building AI-powered products that help small businesses compete with enterprise tools.
+
+## About
+
+Peter Souza is a software engineer and SDET based in Linhares, Espírito Santo, Brazil. He specializes in AI-first application development, test automation, and building multi-agent systems. Currently working as an SDET at NDG Communications while building AutoVendas — a B2B AI platform for Brazilian car dealerships.
+
+- **Location:** Linhares, ES, Brazil
+- **Email:** peterleite.dev@gmail.com
+- **GitHub:** https://github.com/PeterTechDev
+- **LinkedIn:** https://www.linkedin.com/in/petertechdev/
+- **Website:** https://petersouza.dev
+
+## Core Skills
+
+- **AI/ML:** Multi-agent systems, LLM orchestration, autonomous agents, prompt engineering, RAG pipelines
+- **Languages:** TypeScript, JavaScript, Python, Bash
+- **Frameworks:** Next.js, React, Node.js, Playwright, Bun
+- **Infrastructure:** Cloudflare Workers, Vercel, Supabase, Docker, Tailscale
+- **Testing:** Playwright, TypeScript, Page Object Model, network interception, CI/CD pipelines
+- **Tools:** OpenAI API, ElevenLabs, Twilio, Sentry, GitHub Actions
+
+## Featured Projects
+
+### AutoVendas
+B2B AI platform for Brazilian used car dealerships. An AI workforce that handles WhatsApp lead qualification, inventory Q&A, and CRM automation. Multi-tenant SaaS with real paying customers.
+- Stack: Next.js, Supabase, Twilio, OpenAI, Vercel
+- URL: https://autovendas.vercel.app
+- Case Study: https://petersouza.dev/case-study/autovendas/
+
+### OpenClaw AI System
+Personal AI assistant platform running 9 specialized agents (T-800, Robin, Ego, Marvin, etc.) on a local Dell G15. Handles nightly builds, research, code review, content pipelines, and memory management. 100% custom, zero off-the-shelf agent framework.
+- Stack: Node.js, Claude API, custom orchestration layer
+
+### Mind Palace
+Internal ops dashboard for browsing brain docs, agent outputs, knowledge gaps, missions, and reports. Second brain made visible.
+- Stack: Next.js 15, Tailwind CSS, Tailscale
+- Internal: https://mindpalace.tail03ebe2.ts.net
+
+### NDG PR Dashboard
+Unified dashboard for monitoring open PRs across GitLab and Bitbucket for NDG Communications. Google OAuth restricted.
+- URL: https://ndg-pr-dashboard.netlify.app
+
+## Professional Background
+
+- **SDET at NDG Communications** (June 2025–present) — Playwright + TypeScript automation, Page Object Model, CI pipelines
+- **4 years experience** — 2 years dev + 2 years SDET
+- **AI Systems Architect** — Designing and shipping production multi-agent systems
+- **Contractor via Athyna** — USD $2,496/month base
+
+## Content & Writing
+
+Peter writes about AI engineering, agent architecture, and building software products in Brazil. Focus areas: practical LLM applications, multi-agent orchestration, SDET practices.
+
+## Contact
+
+For project inquiries, collaborations, or consulting:
+- Email: peterleite.dev@gmail.com
+- LinkedIn: https://www.linkedin.com/in/petertechdev/
+- GitHub: https://github.com/PeterTechDev
+
+## Optional: Additional Context
+
+- Speaks: English (professional), Portuguese (native)
+- Time zone: America/Sao_Paulo (BRT, UTC-3)
+- Available for: AI consulting, agent system design, test automation audits
+- Building toward: relocating to Australia or Canada, launching AutoVendas to 3+ paying clients
