@@ -83,7 +83,7 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
   }
 
   function runCard(run: QualityRun | null) {
-    const cardKey = run ? String(run.id) : "empty";
+    const cardKey = run ? String(run.id) : report.state;
     const commitId = `quality-run-${cardKey}-commit`;
     const sha = run?.sha ?? missing;
     const dateText = run?.startedAt ? formatWhen(run.startedAt) : missing;
@@ -91,6 +91,18 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
     const status = statusLabel(run?.status ?? null);
     const conclusion = conclusionLabel(run?.conclusion ?? null);
     const date = run?.startedAt ? <time dateTime={run.startedAt}>{dateText}</time> : dateText;
+    const placeholderName =
+      run === null
+        ? t<string>(report.state === "error" ? "quality.errorCardName" : "quality.emptyCardName")
+        : null;
+    const commitValue = placeholderName ? (
+      <>
+        {missing}
+        <span className="sr-only"> {placeholderName}</span>
+      </>
+    ) : (
+      sha
+    );
 
     return (
       <article
@@ -103,7 +115,7 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
           {field(t<string>("quality.fields.status"), status)}
           {field(t<string>("quality.fields.conclusion"), conclusion)}
           {field(t<string>("quality.fields.date"), date)}
-          {field(t<string>("quality.fields.commit"), sha, commitId)}
+          {field(t<string>("quality.fields.commit"), commitValue, commitId)}
           {field(t<string>("quality.fields.duration"), duration)}
           <div className="min-w-0">
             <dt className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>

@@ -139,6 +139,8 @@ export const messages: Record<Locale, Messages> = {
       source: "Workflow file: .github/workflows/quality.yml. This page refreshes every 6 hours.",
       openRun: "Open run",
       openRunLabel: "Open run {sha} ({date})",
+      emptyCardName: "Last run: not yet run",
+      errorCardName: "Last run: data unavailable",
       missing: "—",
       unknown: "Unknown",
       fields: {
@@ -293,6 +295,8 @@ export const messages: Record<Locale, Messages> = {
       source: "Arquivo do workflow: .github/workflows/quality.yml. Esta página atualiza a cada 6 horas.",
       openRun: "Abrir execução",
       openRunLabel: "Abrir execução {sha} ({date})",
+      emptyCardName: "Última execução: ainda não executada",
+      errorCardName: "Última execução: dados indisponíveis",
       missing: "—",
       unknown: "Desconhecido",
       fields: {
