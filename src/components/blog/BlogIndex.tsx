@@ -83,7 +83,7 @@ export function BlogIndex() {
                       className="text-xs font-bold px-2.5 py-1 rounded-full"
                       style={{
                         background: theme.colors.accent + "20",
-                        color: theme.colors.accent,
+                        color: theme.colors.chipText,
                       }}
                     >
                       {post.category}

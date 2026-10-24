@@ -8,6 +8,14 @@ export interface Theme {
     text: string;
     textMuted: string;
     accent: string;
+    /**
+     * Text on an accent-tinted chip. Required on every theme so a new theme
+     * cannot fall back to `accent` and miss 4.5:1. Dark themes use the accent
+     * (already above 5.5:1). Clean and LinkedIn use a darker shade of it:
+     * the blog chip is `accent` at 12.5% and the Tech Stack group chip is
+     * `accent` at ~8%, and this one color clears both.
+     */
+    chipText: string;
     accentHover: string;
     card: string;
     cardBorder: string;
@@ -39,6 +47,7 @@ export const themes: Record<string, Theme> = {
       text: "#ffffff",
       textMuted: "#a0a0a0",
       accent: "#ff6b2b",
+      chipText: "#ff6b2b",
       accentHover: "#ff8c57",
       card: "rgba(255, 107, 43, 0.05)",
       cardBorder: "rgba(255, 107, 43, 0.2)",
@@ -59,6 +68,7 @@ export const themes: Record<string, Theme> = {
       text: "#e8e6e3",
       textMuted: "#9a9a8a",
       accent: "#ffe81f",
+      chipText: "#ffe81f",
       accentHover: "#fff44f",
       card: "rgba(255, 232, 31, 0.05)",
       cardBorder: "rgba(255, 232, 31, 0.2)",
@@ -79,6 +89,7 @@ export const themes: Record<string, Theme> = {
       text: "#111111",
       textMuted: "#666666",
       accent: "#0066cc",
+      chipText: "#0057ae",
       accentHover: "#0044aa",
       card: "rgba(0, 0, 0, 0.02)",
       cardBorder: "rgba(0, 0, 0, 0.1)",
@@ -99,6 +110,7 @@ export const themes: Record<string, Theme> = {
       text: "#191919",
       textMuted: "#666666",
       accent: "#0a66c2",
+      chipText: "#0855a1",
       accentHover: "#004182",
       card: "rgba(10, 102, 194, 0.03)",
       cardBorder: "rgba(10, 102, 194, 0.15)",
@@ -119,6 +131,7 @@ export const themes: Record<string, Theme> = {
       text: "#e0dfe6",
       textMuted: "#a89fd4",
       accent: "#ff00ff",
+      chipText: "#ff00ff",
       accentHover: "#ff44ff",
       card: "rgba(255, 0, 255, 0.05)",
       cardBorder: "rgba(255, 0, 255, 0.3)",
