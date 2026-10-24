@@ -70,7 +70,7 @@ export function AiTestingShowcase() {
       </header>
 
       <div className="px-5 sm:px-6 pb-24">
-        <div className="max-w-3xl mx-auto space-y-12">
+        <div className="max-w-3xl mx-auto min-w-0 space-y-12">
           <section aria-labelledby="ai-testing-method">
             <h2 id="ai-testing-method" className="text-2xl sm:text-3xl font-black mb-4">
               {t<string>("aiTesting.methodTitle")}
@@ -79,14 +79,17 @@ export function AiTestingShowcase() {
               {principles.map((item) => (
                 <article
                   key={item.title}
-                  className="rounded-2xl border p-5 sm:p-6"
+                  className="min-w-0 rounded-2xl border p-5 sm:p-6"
                   style={{
                     background: theme.colors.card,
                     borderColor: theme.colors.cardBorder,
                   }}
                 >
                   <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                  <p className="text-sm sm:text-base leading-relaxed" style={{ color: theme.colors.textMuted }}>
+                  <p
+                    className="min-w-0 text-sm sm:text-base leading-relaxed [overflow-wrap:anywhere]"
+                    style={{ color: theme.colors.textMuted }}
+                  >
                     {item.body}
                   </p>
                 </article>
@@ -98,9 +101,9 @@ export function AiTestingShowcase() {
             <h2 id="ai-testing-scope" className="text-2xl sm:text-3xl font-black mb-4">
               {t<string>("aiTesting.scopeTitle")}
             </h2>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid min-w-0 gap-4 sm:grid-cols-2">
               <article
-                className="rounded-2xl border p-5 sm:p-6"
+                className="min-w-0 rounded-2xl border p-5 sm:p-6"
                 style={{
                   background: theme.colors.card,
                   borderColor: theme.colors.cardBorder,
@@ -109,12 +112,15 @@ export function AiTestingShowcase() {
                 <h3 className="text-sm font-bold tracking-wide uppercase mb-2" style={{ color: theme.colors.accent }}>
                   {t<string>("aiTesting.scopeRouteLabel")}
                 </h3>
-                <p className="text-sm sm:text-base leading-relaxed" style={{ color: theme.colors.textMuted }}>
+                <p
+                  className="min-w-0 text-sm sm:text-base leading-relaxed [overflow-wrap:anywhere]"
+                  style={{ color: theme.colors.textMuted }}
+                >
                   {t<string>("aiTesting.scopeRoute")}
                 </p>
               </article>
               <article
-                className="rounded-2xl border p-5 sm:p-6"
+                className="min-w-0 rounded-2xl border p-5 sm:p-6"
                 style={{
                   background: theme.colors.card,
                   borderColor: theme.colors.cardBorder,
@@ -123,7 +129,10 @@ export function AiTestingShowcase() {
                 <h3 className="text-sm font-bold tracking-wide uppercase mb-2" style={{ color: theme.colors.accent }}>
                   {t<string>("aiTesting.scopeWidgetLabel")}
                 </h3>
-                <p className="text-sm sm:text-base leading-relaxed" style={{ color: theme.colors.textMuted }}>
+                <p
+                  className="min-w-0 text-sm sm:text-base leading-relaxed [overflow-wrap:anywhere]"
+                  style={{ color: theme.colors.textMuted }}
+                >
                   {t<string>("aiTesting.scopeWidget")}
                 </p>
               </article>
@@ -138,7 +147,7 @@ export function AiTestingShowcase() {
               {order.map((step, index) => (
                 <li
                   key={step}
-                  className="rounded-2xl border p-4 sm:p-5 flex gap-3"
+                  className="min-w-0 rounded-2xl border p-4 sm:p-5 flex gap-3"
                   style={{
                     background: theme.colors.card,
                     borderColor: theme.colors.cardBorder,
@@ -150,7 +159,10 @@ export function AiTestingShowcase() {
                   >
                     {index + 1}
                   </span>
-                  <p className="text-sm sm:text-base leading-relaxed" style={{ color: theme.colors.textMuted }}>
+                  <p
+                    className="min-w-0 text-sm sm:text-base leading-relaxed [overflow-wrap:anywhere]"
+                    style={{ color: theme.colors.textMuted }}
+                  >
                     {step}
                   </p>
                 </li>
