@@ -292,7 +292,7 @@ export const messages: Record<Locale, Messages> = {
       notYetRun: "Ainda não executado",
       source: "Arquivo do workflow: .github/workflows/quality.yml. Esta página atualiza a cada 6 horas.",
       openRun: "Abrir execução",
-      openRunLabel: "Abrir run {sha} ({date})",
+      openRunLabel: "Abrir execução {sha} ({date})",
       missing: "—",
       unknown: "Desconhecido",
       fields: {
