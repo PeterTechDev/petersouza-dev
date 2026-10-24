@@ -9,6 +9,30 @@ export interface BlogPost {
   content: string; // markdown-ish HTML string
 }
 
+const BLOG_MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+/** Stable calendar date. Avoids server/client timezone mismatches from Date parsing. */
+export function formatBlogDate(iso: string): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
+  if (!match) return iso;
+  const month = BLOG_MONTHS[Number(match[2]) - 1];
+  if (!month) return iso;
+  return `${month} ${Number(match[3])}, ${match[1]}`;
+}
+
 export const blogPosts: BlogPost[] = [
   {
     slug: "why-i-built-a-multi-agent-ai-team",

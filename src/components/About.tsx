@@ -3,6 +3,12 @@
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
+import {
+  AUTOMATED_TESTS,
+  CI_RUN_MINUTES,
+  QA_YEARS,
+  REGRESSION_HOURS_SAVED,
+} from "@/lib/about-metrics";
 import { Code2, Trophy, Dices, Bot, BookOpen } from "lucide-react";
 
 const interestIcons = [Trophy, Dices, Bot, BookOpen];
@@ -12,10 +18,16 @@ export function About() {
   const { t } = useLocale();
 
   const stats = [
-    { label: t<string>("about.stats.yearsLabel"), value: t<string>("about.stats.yearsValue") },
-    { label: t<string>("about.stats.aiLabel"), value: t<string>("about.stats.aiValue") },
-    { label: t<string>("about.stats.locationLabel"), value: t<string>("about.stats.locationValue") },
-    { label: t<string>("about.stats.drivenLabel"), value: t<string>("about.stats.drivenValue") },
+    { label: t<string>("about.stats.qaYearsLabel"), value: QA_YEARS },
+    { label: t<string>("about.stats.automatedTestsLabel"), value: AUTOMATED_TESTS },
+    {
+      label: t<string>("about.stats.ciRunTimeLabel"),
+      value: t<string>("about.stats.ciRunTimeValue", { minutes: CI_RUN_MINUTES }),
+    },
+    {
+      label: t<string>("about.stats.regressionSavedLabel"),
+      value: t<string>("about.stats.regressionSavedValue", { hours: REGRESSION_HOURS_SAVED }),
+    },
   ];
 
   const timelineItems = t<{ year: string; event: string }[]>("about.timeline");

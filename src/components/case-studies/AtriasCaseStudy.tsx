@@ -376,18 +376,11 @@ export function AtriasCaseStudy() {
           <div className="flex items-center gap-6 pt-4 border-t" style={{ borderColor: theme.colors.cardBorder }}>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-sm font-medium"
+              className="inline-flex items-center gap-2 min-h-11 text-sm font-medium"
               style={{ color: theme.colors.accent }}
             >
               <ArrowLeft size={16} />
               Back to Portfolio
-            </Link>
-            <Link
-              href="/case-study/autovendas/"
-              className="text-sm font-medium"
-              style={{ color: theme.colors.textMuted }}
-            >
-              ← AutoVendas
             </Link>
           </div>
         </div>

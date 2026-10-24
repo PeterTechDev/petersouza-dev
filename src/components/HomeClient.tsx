@@ -9,6 +9,7 @@ import { Skills } from "@/components/Skills";
 import { Projects } from "@/components/Projects";
 import { AIAgents } from "@/components/AIAgents";
 import { Contact } from "@/components/Contact";
+import { SiteHeader } from "@/components/SiteHeader";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { KonamiCode } from "@/components/KonamiCode";
 import { ThemeDecorations } from "@/components/ThemeDecorations";
@@ -29,14 +30,15 @@ export function HomeClient({ githubActivity }: HomeClientProps) {
       <I18nProvider>
         <ParticleField />
         <ThemeDecorations />
-        <main className="relative">
+        <SiteHeader />
+        <main className="relative pb-28">
           <Hero />
           <GitHubActivityStrip activity={githubActivity} />
           <About />
           <Skills />
           <Projects />
-          <AIAgents />
           <Contact />
+          <AIAgents />
         </main>
         <ThemeSwitcher />
         <KonamiCode />

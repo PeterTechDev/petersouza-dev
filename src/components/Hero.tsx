@@ -1,20 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
 import Link from "next/link";
-import { ArrowDown, Github, Linkedin, Mail, BookOpen } from "lucide-react";
+import { ArrowDown, Download, Github, Linkedin, Mail, BookOpen } from "lucide-react";
+
+const EMAIL = "peterleite.dev@gmail.com";
 
 export function Hero() {
   const { theme } = useTheme();
   const { t } = useLocale();
-  const roles = t<string[]>("hero.roles");
 
   return (
     <section
-      className="min-h-[80vh] py-20 sm:py-24 flex flex-col items-center justify-center px-6 md:px-12 lg:px-20 relative"
+      className="relative flex flex-col items-center justify-center px-6 pt-20 pb-10 sm:px-8 sm:pt-24 sm:pb-14 md:min-h-[78vh] md:px-12 md:py-24 lg:px-20"
       style={{ color: theme.colors.text }}
     >
       <motion.div
@@ -23,18 +23,20 @@ export function Hero() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-center max-w-6xl"
       >
-        {/* Greeting */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-sm tracking-[0.3em] uppercase mb-6 font-medium"
-          style={{ color: theme.colors.accent }}
+          className="inline-flex items-center min-h-11 px-4 mb-6 rounded-full border text-xs sm:text-sm font-semibold tracking-wide"
+          style={{
+            color: theme.colors.accent,
+            borderColor: theme.colors.accent + "55",
+            background: theme.colors.accent + "14",
+          }}
         >
-          {t<string>("hero.greeting")}
+          {t<string>("hero.availability")}
         </motion.p>
 
-        {/* Name */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -53,46 +55,43 @@ export function Hero() {
           </span>
         </motion.h1>
 
-        {/* Animated roles */}
-        <motion.div
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="text-lg sm:text-xl md:text-2xl mb-8 min-h-[2rem] sm:min-h-[2.25rem]"
-          style={{ color: theme.colors.textMuted }}
+          className="text-lg sm:text-xl md:text-2xl mb-4 font-semibold"
+          style={{ color: theme.colors.accent }}
         >
-          <RoleSwitcher roles={roles} accent={theme.colors.accent} />
-        </motion.div>
+          {t<string>("hero.role")}
+        </motion.p>
 
-        {/* Tagline */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9 }}
-          className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed"
-          style={{ color: theme.colors.text }}
+          className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto mb-8 leading-relaxed"
+          style={{ color: theme.colors.textMuted }}
         >
-          {t<string>("hero.tagline.line1")}
+          {t<string>("hero.credentials")}
         </motion.p>
 
-        {/* Social links */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1 }}
-          className="flex gap-3 sm:gap-4 justify-center mb-8"
+          className="flex gap-3 sm:gap-4 justify-center mb-4"
         >
           {[
-            { icon: Github, href: "https://github.com/PeterTechDev", label: "GitHub" },
-            { icon: Linkedin, href: "https://www.linkedin.com/in/petertechdev/", label: "LinkedIn" },
-            { icon: Mail, href: "mailto:peterleite.dev@gmail.com", label: "Email" },
-          ].map(({ icon: Icon, href, label }) => (
+            { icon: Github, href: "https://github.com/PeterTechDev", label: "GitHub", external: true },
+            { icon: Linkedin, href: "https://www.linkedin.com/in/petertechdev/", label: "LinkedIn", external: true },
+            { icon: Mail, href: `mailto:${EMAIL}`, label: "Email", external: false },
+          ].map(({ icon: Icon, href, label, external }) => (
             <motion.a
               key={label}
               href={href}
               aria-label={label}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
               className="w-12 h-12 rounded-full flex items-center justify-center border transition-all"
               style={{
                 borderColor: theme.colors.cardBorder,
@@ -110,24 +109,48 @@ export function Hero() {
           ))}
         </motion.div>
 
-        {/* CTA Button */}
+        <motion.a
+          href={`mailto:${EMAIL}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.15 }}
+          className="inline-flex items-center justify-center min-h-11 mb-8 text-base font-semibold underline-offset-4 hover:underline"
+          style={{ color: theme.colors.text }}
+        >
+          {EMAIL}
+        </motion.a>
+
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.3 }}
-          className="mb-16"
         >
           <div className="flex flex-wrap items-center justify-center gap-3">
             <motion.a
-              href="#projects"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-sm sm:text-base transition-all"
+              href="/cv-peter-v2.pdf"
+              download
+              className="inline-flex items-center justify-center gap-2 min-h-11 px-6 sm:px-8 py-3 rounded-full font-bold text-sm sm:text-base transition-all"
               style={{
                 background: theme.colors.gradient,
                 color: theme.isDark ? theme.colors.bg : "#ffffff",
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Download size={18} />
+              {t<string>("hero.downloadCv")}
+            </motion.a>
+            <motion.a
+              href="#about"
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="inline-flex items-center justify-center gap-2 min-h-11 px-6 sm:px-8 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
+              style={{
+                color: theme.colors.accent,
+                borderColor: theme.colors.accent + "40",
+                background: theme.colors.accent + "10",
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -138,27 +161,26 @@ export function Hero() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="/blog/"
-                className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-sm sm:text-base border transition-all"
+                className="inline-flex items-center justify-center gap-2 min-h-11 px-6 sm:px-8 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
                 style={{
-                  color: theme.colors.accent,
-                  borderColor: theme.colors.accent + "40",
-                  background: theme.colors.accent + "10",
+                  color: theme.colors.text,
+                  borderColor: theme.colors.cardBorder,
                 }}
               >
                 <BookOpen size={18} />
-                Writing
+                {t<string>("hero.writing")}
               </Link>
             </motion.div>
           </div>
         </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
-        className="absolute bottom-8"
+        className="hidden md:block mt-16"
+        aria-hidden="true"
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}
@@ -169,32 +191,5 @@ export function Hero() {
         </motion.div>
       </motion.div>
     </section>
-  );
-}
-
-function RoleSwitcher({ roles, accent }: { roles: string[]; accent: string }) {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((i) => (i + 1) % roles.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, [roles.length]);
-
-  return (
-    <AnimatePresence mode="wait">
-      <motion.span
-        key={index}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.3 }}
-        style={{ color: accent }}
-        className="font-semibold inline-block"
-      >
-        {roles[index]}
-      </motion.span>
-    </AnimatePresence>
   );
 }

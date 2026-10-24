@@ -6,7 +6,7 @@ import { blogPosts } from "@/lib/blog-posts";
 const post = blogPosts.find((p) => p.slug === "from-qa-to-ai")!;
 
 export const metadata: Metadata = {
-  title: `${post.title} — Peter Souza`,
+  title: post.title,
   description: post.description,
   openGraph: {
     title: post.title,

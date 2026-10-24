@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
-import { blogPosts } from "@/lib/blog-posts";
+import { blogPosts, formatBlogDate } from "@/lib/blog-posts";
 import { ArrowLeft, ArrowRight, Clock, Tag } from "lucide-react";
 
 export function BlogIndex() {
@@ -19,7 +19,7 @@ export function BlogIndex() {
         <div className="max-w-3xl mx-auto">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm font-medium transition-colors"
+            className="inline-flex items-center gap-2 min-h-11 text-sm font-medium transition-colors"
             style={{ color: theme.colors.textMuted }}
           >
             <ArrowLeft size={16} />
@@ -99,11 +99,7 @@ export function BlogIndex() {
                       className="text-xs"
                       style={{ color: theme.colors.textMuted }}
                     >
-                      {new Date(post.date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+                      {formatBlogDate(post.date)}
                     </span>
                   </div>
 
@@ -153,7 +149,7 @@ export function BlogIndex() {
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link
             href="/"
-            className="text-sm font-medium"
+            className="inline-flex items-center min-h-11 text-sm font-medium"
             style={{ color: theme.colors.accent }}
           >
             ← petersouza.dev

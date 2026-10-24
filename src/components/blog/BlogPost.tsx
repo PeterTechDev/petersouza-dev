@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
-import { type BlogPost } from "@/lib/blog-posts";
+import { formatBlogDate, type BlogPost } from "@/lib/blog-posts";
 import { ArrowLeft, Clock, Tag } from "lucide-react";
 
 export function BlogPostView({ post }: { post: BlogPost }) {
@@ -19,7 +19,7 @@ export function BlogPostView({ post }: { post: BlogPost }) {
         <div className="max-w-2xl mx-auto flex items-center gap-4">
           <Link
             href="/blog/"
-            className="inline-flex items-center gap-2 text-sm font-medium transition-colors"
+            className="inline-flex items-center gap-2 min-h-11 text-sm font-medium transition-colors"
             style={{ color: theme.colors.textMuted }}
           >
             <ArrowLeft size={16} />
@@ -65,11 +65,7 @@ export function BlogPostView({ post }: { post: BlogPost }) {
                 className="text-xs"
                 style={{ color: theme.colors.textMuted }}
               >
-                {new Date(post.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                {formatBlogDate(post.date)}
               </time>
             </div>
 
@@ -135,7 +131,7 @@ export function BlogPostView({ post }: { post: BlogPost }) {
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <Link
             href="/blog/"
-            className="inline-flex items-center gap-2 text-sm font-medium"
+            className="inline-flex items-center gap-2 min-h-11 text-sm font-medium"
             style={{ color: theme.colors.accent }}
           >
             <ArrowLeft size={16} />
@@ -143,7 +139,7 @@ export function BlogPostView({ post }: { post: BlogPost }) {
           </Link>
           <Link
             href="/"
-            className="text-sm font-medium"
+            className="inline-flex items-center min-h-11 text-sm font-medium"
             style={{ color: theme.colors.textMuted }}
           >
             petersouza.dev

@@ -9,7 +9,8 @@
     "cf:deploy": "npx wrangler deploy",
     "cf:preview": "npx wrangler dev",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "^1.18.0",
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
