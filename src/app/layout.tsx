@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Bebas_Neue, Orbitron, Playfair_Display, Space_Mono, DM_Sans } from "next/font/google";
+import { siteLocale, siteName, siteOgImage } from "@/lib/site-metadata";
 import "./globals.css";
 
 const inter = Inter({
@@ -61,25 +62,18 @@ export const metadata: Metadata = {
     description:
       "QA Automation & AI Testing Engineer in Brazil (UTC-3). Solo QA at NDG Communications (USA). Playwright, TypeScript, and LLM system testing. Open to remote QA and SDET roles.",
     url: "https://petersouza.dev",
-    siteName: "Peter Souza",
-    locale: "en_US",
+    siteName,
+    locale: siteLocale,
     alternateLocale: ["pt_BR"],
     type: "website",
-    images: [
-      {
-        url: "https://petersouza.dev/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Peter Souza — QA Automation & AI Testing Engineer",
-      },
-    ],
+    images: [siteOgImage],
   },
   twitter: {
     card: "summary_large_image",
     title: "Peter Souza — QA Automation & AI Testing Engineer",
     description:
       "QA Automation & AI Testing Engineer in Brazil. Solo QA at NDG Communications. Open to remote QA and SDET roles.",
-    images: ["https://petersouza.dev/og-image.png"],
+    images: [siteOgImage.url],
     creator: "@petersouza",
   },
   robots: {
