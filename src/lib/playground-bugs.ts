@@ -13,9 +13,9 @@ import type { Locale } from "@/lib/i18n";
  * plants a missing accessible name and a keyboard trap, so an axe scan of this
  * route is expected to fail and must not fail CI.
  *
- * Automação QA owns playwright.config (do not add it in this change). Exclude
- * every URL whose pathname is listed in AXE_EXCLUDED_PATHS, with or without
- * `?mode=fixed` and `?lang=`. Suggested check:
+ * Automação QA applies this exclusion in the axe spec, not in playwright.config.
+ * Import AXE_EXCLUDED_PATHS from this module. Skip every URL whose pathname is
+ * listed here, with or without `?mode=fixed` and `?lang=`. Suggested check:
  *
  *   const path = new URL(page.url()).pathname.replace(/\/$/, "") || "/";
  *   const skipAxe = AXE_EXCLUDED_PATHS.some(

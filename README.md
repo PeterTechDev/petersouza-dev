@@ -21,7 +21,7 @@ Live at → **[petersouza.dev](https://petersouza.dev)**
 
 `/playground/` is a test fixture, not production UI. The default mode plants a missing accessible name and a keyboard trap, so an axe scan of this route is expected to fail.
 
-Exclude the route from the axe gate. The path list lives in `src/lib/playground-bugs.ts` (`AXE_EXCLUDED_PATHS`: `/playground` and `/playground/`), for both the default mode and `?mode=fixed`. Automação QA should apply that exclusion in `playwright.config` when the axe project is added. Do not "fix" the planted bugs in the default mode.
+Exclude the route from the axe gate. The path list lives in `src/lib/playground-bugs.ts` (`AXE_EXCLUDED_PATHS`: `/playground` and `/playground/`), for both the default mode and `?mode=fixed`. Automação QA applies that exclusion in the axe spec, not in `playwright.config`, by importing `AXE_EXCLUDED_PATHS`. Do not "fix" the planted bugs in the default mode.
 
 ---
 
