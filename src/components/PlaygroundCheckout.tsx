@@ -117,7 +117,7 @@ export function PlaygroundCheckout({ mode }: { mode: PlaygroundMode }) {
             {revealed ? (
               <div id="bug-reports" className="space-y-4">
                 <h2 id="bug-reports-heading" className="text-xl font-black">
-                  {t<string>("playground.reveal")}
+                  {t<string>("playground.reportsTitle")}
                 </h2>
                 {PLAYGROUND_BUGS.map((bug) => {
                   const active = isBugActive(bug.id, mode);
@@ -154,7 +154,7 @@ export function PlaygroundCheckout({ mode }: { mode: PlaygroundMode }) {
               </div>
             ) : (
               <h2 id="bug-reports-heading" className="sr-only">
-                {t<string>("playground.reveal")}
+                {t<string>("playground.reportsTitle")}
               </h2>
             )}
           </section>
@@ -252,11 +252,24 @@ function CheckoutForm({ mode }: { mode: PlaygroundMode }) {
       // A failed resubmit is not the double-submit bug. Drop the previous success.
       placedRef.current = 0;
       setOrderCount(0);
+      if (mode === "fixed") {
+        document.getElementById(!nameOk ? "checkout-name" : "checkout-email")?.focus();
+      }
       return;
     }
 
     placedRef.current += 1;
     setOrderCount(placedRef.current);
+  }
+
+  function startNewOrder() {
+    placedRef.current = 0;
+    setOrderCount(0);
+    setName("");
+    setEmail("");
+    setNameError(false);
+    setEmailError(false);
+    document.getElementById("checkout-name")?.focus();
   }
 
   function closeNote() {
@@ -388,6 +401,16 @@ function CheckoutForm({ mode }: { mode: PlaygroundMode }) {
             <p role="status" className="text-sm font-semibold">
               {t<string>("playground.placed", { count: orderCount })}
             </p>
+          ) : null}
+          {mode === "fixed" && orderCount > 0 ? (
+            <button
+              type="button"
+              className="inline-flex items-center justify-center min-h-11 px-4 rounded-full border text-sm font-bold"
+              style={{ borderColor: theme.colors.cardBorder, color: theme.colors.text }}
+              onClick={startNewOrder}
+            >
+              {t<string>("playground.newOrder")}
+            </button>
           ) : null}
         </form>
       </section>

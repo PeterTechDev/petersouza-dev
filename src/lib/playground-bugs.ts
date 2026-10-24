@@ -66,7 +66,7 @@ export const BUG_IDS = [
 
 export function modeFromParam(value: string | string[] | undefined): PlaygroundMode {
   const raw = Array.isArray(value) ? value[0] : value;
-  return raw === PLAYGROUND_FIXED_MODE ? "fixed" : "planted";
+  return raw?.toLowerCase() === PLAYGROUND_FIXED_MODE ? "fixed" : "planted";
 }
 
 export function isBugActive(_id: BugId, mode: PlaygroundMode): boolean {
