@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
+import { accentChipText } from "@/lib/themes";
 import { formatBlogDate, type BlogPost } from "@/lib/blog-posts";
 import { ArrowLeft, Clock, Tag } from "lucide-react";
 
@@ -49,7 +50,7 @@ export function BlogPostView({ post }: { post: BlogPost }) {
                 className="text-xs font-bold px-2.5 py-1 rounded-full"
                 style={{
                   background: theme.colors.accent + "20",
-                  color: theme.colors.accent,
+                  color: accentChipText(theme),
                 }}
               >
                 {post.category}

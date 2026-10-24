@@ -132,3 +132,21 @@ export const themes: Record<string, Theme> = {
 };
 
 export const defaultTheme = "basketball";
+
+/**
+ * Text on a category chip whose background is the theme accent at 12.5%
+ * (`accent + "20"`), composited over the card and the page.
+ *
+ * Dark themes already clear 4.5:1 with the accent itself (Court #ff6b2b
+ * 5.7:1, Galaxy 12.0:1, Neon 5.6:1). Clean and LinkedIn land at 4.27:1 and
+ * 4.11:1, so those chips use a darker shade of the same accent (~5.4:1).
+ * Keyword chips (muted text on bgSecondary) already clear 4.5:1 on every theme.
+ */
+const CHIP_TEXT_ON_LIGHT: Record<string, string> = {
+  minimal: "#0057ae",
+  corporate: "#0855a1",
+};
+
+export function accentChipText(theme: Theme): string {
+  return CHIP_TEXT_ON_LIGHT[theme.id] ?? theme.colors.accent;
+}
