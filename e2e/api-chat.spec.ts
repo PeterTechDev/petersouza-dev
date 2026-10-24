@@ -19,9 +19,10 @@ const PREVIEW_BASE_URL = process.env.PLAYWRIGHT_BASE_URL?.trim();
 const PREVIEW_API_SKIP =
   "PLAYWRIGHT_BASE_URL is set. Real POST /api/chat calls are skipped so a preview or production host is never billed for LLM traffic and does not share its rate-limit window with this suite. UI tests mock /api/chat with page.route and still run.";
 
-// Length, the no-key 503 text, invalid message arrays, and 429 after N valid
-// posts live in chat-contract.spec.ts. This file keeps the unparsed-body case,
-// which that contract does not cover, and the mocked widget UI.
+// Length, the no-key 503 text, invalid message objects, and 429 after N valid
+// posts live in chat-contract.spec.ts. A 429 from an invalid body is risk 3
+// and is not a contract assertion. This file keeps the unparsed body, plus
+// null, empty, and non-object bodies, and the mocked widget UI.
 chatTest.describe("real POST /api/chat", () => {
   chatTest.beforeEach(() => {
     chatTest.skip(Boolean(PREVIEW_BASE_URL), PREVIEW_API_SKIP);
@@ -38,6 +39,28 @@ chatTest.describe("real POST /api/chat", () => {
     const body = (await response.json()) as { error?: string };
     expect(body.error).toEqual(expect.any(String));
     expect(body.error?.length ?? 0).toBeGreaterThan(0);
+  });
+
+  // null, an empty payload, and a JSON value that is not an object are all 400
+  // with a non-empty JSON error. The error text is not part of the contract.
+  chatTest("returns 400 and a JSON error for null, empty, and non-object bodies", async ({ request, chatOrigin }) => {
+    const cases: Array<{ slot: string; body: Buffer }> = [
+      { slot: "null", body: Buffer.from("null") },
+      { slot: "empty", body: Buffer.from("") },
+      { slot: "array", body: Buffer.from("[]") },
+      { slot: "number", body: Buffer.from("123") },
+    ];
+
+    for (const entry of cases) {
+      const response = await request.post(`${chatOrigin}${CHAT_PATH}`, {
+        headers: { "content-type": "application/json" },
+        data: entry.body,
+      });
+      expect(response.status(), entry.slot).toBe(400);
+      const body = (await response.json()) as { error?: string };
+      expect(body.error, entry.slot).toEqual(expect.any(String));
+      expect(body.error?.length ?? 0, entry.slot).toBeGreaterThan(0);
+    }
   });
 });
 
