@@ -4,8 +4,8 @@ import { PlaygroundCheckout } from "@/components/PlaygroundCheckout";
 import { modeFromParam } from "@/lib/playground-bugs";
 import { siteLocale, siteName, siteOgImage } from "@/lib/site-metadata";
 
-// Axe exclusion: see AXE_EXCLUDED_PATHS in src/lib/playground-bugs.ts.
 // Only the planted mode stays out of the axe gate. ?mode=fixed must have zero violations.
+// Axe specs do not import a path list from this route. The fixed URL is scanned on its own.
 
 export const metadata: Metadata = {
   title: "Playground",

@@ -11,24 +11,16 @@ export { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM };
  * page is opened with `?mode=fixed`. The checkout and the "reveal bugs" panel
  * both read this file. If a report and the form disagree, this file is wrong.
  *
- * AXE GATE EXCLUSION
- * Keep the planted /playground out of the future axe accessibility gate. The
- * default mode plants a missing accessible name and a keyboard trap, so an axe
- * scan of that mode is expected to fail and must not fail CI. `?mode=fixed`
- * stays in the gate and must have zero violations.
+ * AXE GATE
+ * The planted mode fails an axe scan on purpose (missing accessible name and
+ * a keyboard trap) and must not fail CI. `?mode=fixed` stays in the gate and
+ * must have zero violations.
  *
- * Automação QA applies this exclusion in the axe spec, not in playwright.config.
- * Import AXE_EXCLUDED_PATHS from this module. Skip the path only when `mode`
- * is not `fixed`. `?lang=` does not change that. Suggested check:
- *
- *   const url = new URL(page.url());
- *   const path = url.pathname.replace(/\/$/, "") || "/";
- *   const fixed = url.searchParams.get(PLAYGROUND_MODE_PARAM)?.toLowerCase() === PLAYGROUND_FIXED_MODE;
- *   const skipAxe =
- *     !fixed &&
- *     AXE_EXCLUDED_PATHS.some((excluded) => excluded.replace(/\/$/, "") === path);
+ * No spec imports a path list from this file. The quality-gate spec keeps its
+ * own route list. The playground axe spec scans the literal URL `?mode=fixed`
+ * and leaves the planted URL out of that scan. `?lang=` does not change that.
+ * playwright.config does not exclude the route.
  */
-export const AXE_EXCLUDED_PATHS = ["/playground", "/playground/"] as const;
 
 export const VALIDATION_SAMPLE = "a@";
 export const VALID_EMAIL_SAMPLE = "qa@example.com";

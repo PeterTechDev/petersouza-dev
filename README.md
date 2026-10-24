@@ -21,7 +21,7 @@ Live at → **[petersouza.dev](https://petersouza.dev)**
 
 `/playground/` is a test fixture, not production UI. The planted mode has a missing accessible name and a keyboard trap, so an axe scan of that mode is expected to fail.
 
-Exclude only the planted mode from the axe gate. The path list lives in `src/lib/playground-bugs.ts` (`AXE_EXCLUDED_PATHS`: `/playground` and `/playground/`). Skip that path when `mode` is not `fixed`. `?mode=fixed` stays in the gate and must have zero violations. Automação QA applies that exclusion in the axe spec, not in `playwright.config`, by importing `AXE_EXCLUDED_PATHS`. Do not "fix" the planted bugs in the default mode.
+Exclude only the planted mode from the axe gate. `?mode=fixed` stays in the gate and must have zero violations. No spec imports a shared path list from this repo. The quality-gate spec keeps its own route list. The playground axe spec writes `/playground/?mode=fixed` as a literal, scans that URL, and leaves the planted URL out of that scan. `playwright.config` does not exclude the route. Do not "fix" the planted bugs in the default mode.
 
 ---
 

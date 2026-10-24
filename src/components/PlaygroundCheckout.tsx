@@ -469,11 +469,9 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
     const dialog: HTMLDivElement = node;
 
     function handleKey(event: globalThis.KeyboardEvent) {
-      if (event.key === "Escape") {
+      if (trapped && event.key === "Escape") {
         event.preventDefault();
         event.stopPropagation();
-        if (trapped) return;
-        onCloseRef.current();
         return;
       }
       if (event.key !== "Tab") return;
@@ -502,9 +500,9 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
 
     dialog.addEventListener("keydown", handleKey);
 
-    // Fixed mode only. Clicking the title, or releasing the pointer outside
-    // the dialog, moves focus to the body. The dialog listener then misses
-    // Escape. Planted mode keeps the trap.
+    // Fixed mode only. The dialog listener does not close on Escape. This
+    // capture listener does, including when focus has left the dialog.
+    // Planted mode does not register it and keeps swallowing Escape.
     function handleDocumentKey(event: globalThis.KeyboardEvent) {
       if (trapped || event.key !== "Escape") return;
       event.preventDefault();
@@ -583,7 +581,10 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
           const target = event.target;
           if (!(target instanceof Element)) return;
           if (target.closest("button, textarea, input, select, a[href]")) return;
-          // Keep focus inside when the pointer hits a non-focusable area.
+          // Title and label stay selectable. preventDefault on them blocks a
+          // drag selection and a double-click. Empty dialog chrome still
+          // cancels the focus move.
+          if (target.closest("#order-note-title, label")) return;
           event.preventDefault();
         }}
       >
