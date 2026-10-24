@@ -15,6 +15,13 @@ Live at → **[petersouza.dev](https://petersouza.dev)**
 - **Case studies** — AutoVendas & Átrias Wiki with technical deep-dives
 - **Blog** — Engineering lessons from shipping real products to real users
 - **PT-BR / EN i18n** — Because Brazil is home
+- **Bug-bash playground** — Synthetic checkout at `/playground/` with six bugs planted on purpose. `?mode=fixed` turns them off.
+
+## Bug-bash playground and axe
+
+`/playground/` is a test fixture, not production UI. The default mode plants a missing accessible name and a keyboard trap, so an axe scan of this route is expected to fail.
+
+Exclude the route from the axe gate. The path list lives in `src/lib/playground-bugs.ts` (`AXE_EXCLUDED_PATHS`: `/playground` and `/playground/`), for both the default mode and `?mode=fixed`. Automação QA applies that exclusion in the axe spec, not in `playwright.config`, by importing `AXE_EXCLUDED_PATHS`. Do not "fix" the planted bugs in the default mode.
 
 ---
 
