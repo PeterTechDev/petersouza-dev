@@ -177,32 +177,98 @@ async function revealPageForAxe(page: Page) {
 }
 
 /**
- * The note dialog is rendered inside <main>, so fixed mode does not mark
- * <main> inert (that would freeze the dialog). It marks every sibling off
- * the path from the dialog to body: both <header> elements (the site chrome
- * and the checkout header) and, once it is in the document, `.-z-10`.
- * `inert` is the content attribute or HTMLElement.inert.
+ * Focusable controls outside the open note. The dialog is inside the page,
+ * so `inert` has to land on each control or on one of its ancestors.
+ * `.-z-10` is the particle field: its canvas is tabindex -1, so it is not in
+ * the focusable list, and the open-before-mount case still has to see it.
  */
-async function inertSignature(page: Page): Promise<string> {
-  return page.evaluate(() => {
-    const marked = (el: Element) => {
-      const node = el as HTMLElement;
-      return node.hasAttribute("inert") || node.inert === true;
-    };
-    const headers = [...document.querySelectorAll("header")];
-    const fields = [...document.querySelectorAll(".-z-10")];
-    const main = document.querySelector("main");
+const FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button",
+  "input",
+  "select",
+  "textarea",
+  "[tabindex]:not([tabindex='-1'])",
+  "[contenteditable]",
+  "summary",
+  "iframe",
+].join(", ");
+
+async function backgroundEscapes(page: Page): Promise<string[]> {
+  return page.evaluate((selector) => {
+    function labelOf(el: Element): string {
+      const tag = el.tagName.toLowerCase();
+      const id = el.id ? `#${el.id}` : "";
+      const classes = [...el.classList]
+        .slice(0, 4)
+        .map((name) => `.${name}`)
+        .join("");
+      const aria = el.getAttribute("aria-label");
+      const name = el.getAttribute("name");
+      const text = (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 60);
+      const bits = [`<${tag}${id}${classes}>`];
+      if (aria) bits.push(`aria-label="${aria}"`);
+      if (name) bits.push(`name="${name}"`);
+      if (text) bits.push(`"${text}"`);
+      return bits.join(" ");
+    }
+
     const dialog = document.querySelector("[role='dialog']");
-    const headerState = headers.length === 0 ? "absent" : headers.every(marked) ? "inert" : "live";
-    const fieldState = fields.length === 0 ? "absent" : fields.every(marked) ? "inert" : "live";
-    const mainState = main ? (marked(main) ? "inert" : "live") : "absent";
-    const dialogState = dialog ? (marked(dialog) ? "inert" : "live") : "absent";
-    return `headers ${headers.length} ${headerState}; fields ${fields.length} ${fieldState}; main ${mainState}; dialog ${dialogState}`;
-  });
+    if (!dialog) return ["dialog is not open"];
+    const escapes: string[] = [];
+    for (const el of document.querySelectorAll(selector)) {
+      if (el === dialog || dialog.contains(el)) continue;
+      if (el.closest("[inert]")) continue;
+      escapes.push(labelOf(el));
+    }
+    for (const field of document.querySelectorAll(".-z-10")) {
+      if (field.closest("[inert]")) continue;
+      escapes.push(`${labelOf(field)} (particle field is not inert)`);
+    }
+    return escapes;
+  }, FOCUSABLE_SELECTOR);
 }
 
-async function expectInertSignature(page: Page, signature: string) {
-  await expect.poll(() => inertSignature(page), { timeout: READY_TIMEOUT_MS }).toBe(signature);
+async function focusablesWithInertAncestor(page: Page): Promise<string[]> {
+  return page.evaluate((selector) => {
+    function labelOf(el: Element): string {
+      const tag = el.tagName.toLowerCase();
+      const id = el.id ? `#${el.id}` : "";
+      const aria = el.getAttribute("aria-label");
+      const text = (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 60);
+      const bits = [`<${tag}${id}>`];
+      if (aria) bits.push(`aria-label="${aria}"`);
+      if (text) bits.push(`"${text}"`);
+      return bits.join(" ");
+    }
+
+    const stuck: string[] = [];
+    for (const el of document.querySelectorAll(selector)) {
+      const ancestor = el.parentElement?.closest("[inert]");
+      if (!ancestor) continue;
+      stuck.push(labelOf(el));
+    }
+    return stuck;
+  }, FOCUSABLE_SELECTOR);
+}
+
+async function expectBackgroundInert(page: Page) {
+  await expect
+    .poll(() => backgroundEscapes(page), {
+      timeout: READY_TIMEOUT_MS,
+      message:
+        "focusable elements outside the dialog without [inert] on themselves or an ancestor",
+    })
+    .toEqual([]);
+}
+
+async function expectNoInertFocusables(page: Page) {
+  await expect
+    .poll(() => focusablesWithInertAncestor(page), {
+      timeout: READY_TIMEOUT_MS,
+      message: "focusable elements that still have an [inert] ancestor after the note closed",
+    })
+    .toEqual([]);
 }
 
 const NOTE_CLOSE = { en: "Close", "pt-BR": "Fechar" } as const;
@@ -330,20 +396,20 @@ for (const locale of LOCALES) {
 
       const field = page.locator(".-z-10");
       await expect(field, "ParticleField was already mounted when the dialog opened").toHaveCount(0);
-      await expectInertSignature(page, "headers 2 inert; fields 0 absent; main live; dialog live");
+      await expectBackgroundInert(page);
 
       particle.release();
       await expect(field).toBeVisible();
       await expect(field.locator("canvas")).toBeAttached();
       await expect(field, "ParticleField was absent when axe ran").toHaveCount(1);
-      await expectInertSignature(page, "headers 2 inert; fields 1 inert; main live; dialog live");
+      await expectBackgroundInert(page);
 
       const results = await new AxeBuilder({ page }).analyze();
       expect(formatViolations(results.violations), "axe violations of any severity").toBe("");
 
       await page.getByRole("button", { name: NOTE_CLOSE[locale.id] }).click();
       await expect(dialog).toHaveCount(0);
-      await expectInertSignature(page, "headers 2 live; fields 1 live; main live; dialog absent");
+      await expectNoInertFocusables(page);
     } finally {
       particle.release();
     }
@@ -355,11 +421,11 @@ for (const locale of LOCALES) {
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
     await expect(page.locator(".-z-10")).toHaveCount(1);
-    await expectInertSignature(page, "headers 2 inert; fields 1 inert; main live; dialog live");
+    await expectBackgroundInert(page);
 
     await page.getByRole("button", { name: NOTE_CLOSE[locale.id] }).click();
     await expect(dialog).toHaveCount(0);
-    await expectInertSignature(page, "headers 2 live; fields 1 live; main live; dialog absent");
+    await expectNoInertFocusables(page);
   });
 
   test(`fixed mode with the bug panel open has zero axe violations (${locale.id})`, async ({ page }) => {
