@@ -138,7 +138,7 @@ export const messages: Record<Locale, Messages> = {
       principles: [
         {
           title: "Deterministic",
-          body: "API cases send one fixed body and expect one status plus the error string the route actually returns. Widget cases intercept POST /api/chat with Playwright page.route and fulfill a fixed response. Nothing in the suite depends on model wording.",
+          body: "API cases send one fixed body and expect one status plus the error string the route actually returns. Widget cases intercept POST /api/chat/ with Playwright page.route and fulfill a fixed response. Nothing in the suite depends on model wording.",
         },
         {
           title: "No API key",
@@ -151,7 +151,7 @@ export const messages: Record<Locale, Messages> = {
       ],
       scopeTitle: "Code under test",
       scopeRouteLabel: "Route",
-      scopeRoute: "POST /api/chat is implemented in src/app/api/chat/route.ts. The handler checks the rate limit, then parses JSON, then validates messages, then calls a provider only when a key is present.",
+      scopeRoute: "POST /api/chat/ is implemented in src/app/api/chat/route.ts. next.config sets trailingSlash, so every method on /api/chat without the slash answers 308 to /api/chat/. The handler then checks the rate limit, parses JSON, validates messages, and calls a provider only when a key is present.",
       scopeWidgetLabel: "Widget",
       scopeWidget: "The widget on every page is AskMeAnythingWidget in src/components/AskMeAnythingWidget.tsx, mounted from src/app/layout.tsx. ChatWidget.tsx is not mounted.",
       orderTitle: "What POST does, in order",
@@ -161,7 +161,7 @@ export const messages: Record<Locale, Messages> = {
         "messages must be a non-empty array. Otherwise the response is 400 with error Invalid messages.",
         "Only the last message is length-checked. The limit is at most 500 characters (UTF-16 code units): content.length > 500 returns 400, so a length of 500 is accepted. The error string still says \"under 500 characters.\" sessionCount and conversationId are not read.",
         "ANTHROPIC_API_KEY, when set, calls claude-3-haiku-20240307 with the last 10 messages and max_tokens 512. Otherwise OPENAI_API_KEY, when set, calls gpt-4o-mini the same way. A non-OK HTTP response from the provider returns 502 with error AI service error. If fetch throws, or if parsing the provider JSON throws, the route catch returns 500 with error Internal server error. When both keys are absent the response is 503 with error No AI API key configured.",
-        "GET /api/chat returns 405 with error Method not allowed and an Allow: POST header. That response is part of the route, and it is outside the CI list below.",
+        "GET /api/chat/ returns 405 with error Method not allowed and an Allow: POST header. GET /api/chat without the slash is a 308 to that path first. The 405 is part of the route, and it is outside the CI list below.",
       ],
       casesTitle: "Cases",
       casesIntro: "Statuses below are the ones the route returns today.",
@@ -209,7 +209,7 @@ export const messages: Record<Locale, Messages> = {
         },
       ],
       uiTitle: "Widget checks",
-      uiIntro: "UI checks open the real AskMeAnythingWidget and intercept POST /api/chat with Playwright page.route. The fulfillment is a fixed status and body. No API key is read and no model is called.",
+      uiIntro: "UI checks open the real AskMeAnythingWidget and intercept POST /api/chat/ with Playwright page.route. The widget calls that slashed path, so the check does not depend on the 308. The fulfillment is a fixed status and body. No API key is read and no model is called.",
       uiPoints: [
         "Open control: button aria-label \"Open Ask Me Anything chat\". Close control: aria-label \"Close chat\". Escape also closes the panel.",
         "Send control: aria-label \"Send message\". Enter sends. A blank or whitespace-only input is not sent, because the widget trims first.",
@@ -357,7 +357,7 @@ export const messages: Record<Locale, Messages> = {
       principles: [
         {
           title: "Determinística",
-          body: "Os casos de API enviam um body fixo e esperam um status mais a string de erro que a rota devolve de fato. Os casos de UI interceptam POST /api/chat com page.route do Playwright e respondem com um fulfillment fixo. Nada na suíte depende do texto gerado por um modelo.",
+          body: "Os casos de API enviam um body fixo e esperam um status mais a string de erro que a rota devolve de fato. Os casos de UI interceptam POST /api/chat/ com page.route do Playwright e respondem com um fulfillment fixo. Nada na suíte depende do texto gerado por um modelo.",
         },
         {
           title: "Sem chave de API",
@@ -370,7 +370,7 @@ export const messages: Record<Locale, Messages> = {
       ],
       scopeTitle: "Código sob teste",
       scopeRouteLabel: "Rota",
-      scopeRoute: "POST /api/chat está em src/app/api/chat/route.ts. O handler aplica o rate limit, depois faz o parse do JSON, depois valida messages, e só chama um provedor quando existe chave.",
+      scopeRoute: "POST /api/chat/ está em src/app/api/chat/route.ts. O next.config liga trailingSlash, então qualquer método em /api/chat sem a barra responde 308 para /api/chat/. O handler aplica o rate limit, faz o parse do JSON, valida messages, e só chama um provedor quando existe chave.",
       scopeWidgetLabel: "Widget",
       scopeWidget: "O widget presente em todas as páginas é AskMeAnythingWidget, em src/components/AskMeAnythingWidget.tsx, montado por src/app/layout.tsx. ChatWidget.tsx não está montado.",
       orderTitle: "O que o POST faz, em ordem",
@@ -380,7 +380,7 @@ export const messages: Record<Locale, Messages> = {
         "messages precisa ser um array não vazio. Caso contrário a resposta é 400 com erro Invalid messages.",
         "Só a última mensagem tem o tamanho verificado. O limite é no máximo 500 caracteres (unidades UTF-16): content.length > 500 devolve 400, então comprimento 500 é aceito. A string de erro ainda diz \"under 500 characters.\" sessionCount e conversationId não são lidos.",
         "ANTHROPIC_API_KEY, quando definida, chama claude-3-haiku-20240307 com as últimas 10 mensagens e max_tokens 512. Senão, OPENAI_API_KEY, quando definida, chama gpt-4o-mini do mesmo modo. Resposta HTTP não-OK do provedor devolve 502 com erro AI service error. Se o fetch lança, ou se o parse do JSON do provedor lança, o catch da rota devolve 500 com erro Internal server error. Sem as duas chaves, a resposta é 503 com erro No AI API key configured.",
-        "GET /api/chat devolve 405 com erro Method not allowed e header Allow: POST. Essa resposta faz parte da rota e fica fora da lista de CI abaixo.",
+        "GET /api/chat/ devolve 405 com erro Method not allowed e header Allow: POST. GET /api/chat sem a barra é um 308 para esse caminho antes. A resposta 405 faz parte da rota e fica fora da lista de CI abaixo.",
       ],
       casesTitle: "Casos",
       casesIntro: "Os status abaixo são os que a rota devolve hoje.",
@@ -428,7 +428,7 @@ export const messages: Record<Locale, Messages> = {
         },
       ],
       uiTitle: "Checagens do widget",
-      uiIntro: "As checagens de UI abrem o AskMeAnythingWidget de verdade e interceptam POST /api/chat com page.route do Playwright. O fulfillment é um status e um body fixos. Nenhuma chave de API é lida e nenhum modelo é chamado.",
+      uiIntro: "As checagens de UI abrem o AskMeAnythingWidget de verdade e interceptam POST /api/chat/ com page.route do Playwright. O widget chama esse caminho com barra, então a checagem não depende do 308. O fulfillment é um status e um body fixos. Nenhuma chave de API é lida e nenhum modelo é chamado.",
       uiPoints: [
         "Abrir: botão com aria-label \"Open Ask Me Anything chat\". Fechar: aria-label \"Close chat\". Escape também fecha o painel.",
         "Enviar: aria-label \"Send message\". Enter envia. Input vazio ou só com espaço não é enviado, porque o widget aplica trim antes.",
