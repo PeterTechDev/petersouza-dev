@@ -105,8 +105,8 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
         style={{ background: theme.colors.card, borderColor: theme.colors.cardBorder }}
       >
         {placeholderName ? (
-          <span id={labelId} className="sr-only">
-            {missing} {placeholderName}
+          <span id={labelId} className="sr-only" aria-hidden="true">
+            {placeholderName}
           </span>
         ) : null}
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
