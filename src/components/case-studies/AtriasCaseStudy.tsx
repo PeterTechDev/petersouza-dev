@@ -202,7 +202,7 @@ export function AtriasCaseStudy() {
                 After four years of running a D&D campaign set in the world of Átrias, the world had grown to <strong style={{ color: theme.colors.text }}>176+ entities</strong> — NPCs with full backstories, locations with political history, factions with competing agendas, artifacts with lore chains, timelines spanning hundreds of years.
               </p>
               <p className="text-base leading-relaxed" style={{ color: theme.colors.textMuted }}>
-                All of this lived in a chaotic mix of Google Docs, Notion pages, and hand-written notes. Sessions regularly got derailed because a player asked "wait, wasn't that kingdom destroyed in the war?" and no one could find the answer quickly. The world was becoming too big to hold in anyone's head.
+                All of this lived in a chaotic mix of Google Docs, Notion pages, and hand-written notes. Sessions regularly got derailed because a player asked &quot;wait, wasn&apos;t that kingdom destroyed in the war?&quot; and no one could find the answer quickly. The world was becoming too big to hold in anyone&apos;s head.
               </p>
               <p className="text-base leading-relaxed" style={{ color: theme.colors.textMuted }}>
                 The secondary problem: as the Game Master, I wanted a tool that could answer player questions <em>in character</em>, with the voice of the world itself — not just retrieve facts, but <em>narrate</em> them.
@@ -238,7 +238,7 @@ export function AtriasCaseStudy() {
                   Headless CMS as World Brain
                 </h3>
                 <p className="text-base leading-relaxed" style={{ color: theme.colors.textMuted }}>
-                  Sanity CMS became the structured backbone of Átrias. Every entity (NPC, location, faction, artifact, event) has a typed schema with relationships. An NPC has a faction allegiance, a home location, a historical event that shaped them. The graph of relationships is queryable — "give me all NPCs connected to the Black Throne faction" is a single query.
+                  Sanity CMS became the structured backbone of Átrias. Every entity (NPC, location, faction, artifact, event) has a typed schema with relationships. An NPC has a faction allegiance, a home location, a historical event that shaped them. The graph of relationships is queryable — &quot;give me all NPCs connected to the Black Throne faction&quot; is a single query.
                 </p>
               </div>
               <div
@@ -252,7 +252,7 @@ export function AtriasCaseStudy() {
                   AI Narrator with RAG
                 </h3>
                 <p className="text-base leading-relaxed" style={{ color: theme.colors.textMuted }}>
-                  Players can ask natural language questions to the AI narrator — "tell me about the Fall of Valdris" or "who rules the Sunken Reaches?" The system retrieves relevant entities via vector embeddings, then generates an in-character narrative response using a custom system prompt that captures the world's voice and tone.
+                  Players can ask natural language questions to the AI narrator — &quot;tell me about the Fall of Valdris&quot; or &quot;who rules the Sunken Reaches?&quot; The system retrieves relevant entities via vector embeddings, then generates an in-character narrative response using a custom system prompt that captures the world&apos;s voice and tone.
                 </p>
               </div>
               <div
@@ -367,7 +367,7 @@ export function AtriasCaseStudy() {
               }}
             >
               <p className="text-base leading-relaxed" style={{ color: theme.colors.textMuted }}>
-                Átrias Wiki is the only project I've built purely for love of the craft. No revenue model, no user acquisition strategy. Just a world I've been building with friends for four years, and a tool that makes that world feel more real. It's where I learned Three.js, RAG pipelines, and the limits of LLM context — all because the problem was interesting enough to justify the exploration. Every engineer should have a project like this.
+                Átrias Wiki is the only project I&apos;ve built purely for love of the craft. No revenue model, no user acquisition strategy. Just a world I&apos;ve been building with friends for four years, and a tool that makes that world feel more real. It&apos;s where I learned Three.js, RAG pipelines, and the limits of LLM context — all because the problem was interesting enough to justify the exploration. Every engineer should have a project like this.
               </p>
             </div>
           </motion.section>

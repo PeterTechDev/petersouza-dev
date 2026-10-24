@@ -21,16 +21,26 @@
   body {
     font-family: var(--theme-body-font), sans-serif;
     overflow-x: hidden;
-    transition: background-color 0.5s ease, color 0.4s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--theme-heading-font), sans-serif;
   }
 
-  /* Smooth theme transitions on all themed elements */
-  section, div, a, span, p, h1, h2, h3, button {
+  /* Color transitions start only after the first paint (html.theme-ready). */
+  html.theme-ready body {
+    transition: background-color 0.5s ease, color 0.4s ease;
+  }
+
+  html.theme-ready :is(section, div, a, span, p, h1, h2, h3, button) {
     transition: background-color 0.5s ease, color 0.4s ease, border-color 0.4s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.theme-ready body,
+    html.theme-ready :is(section, div, a, span, p, h1, h2, h3, button) {
+      transition: none;
+    }
   }
 }
 
@@ -154,6 +164,21 @@
 
 .prose-like em {
   font-style: italic;
+}
+
+/* Vertical rule between About stats. A real element here would be invalid inside the dt/dd group. */
+@media (min-width: 640px) {
+  .about-stat-divider::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 1px;
+    height: 2rem;
+    transform: translateY(-50%);
+    background: var(--about-stat-divider);
+    pointer-events: none;
+  }
 }
 
 a:focus-visible,

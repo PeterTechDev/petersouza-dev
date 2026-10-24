@@ -134,6 +134,10 @@ export const messages: Record<Locale, Messages> = {
         ptShort: "PT",
         ariaLabel: "Switch language",
       },
+      theme: {
+        switch: "Switch theme",
+        select: "Select theme",
+      },
     },
   },
   "pt-BR": {
@@ -246,6 +250,10 @@ export const messages: Record<Locale, Messages> = {
         enShort: "EN",
         ptShort: "PT",
         ariaLabel: "Trocar idioma",
+      },
+      theme: {
+        switch: "Trocar tema",
+        select: "Selecionar tema",
       },
     },
   },

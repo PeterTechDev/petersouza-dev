@@ -137,6 +137,27 @@ function checkRateLimit(ip: string): boolean {
 // ── Message length constraint ─────────────────────────────────────────────────
 const MAX_MESSAGE_LENGTH = 500;
 
+// ── Request body ──────────────────────────────────────────────────────────────
+
+type JsonObjectResult =
+  | { ok: true; value: Record<string, unknown> }
+  | { ok: false; error: string };
+
+async function readJsonObject(req: NextRequest): Promise<JsonObjectResult> {
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return { ok: false, error: "Invalid JSON body. Expected a JSON object." };
+  }
+
+  if (body === null || typeof body !== "object" || Array.isArray(body)) {
+    return { ok: false, error: "Request body must be a JSON object." };
+  }
+
+  return { ok: true, value: body as Record<string, unknown> };
+}
+
 // ── Route handlers ────────────────────────────────────────────────────────────
 
 // Return 405 for GET requests instead of falling through to a 500
@@ -164,8 +185,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const body = await req.json();
-    const { messages } = body as {
+    const parsed = await readJsonObject(req);
+    if (!parsed.ok) {
+      return NextResponse.json({ error: parsed.error }, { status: 400 });
+    }
+
+    const { messages } = parsed.value as {
       messages: Array<{ role: string; content: string }>;
     };
     // Note: sessionCount from the client is intentionally ignored — we enforce

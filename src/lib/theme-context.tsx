@@ -48,7 +48,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     window.dispatchEvent(new Event(THEME_EVENT));
   }, []);
 
-  // Apply theme background to body for smooth transitions
+  // Apply the theme immediately. The transition class is added on a later
+  // frame so the first paint does not interpolate from the default theme.
   useEffect(() => {
     const t = themes[themeId];
     document.body.style.backgroundColor = t.colors.bg;
@@ -56,6 +57,19 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     document.documentElement.style.setProperty("--theme-heading-font", t.font.heading);
     document.documentElement.style.setProperty("--theme-body-font", t.font.body);
   }, [themeId]);
+
+  useEffect(() => {
+    let secondFrame = 0;
+    const firstFrame = requestAnimationFrame(() => {
+      secondFrame = requestAnimationFrame(() => {
+        document.documentElement.classList.add("theme-ready");
+      });
+    });
+    return () => {
+      cancelAnimationFrame(firstFrame);
+      cancelAnimationFrame(secondFrame);
+    };
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme: themes[themeId], themeId, setTheme, cycleTheme }}>

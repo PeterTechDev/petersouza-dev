@@ -55,15 +55,15 @@ export function Hero() {
           </span>
         </motion.h1>
 
-        <motion.p
+        <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="text-lg sm:text-xl md:text-2xl mb-4 font-semibold"
+          className="block text-lg sm:text-xl md:text-2xl mb-4 font-semibold"
           style={{ color: theme.colors.accent }}
         >
           {t<string>("hero.role")}
-        </motion.p>
+        </motion.span>
 
         <motion.p
           initial={{ opacity: 0 }}

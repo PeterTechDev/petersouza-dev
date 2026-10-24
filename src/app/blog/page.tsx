@@ -10,6 +10,18 @@ export const metadata: Metadata = {
     title: "Blog — Peter Souza",
     description: "Engineering, product thinking, and career stories.",
     url: "https://petersouza.dev/blog/",
+    siteName: "Peter Souza",
+    locale: "en_US",
+    alternateLocale: ["pt_BR"],
+    type: "website",
+    images: [
+      {
+        url: "https://petersouza.dev/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Peter Souza — QA Automation & AI Testing Engineer",
+      },
+    ],
   },
   alternates: { canonical: "https://petersouza.dev/blog/" },
 };
