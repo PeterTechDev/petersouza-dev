@@ -24,6 +24,14 @@ export const metadata: Metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI testing — Peter Souza",
+    description:
+      "Deterministic checks for the portfolio chat. No model API key. No score until a real run exists.",
+    images: ["https://petersouza.dev/og-image.png"],
+    creator: "@petersouza",
+  },
   alternates: {
     canonical: "https://petersouza.dev/ai-testing/",
     languages: {
