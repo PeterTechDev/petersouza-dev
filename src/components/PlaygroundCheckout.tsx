@@ -70,6 +70,7 @@ export function PlaygroundCheckout({ mode }: { mode: PlaygroundMode }) {
             <p className="text-base sm:text-lg leading-relaxed" style={{ color: theme.colors.textMuted }}>
               {t<string>("playground.subtitle")}
             </p>
+            <p className="text-base leading-relaxed mt-4">{t<string>("playground.focusTrapWarning")}</p>
           </motion.div>
         </div>
       </header>

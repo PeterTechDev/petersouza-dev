@@ -140,6 +140,8 @@ export const messages: Record<Locale, Messages> = {
         `Synthetic checkout for practice. The bugs on this page are planted on purpose. Do not fix the default mode. Use ${fixedModeQuery} to run the corrected checkout.`,
       warning:
         "Test playground. Defects in the default mode are intentional. The reveal panel and the form both read src/lib/playground-bugs.ts.",
+      focusTrapWarning:
+        `The order note traps keyboard focus on purpose. Reload the page, or open ${fixedModeQuery}, to leave it.`,
       back: "Back to portfolio",
       synthetic: "Synthetic USD fixture. These prices are not a store.",
       modeLabel: "Mode",
@@ -314,6 +316,8 @@ export const messages: Record<Locale, Messages> = {
         `Checkout sintético para praticar. Os bugs desta página foram plantados de propósito. Não corrija o modo padrão. Use ${fixedModeQuery} para rodar o checkout corrigido.`,
       warning:
         "Playground de teste. Os defeitos do modo padrão são intencionais. O painel de revelar bugs e o formulário leem src/lib/playground-bugs.ts.",
+      focusTrapWarning:
+        `A nota do pedido prende o foco do teclado de propósito. Recarregue a página, ou abra ${fixedModeQuery}, para sair.`,
       back: "Voltar ao portfólio",
       synthetic: "Fixture sintético em USD. Estes preços não são uma loja.",
       modeLabel: "Modo",
