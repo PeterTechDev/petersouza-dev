@@ -248,7 +248,12 @@ function CheckoutForm({ mode }: { mode: PlaygroundMode }) {
     const emailOk = isEmailAccepted(email, mode);
     setNameError(!nameOk);
     setEmailError(!emailOk);
-    if (!nameOk || !emailOk) return;
+    if (!nameOk || !emailOk) {
+      // A failed resubmit is not the double-submit bug. Drop the previous success.
+      placedRef.current = 0;
+      setOrderCount(0);
+      return;
+    }
 
     placedRef.current += 1;
     setOrderCount(placedRef.current);
@@ -373,10 +378,10 @@ function CheckoutForm({ mode }: { mode: PlaygroundMode }) {
             id="checkout-submit"
             type="submit"
             disabled={shouldIgnoreExtraSubmit(orderCount, mode)}
-            className="inline-flex items-center justify-center min-h-11 px-5 rounded-full text-sm font-bold disabled:opacity-60 disabled:cursor-not-allowed"
+            className="inline-flex max-w-full items-center justify-center min-h-11 px-5 rounded-full text-sm font-bold disabled:opacity-60 disabled:cursor-not-allowed"
             style={{ background: theme.colors.gradient, color: theme.isDark ? theme.colors.bg : "#ffffff" }}
           >
-            {t<string>(submitLabelKey(mode))}
+            <span className="min-w-0 break-all">{t<string>(submitLabelKey(mode))}</span>
           </button>
 
           {orderCount > 0 ? (
