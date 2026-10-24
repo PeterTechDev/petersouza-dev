@@ -92,9 +92,9 @@ function stopServer(child: ChildProcess) {
 }
 
 export const test = base.extend<{ chatOrigin: string }>({
-  chatOrigin: async ({}, use, testInfo) => {
+  chatOrigin: async ({}, provide, testInfo) => {
     if (process.env.PLAYWRIGHT_BASE_URL?.trim()) {
-      await use("http://preview.invalid");
+      await provide("http://preview.invalid");
       return;
     }
 
@@ -135,7 +135,7 @@ export const test = base.extend<{ chatOrigin: string }>({
     }
 
     try {
-      await use(`http://127.0.0.1:${port}`);
+      await provide(`http://127.0.0.1:${port}`);
     } finally {
       stopServer(child);
       await waitForPort(port, false, 15_000);
