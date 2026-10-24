@@ -1,11 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { NodeResult, Result } from "axe-core";
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import {
-  AXE_EXCLUDED_PATHS,
-  PLAYGROUND_FIXED_MODE,
-  PLAYGROUND_MODE_PARAM,
-} from "@/lib/playground-bugs";
 
 /**
  * Locale is client-only: localStorage key `ps-locale` (`en` | `pt-BR`).
@@ -17,24 +12,15 @@ const LOCALES = [
 ] as const;
 
 /**
- * Planted `/playground` stays out of this gate. The path list lives in
- * `AXE_EXCLUDED_PATHS` (src/lib/playground-bugs.ts). That list is path-only,
- * and the module comment also skips `?mode=fixed`. This gate does not:
- * `/playground/?mode=fixed` is scanned and must have no serious or critical
- * violations. A pathname match would have dropped the fixed page too.
+ * Feature 2 (`/playground`) is a bug-bash with planted accessibility defects
+ * (missing label, keyboard trap, and others). That page is a demo, not a
+ * product surface, so it is excluded from this gate. It is not shipped on
+ * this branch; the filter stays so listing it below cannot turn those
+ * planted bugs into a failing quality check.
  */
-function isPlantedPlayground(route: string): boolean {
-  const url = new URL(route, "http://127.0.0.1");
-  const path = url.pathname.replace(/\/$/, "") || "/";
-  const listed = AXE_EXCLUDED_PATHS.some((excluded) => {
-    const excludedPath = excluded.replace(/\/$/, "") || "/";
-    return excludedPath === path;
-  });
-  if (!listed) return false;
-  return url.searchParams.get(PLAYGROUND_MODE_PARAM) !== PLAYGROUND_FIXED_MODE;
-}
+const AXE_EXCLUDED_ROUTES = ["/playground", "/playground/"] as const;
 
-const CANDIDATE_ROUTES = [
+const PRODUCT_ROUTES = [
   "/",
   "/blog/",
   "/blog/building-ai-first-products/",
@@ -43,11 +29,11 @@ const CANDIDATE_ROUTES = [
   "/blog/from-qa-to-ai/",
   "/blog/why-i-built-a-multi-agent-ai-team/",
   "/case-study/atrias-wiki/",
-  "/playground/",
-  "/playground/?mode=fixed",
 ] as const;
 
-const ROUTES = CANDIDATE_ROUTES.filter((route) => !isPlantedPlayground(route));
+const ROUTES = PRODUCT_ROUTES.filter(
+  (route) => !(AXE_EXCLUDED_ROUTES as readonly string[]).includes(route),
+);
 
 const CHAT_OPEN_LABEL = "Open Ask Me Anything chat";
 const CHAT_BADGE = "Ask me anything ✨";
