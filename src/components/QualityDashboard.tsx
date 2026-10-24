@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { useLocale } from "@/lib/i18n-context";
 import { useTheme } from "@/lib/theme-context";
-import type { Locale } from "@/lib/i18n";
 import type { QualityReport, QualityRun } from "@/lib/ci-status";
 
 const STATUSES = new Set([
@@ -42,18 +41,20 @@ function formatDuration(ms: number): string {
   return parts.join(" ");
 }
 
-function formatWhen(iso: string, locale: Locale): string {
+function formatWhen(iso: string): string {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return "—";
-  return new Intl.DateTimeFormat(locale === "pt-BR" ? "pt-BR" : "en", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const hour = String(date.getUTCHours()).padStart(2, "0");
+  const minute = String(date.getUTCMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day} ${hour}:${minute} UTC`;
 }
 
 export function QualityDashboard({ report }: { report: QualityReport }) {
   const { theme } = useTheme();
-  const { locale, t } = useLocale();
+  const { t } = useLocale();
   const missing = t<string>("quality.missing");
 
   function statusLabel(value: string | null): string {
@@ -87,7 +88,7 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
     const status = statusLabel(run?.status ?? null);
     const conclusion = conclusionLabel(run?.conclusion ?? null);
     const date = run?.startedAt ? (
-      <time dateTime={run.startedAt}>{formatWhen(run.startedAt, locale)}</time>
+      <time dateTime={run.startedAt}>{formatWhen(run.startedAt)}</time>
     ) : (
       missing
     );
