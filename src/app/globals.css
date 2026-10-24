@@ -21,16 +21,26 @@
   body {
     font-family: var(--theme-body-font), sans-serif;
     overflow-x: hidden;
-    transition: background-color 0.5s ease, color 0.4s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--theme-heading-font), sans-serif;
   }
 
-  /* Smooth theme transitions on all themed elements */
-  section, div, a, span, p, h1, h2, h3, button {
+  /* Color transitions start only after the first paint (html.theme-ready). */
+  html.theme-ready body {
+    transition: background-color 0.5s ease, color 0.4s ease;
+  }
+
+  html.theme-ready :is(section, div, a, span, p, h1, h2, h3, button) {
     transition: background-color 0.5s ease, color 0.4s ease, border-color 0.4s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.theme-ready body,
+    html.theme-ready :is(section, div, a, span, p, h1, h2, h3, button) {
+      transition: none;
+    }
   }
 }
 
