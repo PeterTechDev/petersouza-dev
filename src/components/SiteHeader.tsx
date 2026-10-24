@@ -26,7 +26,7 @@ export function SiteHeader() {
         <span style={{ color: locale === "en" ? theme.colors.accent : theme.colors.textMuted }}>
           {enShort}
         </span>
-        <span className="mx-1 opacity-60"> | </span>
+        <span className="mx-2 opacity-60"> | </span>
         <span style={{ color: locale === "pt-BR" ? theme.colors.accent : theme.colors.textMuted }}>
           {ptShort}
         </span>
