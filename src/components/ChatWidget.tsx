@@ -109,7 +109,6 @@ export function ChatWidget() {
   }
 
   const accentStyle = { backgroundColor: theme.colors.accent };
-  const accentText = { color: theme.colors.accent };
 
   return (
     <>

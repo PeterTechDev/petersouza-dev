@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
@@ -132,13 +133,15 @@ export function Contact() {
             rel="noopener noreferrer"
             className="inline-flex items-center min-h-11 px-2"
           >
-            <img
+            <Image
               src={theme.isDark
                 ? "https://eleven-public-cdn.elevenlabs.io/payloadcms/cy7rxce8uki-IIElevenLabsGrants%201.webp"
                 : "https://eleven-public-cdn.elevenlabs.io/payloadcms/pwsc4vchsqt-ElevenLabsGrants.webp"
               }
               alt="ElevenLabs Grants"
-              style={{ width: "150px" }}
+              width={1496}
+              height={132}
+              style={{ width: "150px", height: "auto" }}
             />
           </a>
         </motion.div>
