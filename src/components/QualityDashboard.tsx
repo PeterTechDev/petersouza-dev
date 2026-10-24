@@ -159,15 +159,12 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
         </div>
       </header>
 
-      <section className="px-5 sm:px-6 pb-24" aria-labelledby="quality-runs-heading">
+      <section className="px-5 sm:px-6 pb-24">
         <div className="max-w-3xl mx-auto space-y-4">
-          <h2 id="quality-runs-heading" className="sr-only">
-            {t<string>("quality.title")}
-          </h2>
           {report.state === "ready" ? (
             report.runs.map((run) => runCard(run))
           ) : (
-            <div role="status" className="space-y-4">
+            <div className="space-y-4">
               <p className="text-lg font-semibold">
                 {report.state === "empty"
                   ? t<string>("quality.notYetRun")
