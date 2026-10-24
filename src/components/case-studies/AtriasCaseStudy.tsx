@@ -280,16 +280,21 @@ export function AtriasCaseStudy() {
             transition={{ duration: 0.6 }}
           >
             <h2
+              id="atrias-architecture"
               className="text-2xl sm:text-3xl font-black mb-6"
               style={{ color: theme.colors.text }}
             >
               Architecture
             </h2>
             <div
-              className="rounded-2xl border p-6 sm:p-8 overflow-x-auto"
+              role="region"
+              tabIndex={0}
+              aria-labelledby="atrias-architecture"
+              className="rounded-2xl border p-6 sm:p-8 overflow-x-auto focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2"
               style={{
                 background: theme.colors.card,
                 borderColor: theme.colors.cardBorder,
+                outlineColor: theme.colors.accent,
               }}
             >
               <pre
