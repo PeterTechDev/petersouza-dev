@@ -6,6 +6,9 @@ import { useLocale } from "@/lib/i18n-context";
 export function SiteHeader() {
   const { theme } = useTheme();
   const { locale, toggleLocale, t } = useLocale();
+  const enShort = t<string>("ui.language.enShort");
+  const ptShort = t<string>("ui.language.ptShort");
+  const visibleLanguage = `${enShort} | ${ptShort}`;
 
   return (
     <header className="fixed top-0 right-0 z-50 p-3 sm:p-4">
@@ -18,14 +21,14 @@ export function SiteHeader() {
           borderColor: theme.colors.cardBorder,
           color: theme.colors.textMuted,
         }}
-        aria-label={t<string>("ui.language.ariaLabel")}
+        aria-label={`${visibleLanguage}, ${t<string>("ui.language.ariaLabel")}`}
       >
         <span style={{ color: locale === "en" ? theme.colors.accent : theme.colors.textMuted }}>
-          {t<string>("ui.language.enShort")}
+          {enShort}
         </span>
-        <span className="mx-2 opacity-60">|</span>
+        <span className="mx-1 opacity-60"> | </span>
         <span style={{ color: locale === "pt-BR" ? theme.colors.accent : theme.colors.textMuted }}>
-          {t<string>("ui.language.ptShort")}
+          {ptShort}
         </span>
       </button>
     </header>

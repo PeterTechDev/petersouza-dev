@@ -3,11 +3,13 @@
 import { useEffect, useId, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
+import { useLocale } from "@/lib/i18n-context";
 import { themes } from "@/lib/themes";
 import { Palette } from "lucide-react";
 
 export function ThemeSwitcher() {
   const { themeId, setTheme, theme } = useTheme();
+  const { t } = useLocale();
   const [open, setOpen] = useState(false);
   const menuId = useId();
 
@@ -35,7 +37,7 @@ export function ThemeSwitcher() {
         }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
-        aria-label="Switch theme"
+        aria-label={t<string>("ui.theme.switch")}
         aria-expanded={open}
         aria-controls={menuId}
       >
@@ -47,7 +49,7 @@ export function ThemeSwitcher() {
           <motion.div
             id={menuId}
             role="menu"
-            aria-label="Select theme"
+            aria-label={t<string>("ui.theme.select")}
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
