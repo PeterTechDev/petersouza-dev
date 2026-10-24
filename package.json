@@ -10,7 +10,10 @@
     "cf:preview": "npx wrangler dev",
     "start": "next start",
     "lint": "eslint",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:e2e:a11y": "playwright test e2e/a11y.spec.ts",
+    "test:e2e:i18n": "playwright test e2e/i18n.spec.ts",
+    "test:e2e:api": "playwright test e2e/api-chat.spec.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
@@ -23,6 +26,7 @@
     "three": "^0.182.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@opennextjs/cloudflare": "^1.18.0",
     "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4",
