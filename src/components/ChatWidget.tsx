@@ -221,7 +221,7 @@ export function ChatWidget() {
               style={{ backgroundColor: theme.colors.card }}
             >
               <span
-                className="text-xs opacity-50"
+                className="text-xs"
                 style={{ color: theme.colors.textMuted }}
               >
                 {sessionCount}/{MAX_MESSAGES} messages

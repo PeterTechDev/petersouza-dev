@@ -28,6 +28,8 @@ const COLORS = {
   textMuted: "#94a3b8",  // slate-400
   accent: "#ff6b2b",     // orange-coral (matches site accent)
   accentHover: "#ff8c57",// orange-coral hover
+  // Espresso on the brand orange. White (#fff) on #ff6b2b is 2.84:1.
+  onAccent: "#1a0d06",
 };
 
 function getOrCreateSessionId(): string {
@@ -258,7 +260,7 @@ export function AskMeAnythingWidget() {
               className="px-4 py-1 flex justify-end shrink-0"
               style={{ backgroundColor: COLORS.card }}
             >
-              <span className="text-xs opacity-50" style={{ color: COLORS.textMuted }}>
+              <span className="text-xs" style={{ color: COLORS.textMuted }}>
                 {sessionCount}/{MAX_MESSAGES} messages
               </span>
             </div>
@@ -317,8 +319,8 @@ export function AskMeAnythingWidget() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 10 }}
               transition={{ delay: 0.3, duration: 0.3 }}
-              className="px-3 py-1.5 rounded-full text-xs font-medium text-white shadow-lg pointer-events-none select-none"
-              style={{ backgroundColor: COLORS.accent }}
+              className="px-3 py-1.5 rounded-full text-xs font-medium shadow-lg pointer-events-none select-none"
+              style={{ backgroundColor: COLORS.accent, color: COLORS.onAccent }}
             >
               Ask me anything ✨
             </motion.div>
