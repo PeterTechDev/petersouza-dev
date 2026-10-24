@@ -53,11 +53,13 @@ for (const bug of PLAYGROUND_BUGS) {
           await page.locator("#checkout-name").fill("Ada");
           await page.locator("#checkout-email").fill(observed.sample);
           await page.locator("#checkout-submit").click();
-          const status = page.locator("form").getByRole("status");
+          const form = page.locator("form");
+          const status = form.getByRole("status");
           if (observed.accepted) {
             await expect(status).toHaveText(tEn("playground.placed", { count: 1 }));
           } else {
-            await expect(page.getByRole("alert")).toHaveText(tEn(emailErrorKey(mode)));
+            // Next keeps an empty route announcer with role=alert outside the form.
+            await expect(form.getByRole("alert")).toHaveText(tEn(emailErrorKey(mode)));
             await expect(status).toHaveCount(0);
           }
           break;
@@ -176,8 +178,12 @@ async function openPlantedTrap(page: Page) {
 async function expectTabLeavesContent(page: Page) {
   await expect(page.locator("#order-note")).toHaveCount(0);
   await expect(page.getByRole("dialog")).toHaveCount(0);
+  // A client navigation can leave the sequential focus point inside <main>.
+  // Body is not focusable until it has a tabindex, so Tab would continue
+  // from that point and never reach the header. Focusing the body restarts
+  // Tab order at the top of the new page.
   await page.evaluate(() => {
-    (document.activeElement as HTMLElement | null)?.blur?.();
+    document.body.tabIndex = -1;
     document.body.focus();
   });
 
