@@ -2,8 +2,6 @@ import AxeBuilder from "@axe-core/playwright";
 import type { NodeResult, Result } from "axe-core";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-import { AXE_EXCLUDED_PATHS } from "@/lib/playground-bugs";
-
 /**
  * Locale is client-only: localStorage key `ps-locale` (`en` | `pt-BR`).
  * The server render is English; the client then sets `<html lang>`.
@@ -14,18 +12,10 @@ const LOCALES = [
 ] as const;
 
 /**
- * Planted /playground stays out of this product gate. AXE_EXCLUDED_PATHS is
- * the single source, and it is pathname-only, so a pathname check also
- * matches `/playground/?mode=fixed`. Fixed mode is not listed in
- * PRODUCT_ROUTES for that reason. playground-a11y.spec.ts scans `?mode=fixed`
- * and expects zero violations of every severity. Do not add that URL here:
- * this filter would skip it.
+ * Planted /playground is not in this list. playground-a11y.spec.ts scans
+ * /playground/?mode=fixed and expects zero violations of every severity,
+ * including region.
  */
-function isAxeExcluded(route: string): boolean {
-  const path = new URL(route, "http://127.0.0.1").pathname.replace(/\/$/, "") || "/";
-  return AXE_EXCLUDED_PATHS.some((excluded) => (excluded.replace(/\/$/, "") || "/") === path);
-}
-
 const PRODUCT_ROUTES = [
   "/",
   "/blog/",
@@ -37,7 +27,7 @@ const PRODUCT_ROUTES = [
   "/case-study/atrias-wiki/",
 ] as const;
 
-const ROUTES = PRODUCT_ROUTES.filter((route) => !isAxeExcluded(route));
+const ROUTES = PRODUCT_ROUTES;
 
 const CHAT_OPEN_LABEL = "Open Ask Me Anything chat";
 const CHAT_BADGE = "Ask me anything ✨";

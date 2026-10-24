@@ -182,6 +182,17 @@ async function checkBug(page: Page, id: BugId, mode: Mode) {
   }
 }
 
+test("the catalog lists exactly these six bugs", () => {
+  expect([...BUG_IDS]).toEqual([
+    "validation",
+    "rounding",
+    "a11y-label",
+    "double-submit",
+    "i18n-string",
+    "keyboard-trap",
+  ]);
+});
+
 for (const id of BUG_IDS) {
   for (const mode of MODES) {
     test(`${id} is ${mode === "planted" ? "present" : "gone"} on ${routeFor(mode)}`, async ({ page }) => {
@@ -248,3 +259,18 @@ test("the planted keyboard trap does not leak after goto", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1, name: "Peter Souza" })).toBeVisible();
   await expectTabLeavesContent(page);
 });
+
+const OG_ROUTES = ["/playground/", "/playground/?mode=fixed"] as const;
+
+for (const route of OG_ROUTES) {
+  test(`${route} publishes og:image, og:site_name, and og:locale`, async ({ page }) => {
+    const response = await page.goto(route);
+    expect(response?.status() ?? 0).toBeLessThan(400);
+    for (const property of ["og:image", "og:site_name", "og:locale"] as const) {
+      await expect(page.locator(`meta[property="${property}"]`).first(), property).toHaveAttribute(
+        "content",
+        /\S/,
+      );
+    }
+  });
+}

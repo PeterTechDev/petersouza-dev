@@ -1,25 +1,19 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { NodeResult, Result } from "axe-core";
-import { expect, test, type Locator, type Page } from "@playwright/test";
-
-import { AXE_EXCLUDED_PATHS, PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM } from "@/lib/playground-bugs";
+import { expect, test, type Locator } from "@playwright/test";
 
 /**
- * Planted /playground is the only playground URL excluded from axe. The
- * checkout plants a missing label and a keyboard trap, so that scan is
- * expected to fail and is not a gate.
- *
- * AXE_EXCLUDED_PATHS lists the pathname only (`/playground`, `/playground/`).
- * The module comment says to skip that pathname with or without `?mode=fixed`.
- * This file does not do that. Fixed mode is scanned, and every severity must
- * be clean. A real violation stays a failure.
+ * Planted /playground is not a clean-page gate: it plants a missing email
+ * label and a keyboard trap. A separate test asserts axe reports that label.
+ * /playground/?mode=fixed is scanned for every severity, including region.
+ * A real violation stays a failure. The URL is a literal, not a catalog constant.
  */
 const LOCALES = [
   { id: "en", storage: "en", htmlLang: "en" },
   { id: "pt-BR", storage: "pt-BR", htmlLang: "pt-BR" },
 ] as const;
 
-const FIXED_URL = `/playground/?${PLAYGROUND_MODE_PARAM}=${PLAYGROUND_FIXED_MODE}`;
+const FIXED_URL = "/playground/?mode=fixed";
 const CHAT_BADGE = "Ask me anything ✨";
 const READY_TIMEOUT_MS = 15_000;
 
@@ -86,13 +80,17 @@ async function waitUntilMotionSettled(locator: Locator) {
     .toBe("settled");
 }
 
-test("AXE_EXCLUDED_PATHS matches planted /playground and would also match fixed mode", () => {
-  expect([...AXE_EXCLUDED_PATHS]).toEqual(["/playground", "/playground/"]);
-  const fixedPath = new URL(FIXED_URL, "http://127.0.0.1").pathname.replace(/\/$/, "") || "/";
-  const sourceWouldSkipFixed = AXE_EXCLUDED_PATHS.some(
-    (excluded) => (excluded.replace(/\/$/, "") || "/") === fixedPath,
-  );
-  expect(sourceWouldSkipFixed).toBe(true);
+test("axe reports the missing email label in planted mode", async ({ page }) => {
+  await page.goto("/playground/");
+  const email = page.locator("#checkout-email");
+  await expect(email).toBeVisible();
+  await expect(page.locator("[data-mode]")).toHaveAttribute("data-mode", "planted");
+
+  const results = await new AxeBuilder({ page }).analyze();
+  const label = results.violations.find((violation) => violation.id === "label");
+  expect(label, formatViolations(results.violations)).toBeTruthy();
+  const targets = label?.nodes.flatMap((node) => node.target.map(formatSelector)).join("\n") ?? "";
+  expect(targets).toContain("checkout-email");
 });
 
 for (const locale of LOCALES) {
