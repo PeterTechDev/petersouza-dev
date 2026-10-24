@@ -122,14 +122,14 @@ export async function fetchQualityRuns(): Promise<QualityReport> {
   let response: Response;
   try {
     response = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${QUALITY_WORKFLOW}/runs?branch=${QUALITY_BRANCH}&per_page=${RUN_LIMIT}`,
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${QUALITY_WORKFLOW}/runs?branch=${QUALITY_BRANCH}&event=push&per_page=${RUN_LIMIT}`,
       { headers, next: { revalidate: REVALIDATE_SECONDS } },
     );
   } catch {
     return errorReport();
   }
 
-  // No workflow yet, or no run on main: the published site has not been checked.
+  // 404 means quality.yml is not in the repo. A 200 with no push run on main is an empty list, handled below.
   if (response.status === 404) return emptyReport();
   if (!response.ok) return errorReport();
 
