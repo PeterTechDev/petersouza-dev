@@ -1,4 +1,7 @@
 import type { Locale } from "@/lib/i18n";
+import { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM } from "@/lib/playground-mode";
+
+export { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM };
 
 /**
  * INTENTIONAL BUGS. This module is the bug-bash fixture for /playground.
@@ -23,9 +26,6 @@ import type { Locale } from "@/lib/i18n";
  *   );
  */
 export const AXE_EXCLUDED_PATHS = ["/playground", "/playground/"] as const;
-
-export const PLAYGROUND_MODE_PARAM = "mode";
-export const PLAYGROUND_FIXED_MODE = "fixed";
 
 export const VALIDATION_SAMPLE = "a@";
 export const VALID_EMAIL_SAMPLE = "qa@example.com";

@@ -1,4 +1,4 @@
-import { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM } from "@/lib/playground-bugs";
+import { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM } from "@/lib/playground-mode";
 
 const fixedModeQuery = `?${PLAYGROUND_MODE_PARAM}=${PLAYGROUND_FIXED_MODE}`;
 
