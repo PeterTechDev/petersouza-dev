@@ -29,7 +29,9 @@ export function AiTestingShowcase() {
   const cases = asArray(t<AiCase[]>("aiTesting.cases"));
   const uiPoints = asArray(t<string[]>("aiTesting.uiPoints"));
   const resultRows = asArray(t<ResultRow[]>("aiTesting.resultRows"));
-  const resultsStatus = t<string>("aiTesting.resultsStatus");
+  const statusValue = t<string>("aiTesting.resultsStatus");
+  const statusRow = resultRows.find((row) => row.value === statusValue);
+  const detailRows = statusRow ? resultRows.filter((row) => row !== statusRow) : resultRows;
 
   return (
     <div
@@ -255,14 +257,24 @@ export function AiTestingShowcase() {
                 borderColor: theme.colors.cardBorder,
               }}
             >
-              <p className="text-3xl sm:text-4xl font-black mb-3">
-                {resultsStatus}
-              </p>
+              {statusRow ? (
+                <dl className="mb-3">
+                  <div>
+                    <dt
+                      className="text-xs font-bold tracking-wide uppercase mb-1"
+                      style={{ color: theme.colors.textMuted }}
+                    >
+                      {statusRow.label}
+                    </dt>
+                    <dd className="text-3xl sm:text-4xl font-black">{statusRow.value}</dd>
+                  </div>
+                </dl>
+              ) : null}
               <p className="text-sm sm:text-base leading-relaxed mb-6" style={{ color: theme.colors.textMuted }}>
                 {t<string>("aiTesting.resultsBody")}
               </p>
               <dl className="grid gap-3 sm:grid-cols-2">
-                {resultRows.map((row) => (
+                {detailRows.map((row) => (
                   <div key={row.label}>
                     <dt className="text-xs font-bold tracking-wide uppercase mb-1" style={{ color: theme.colors.textMuted }}>
                       {row.label}
