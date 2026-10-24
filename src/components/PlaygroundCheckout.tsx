@@ -122,6 +122,7 @@ export function PlaygroundCheckout({ mode }: { mode: PlaygroundMode }) {
                 className="inline-flex items-center justify-center min-h-11 px-5 rounded-full border text-sm font-bold"
                 style={{ borderColor: theme.colors.cardBorder, color: theme.colors.text }}
                 aria-expanded={revealed}
+                aria-controls="bug-reports"
                 onClick={() => setRevealed((open) => !open)}
               >
                 {revealed ? t<string>("playground.hide") : t<string>("playground.reveal")}
@@ -506,7 +507,22 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
     }
 
     dialog.addEventListener("keydown", handleKey);
-    return () => dialog.removeEventListener("keydown", handleKey);
+
+    // Fixed mode only. Clicking the title, or releasing the pointer outside
+    // the dialog, moves focus to the body. The dialog listener then misses
+    // Escape. Planted mode keeps the trap.
+    function handleDocumentKey(event: globalThis.KeyboardEvent) {
+      if (trapped || event.key !== "Escape") return;
+      event.preventDefault();
+      event.stopPropagation();
+      onCloseRef.current();
+    }
+    if (!trapped) document.addEventListener("keydown", handleDocumentKey, true);
+
+    return () => {
+      dialog.removeEventListener("keydown", handleKey);
+      document.removeEventListener("keydown", handleDocumentKey, true);
+    };
   }, [trapped]);
 
   let dismiss: ReactNode;
@@ -564,10 +580,18 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
       <div
         ref={dialogRef}
         role="dialog"
-        aria-modal={trapped ? undefined : true}
+        aria-modal="true"
         aria-labelledby="order-note-title"
         className="w-full max-w-md rounded-2xl border p-5 space-y-3"
         style={{ background: theme.colors.bg, borderColor: theme.colors.cardBorder, color: theme.colors.text }}
+        onMouseDown={(event) => {
+          if (trapped) return;
+          const target = event.target;
+          if (!(target instanceof Element)) return;
+          if (target.closest("button, textarea, input, select, a[href]")) return;
+          // Keep focus inside when the pointer hits a non-focusable area.
+          event.preventDefault();
+        }}
       >
         <h2 id="order-note-title" className="text-lg font-black">
           {t<string>("playground.noteTitle")}

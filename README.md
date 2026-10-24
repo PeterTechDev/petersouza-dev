@@ -19,9 +19,9 @@ Live at → **[petersouza.dev](https://petersouza.dev)**
 
 ## Bug-bash playground and axe
 
-`/playground/` is a test fixture, not production UI. The default mode plants a missing accessible name and a keyboard trap, so an axe scan of this route is expected to fail.
+`/playground/` is a test fixture, not production UI. The planted mode has a missing accessible name and a keyboard trap, so an axe scan of that mode is expected to fail.
 
-Exclude the route from the axe gate. The path list lives in `src/lib/playground-bugs.ts` (`AXE_EXCLUDED_PATHS`: `/playground` and `/playground/`), for both the default mode and `?mode=fixed`. Automação QA applies that exclusion in the axe spec, not in `playwright.config`, by importing `AXE_EXCLUDED_PATHS`. Do not "fix" the planted bugs in the default mode.
+Exclude only the planted mode from the axe gate. The path list lives in `src/lib/playground-bugs.ts` (`AXE_EXCLUDED_PATHS`: `/playground` and `/playground/`). Skip that path when `mode` is not `fixed`. `?mode=fixed` stays in the gate and must have zero violations. Automação QA applies that exclusion in the axe spec, not in `playwright.config`, by importing `AXE_EXCLUDED_PATHS`. Do not "fix" the planted bugs in the default mode.
 
 ---
 
