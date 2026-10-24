@@ -69,13 +69,13 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
     return t<string>(`quality.conclusion.${value}`);
   }
 
-  function field(label: string, value: ReactNode) {
+  function field(label: string, value: ReactNode, valueId?: string) {
     return (
       <div className="min-w-0">
         <dt className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>
           {label}
         </dt>
-        <dd className="mt-1 text-sm break-words" style={{ color: theme.colors.text }}>
+        <dd id={valueId} className="mt-1 text-sm break-words" style={{ color: theme.colors.text }}>
           {value}
         </dd>
       </div>
@@ -83,19 +83,19 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
   }
 
   function runCard(run: QualityRun | null) {
+    const cardKey = run ? String(run.id) : "empty";
+    const commitId = `quality-run-${cardKey}-commit`;
     const sha = run?.sha ?? missing;
+    const dateText = run?.startedAt ? formatWhen(run.startedAt) : missing;
     const duration = run && run.durationMs !== null ? formatDuration(run.durationMs) : missing;
     const status = statusLabel(run?.status ?? null);
     const conclusion = conclusionLabel(run?.conclusion ?? null);
-    const date = run?.startedAt ? (
-      <time dateTime={run.startedAt}>{formatWhen(run.startedAt)}</time>
-    ) : (
-      missing
-    );
+    const date = run?.startedAt ? <time dateTime={run.startedAt}>{dateText}</time> : dateText;
 
     return (
       <article
-        key={run?.id ?? "unavailable"}
+        key={cardKey}
+        aria-labelledby={commitId}
         className="rounded-2xl border p-5 sm:p-6"
         style={{ background: theme.colors.card, borderColor: theme.colors.cardBorder }}
       >
@@ -103,7 +103,7 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
           {field(t<string>("quality.fields.status"), status)}
           {field(t<string>("quality.fields.conclusion"), conclusion)}
           {field(t<string>("quality.fields.date"), date)}
-          {field(t<string>("quality.fields.commit"), sha)}
+          {field(t<string>("quality.fields.commit"), sha, commitId)}
           {field(t<string>("quality.fields.duration"), duration)}
           <div className="min-w-0">
             <dt className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>
@@ -115,6 +115,7 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
                   href={run.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={t<string>("quality.openRunLabel", { sha, date: dateText })}
                   className="inline-flex items-center gap-1 min-h-11 font-semibold underline-offset-4 hover:underline"
                   style={{ color: theme.colors.accent }}
                 >
