@@ -139,6 +139,7 @@ export const messages: Record<Locale, Messages> = {
       source: "Workflow file: .github/workflows/quality.yml. This page refreshes every 6 hours.",
       openRun: "Open run",
       missing: "—",
+      unknown: "Unknown",
       fields: {
         status: "Status",
         conclusion: "Conclusion",
@@ -291,6 +292,7 @@ export const messages: Record<Locale, Messages> = {
       source: "Arquivo do workflow: .github/workflows/quality.yml. Esta página atualiza a cada 6 horas.",
       openRun: "Abrir execução",
       missing: "—",
+      unknown: "Desconhecido",
       fields: {
         status: "Status",
         conclusion: "Conclusão",

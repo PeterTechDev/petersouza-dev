@@ -59,13 +59,13 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
 
   function statusLabel(value: string | null): string {
     if (!value) return missing;
-    if (!STATUSES.has(value)) return value;
+    if (!STATUSES.has(value)) return t<string>("quality.unknown");
     return t<string>(`quality.status.${value}`);
   }
 
   function conclusionLabel(value: string | null): string {
     if (!value) return missing;
-    if (!CONCLUSIONS.has(value)) return value;
+    if (!CONCLUSIONS.has(value)) return t<string>("quality.unknown");
     return t<string>(`quality.conclusion.${value}`);
   }
 
