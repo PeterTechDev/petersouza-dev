@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
 import Link from "next/link";
-import { ArrowDown, Download, Github, Linkedin, Mail, BookOpen } from "lucide-react";
+import { ArrowDown, Download, Github, Linkedin, Mail, BookOpen, ShieldCheck } from "lucide-react";
 
 const EMAIL = "peterleite.dev@gmail.com";
 
@@ -169,6 +169,19 @@ export function Hero() {
               >
                 <BookOpen size={18} />
                 {t<string>("hero.writing")}
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href="/quality/"
+                className="inline-flex items-center justify-center gap-2 min-h-11 px-6 sm:px-8 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
+                style={{
+                  color: theme.colors.text,
+                  borderColor: theme.colors.cardBorder,
+                }}
+              >
+                <ShieldCheck size={18} />
+                {t<string>("hero.quality")}
               </Link>
             </motion.div>
           </div>

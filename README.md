@@ -1,5 +1,7 @@
 # petersouza.dev
 
+[![Quality](https://github.com/PeterTechDev/petersouza-dev/actions/workflows/quality.yml/badge.svg)](https://github.com/PeterTechDev/petersouza-dev/actions/workflows/quality.yml)
+
 > *"The world doesn't need more arguments. It needs more people who build things."*
 
 Personal portfolio of **Peter Souza** — AI systems builder, SDET, and full-stack developer from Brazil.
