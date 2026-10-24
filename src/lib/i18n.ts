@@ -132,7 +132,7 @@ export const messages: Record<Locale, Messages> = {
     quality: {
       kicker: "Quality",
       title: "Pipeline",
-      subtitle: "Latest GitHub Actions runs for quality.yml. A missing value stays blank.",
+      subtitle: "Latest GitHub Actions runs for quality.yml. A missing value is shown as —.",
       back: "Back to portfolio",
       unavailableTitle: "Data unavailable",
       notYetRun: "Not yet run",
@@ -284,7 +284,7 @@ export const messages: Record<Locale, Messages> = {
     quality: {
       kicker: "Qualidade",
       title: "Pipeline",
-      subtitle: "Últimas execuções do GitHub Actions para quality.yml. Um valor ausente fica em branco.",
+      subtitle: "Últimas execuções do GitHub Actions para quality.yml. Um valor ausente aparece como —.",
       back: "Voltar ao portfólio",
       unavailableTitle: "Dados indisponíveis",
       notYetRun: "Ainda não executado",
