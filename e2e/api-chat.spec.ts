@@ -95,10 +95,8 @@ test.describe("real POST /api/chat", () => {
     }
   });
 
-  // Contract: a body that is not JSON is 400. route.ts does not do that.
-  // req.json() throws and the generic catch returns 500 "Internal server error".
-  // Leave this red until the route returns 400. Do not skip it.
-  // Buffer keeps Playwright from JSON.stringifying the payload into a valid string.
+  // Contract: a body that is not JSON is 400 with a JSON error.
+  // Buffer keeps Playwright from JSON.stringifying the payload into a quoted string.
   test("returns 400 when the JSON body cannot be parsed", async ({ request }, testInfo) => {
     const response = await request.post(CHAT_PATH, {
       headers: {
@@ -108,8 +106,38 @@ test.describe("real POST /api/chat", () => {
       data: Buffer.from("{"),
     });
     expect(response.status()).toBe(400);
+    const body = (await response.json()) as { error?: string };
+    expect(body.error).toEqual(expect.any(String));
+    expect(body.error?.length ?? 0).toBeGreaterThan(0);
   });
 
+  // null, an empty payload, and a JSON value that is not an object are all 400
+  // with a non-empty JSON error. The error text is not part of the contract.
+  test("returns 400 and a JSON error for null, empty, and non-object bodies", async ({ request }, testInfo) => {
+    const cases: Array<{ slot: string; body: Buffer }> = [
+      { slot: "null", body: Buffer.from("null") },
+      { slot: "empty", body: Buffer.from("") },
+      { slot: "array", body: Buffer.from("[]") },
+      { slot: "number", body: Buffer.from("123") },
+    ];
+
+    for (const entry of cases) {
+      const response = await request.post(CHAT_PATH, {
+        headers: {
+          "content-type": "application/json",
+          "x-forwarded-for": clientIp(testInfo, entry.slot),
+        },
+        data: entry.body,
+      });
+      expect(response.status(), entry.slot).toBe(400);
+      const body = (await response.json()) as { error?: string };
+      expect(body.error, entry.slot).toEqual(expect.any(String));
+      expect(body.error?.length ?? 0, entry.slot).toBeGreaterThan(0);
+    }
+  });
+
+  // 429 after N valid posts from one IP. A 429 caused by an invalid body
+  // (the limit runs before parsing) is risk 3, not this contract.
   test("returns 429 on the 21st POST from the same IP @local-only", async ({ request }, testInfo) => {
     test.skip(!!process.env.CI, LOCAL_RATE_LIMIT_REASON);
 
