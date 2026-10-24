@@ -58,21 +58,39 @@ function runUrl(value: unknown): string | null {
   return value;
 }
 
-function reportedDurationMs(body: unknown): number | null {
+function durationFromJobs(body: unknown): number | null {
   if (!body || typeof body !== "object") return null;
-  const ms = (body as { run_duration_ms?: unknown }).run_duration_ms;
-  if (typeof ms !== "number" || !Number.isFinite(ms) || ms < 0) return null;
-  return ms;
+  const record = body as { total_count?: unknown; jobs?: unknown };
+  if (!Array.isArray(record.jobs)) return null;
+  if (typeof record.total_count === "number" && record.total_count > record.jobs.length) return null;
+
+  let earliest: number | null = null;
+  let latest: number | null = null;
+  for (const job of record.jobs) {
+    if (!job || typeof job !== "object") return null;
+    const started = isoOrNull((job as { started_at?: unknown }).started_at);
+    const completed = isoOrNull((job as { completed_at?: unknown }).completed_at);
+    if (!started && !completed) continue;
+    if (!started || !completed) return null;
+    const startMs = Date.parse(started);
+    const endMs = Date.parse(completed);
+    if (endMs < startMs) return null;
+    earliest = earliest === null ? startMs : Math.min(earliest, startMs);
+    latest = latest === null ? endMs : Math.max(latest, endMs);
+  }
+
+  if (earliest === null || latest === null) return null;
+  return latest - earliest;
 }
 
-async function fetchReportedDuration(id: number, headers: HeadersInit): Promise<number | null> {
+async function fetchJobDuration(id: number, headers: HeadersInit): Promise<number | null> {
   try {
     const response = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/runs/${id}/timing`,
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/runs/${id}/jobs?per_page=100`,
       { headers, next: { revalidate: REVALIDATE_SECONDS } },
     );
     if (!response.ok) return null;
-    return reportedDurationMs(await response.json());
+    return durationFromJobs(await response.json());
   } catch {
     return null;
   }
@@ -134,10 +152,10 @@ export async function fetchQualityRuns(): Promise<QualityReport> {
   if (runs.length === 0) return errorReport();
 
   const withDuration = await Promise.all(
-    runs.map(async (run) => {
-      if (run.status !== "completed") return run;
-      return { ...run, durationMs: await fetchReportedDuration(run.id, headers) };
-    }),
+    runs.map(async (run) => ({
+      ...run,
+      durationMs: await fetchJobDuration(run.id, headers),
+    })),
   );
 
   return { state: "ready", runs: withDuration };
