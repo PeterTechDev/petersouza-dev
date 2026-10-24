@@ -14,7 +14,7 @@ type AiCase = {
   expect: string;
   detail: string;
 };
-type ResultRow = { label: string; value: string };
+type ResultRow = { id: string; label: string; value: string };
 
 function asArray<T>(value: T[] | string): T[] {
   return Array.isArray(value) ? value : [];
@@ -29,8 +29,7 @@ export function AiTestingShowcase() {
   const cases = asArray(t<AiCase[]>("aiTesting.cases"));
   const uiPoints = asArray(t<string[]>("aiTesting.uiPoints"));
   const resultRows = asArray(t<ResultRow[]>("aiTesting.resultRows"));
-  const statusValue = t<string>("aiTesting.resultsStatus");
-  const statusRow = resultRows.find((row) => row.value === statusValue);
+  const statusRow = resultRows.find((row) => row.id === "status");
   const detailRows = statusRow ? resultRows.filter((row) => row !== statusRow) : resultRows;
 
   return (
