@@ -6,6 +6,8 @@ import { useLocale } from "@/lib/i18n-context";
 import Link from "next/link";
 import { ArrowDown, Download, Github, Linkedin, Mail, BookOpen, ShieldCheck } from "lucide-react";
 
+const MotionLink = motion.create(Link);
+
 const EMAIL = "peterleite.dev@gmail.com";
 
 export function Hero() {
@@ -158,32 +160,32 @@ export function Hero() {
               <ArrowDown size={18} />
               {t<string>("hero.cta")}
             </motion.a>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                href="/blog/"
-                className="inline-flex items-center justify-center gap-2 min-h-11 px-6 sm:px-8 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
-                style={{
-                  color: theme.colors.text,
-                  borderColor: theme.colors.cardBorder,
-                }}
-              >
-                <BookOpen size={18} />
-                {t<string>("hero.writing")}
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link
-                href="/quality/"
-                className="inline-flex items-center justify-center gap-2 min-h-11 px-6 sm:px-8 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
-                style={{
-                  color: theme.colors.text,
-                  borderColor: theme.colors.cardBorder,
-                }}
-              >
-                <ShieldCheck size={18} />
-                {t<string>("hero.quality")}
-              </Link>
-            </motion.div>
+            <MotionLink
+              href="/blog/"
+              className="inline-flex items-center justify-center gap-2 min-h-11 px-6 sm:px-8 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
+              style={{
+                color: theme.colors.text,
+                borderColor: theme.colors.cardBorder,
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <BookOpen size={18} />
+              {t<string>("hero.writing")}
+            </MotionLink>
+            <MotionLink
+              href="/quality/"
+              className="inline-flex items-center justify-center gap-2 min-h-11 px-6 sm:px-8 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
+              style={{
+                color: theme.colors.text,
+                borderColor: theme.colors.cardBorder,
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ShieldCheck size={18} />
+              {t<string>("hero.quality")}
+            </MotionLink>
           </div>
         </motion.div>
       </motion.div>
