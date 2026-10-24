@@ -244,7 +244,15 @@ function CheckoutForm({ mode }: { mode: PlaygroundMode }) {
   const [noteOpen, setNoteOpen] = useState(false);
   const placedRef = useRef(0);
   const noteTriggerRef = useRef<HTMLButtonElement>(null);
+  const placedStatusRef = useRef<HTMLParagraphElement>(null);
+  const focusPlacedStatus = useRef(false);
   const emailAssociated = emailLabelAssociated(mode);
+
+  useEffect(() => {
+    if (!focusPlacedStatus.current) return;
+    focusPlacedStatus.current = false;
+    placedStatusRef.current?.focus();
+  }, [orderCount]);
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -266,6 +274,7 @@ function CheckoutForm({ mode }: { mode: PlaygroundMode }) {
 
     placedRef.current += 1;
     setOrderCount(placedRef.current);
+    if (mode === "fixed") focusPlacedStatus.current = true;
   }
 
   function startNewOrder() {
@@ -405,7 +414,13 @@ function CheckoutForm({ mode }: { mode: PlaygroundMode }) {
           </button>
 
           {orderCount > 0 ? (
-            <p role="status" className="text-sm font-semibold">
+            <p
+              ref={placedStatusRef}
+              id="checkout-placed"
+              role="status"
+              tabIndex={mode === "fixed" ? -1 : undefined}
+              className="text-sm font-semibold"
+            >
               {t<string>("playground.placed", { count: orderCount })}
             </p>
           ) : null}
