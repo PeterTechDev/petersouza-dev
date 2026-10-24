@@ -458,7 +458,8 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
   const dialogRef = useRef<HTMLDivElement>(null);
   const noteRef = useRef<HTMLTextAreaElement>(null);
   const onCloseRef = useRef(onClose);
-  const backdropPressed = useRef(false);
+  const backdropDown = useRef(false);
+  const backdropUp = useRef(false);
   const trapped = keyboardTrapActive(mode);
   const dismissIsButton = noteDismissIsButton(mode);
 
@@ -540,19 +541,23 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
       style={{ background: "rgba(0, 0, 0, 0.72)" }}
       onMouseDown={(event) => {
         const onBackdrop = event.target === event.currentTarget;
-        backdropPressed.current = onBackdrop;
+        backdropDown.current = onBackdrop;
+        backdropUp.current = false;
         if (!onBackdrop || trapped) return;
         // Cancel the focus move to the body. The click below restores the opener.
         event.preventDefault();
       }}
-      onClick={(event) => {
-        const pressedBackdrop = backdropPressed.current;
-        backdropPressed.current = false;
-        // A drag that starts in the textarea and ends on the backdrop still
-        // fires click with target === currentTarget. Close only when both
-        // events hit the backdrop itself, so the note text is kept.
-        if (!pressedBackdrop || event.target !== event.currentTarget) return;
-        if (trapped) return;
+      onMouseUp={(event) => {
+        backdropUp.current = event.target === event.currentTarget;
+      }}
+      onClick={() => {
+        const bothOnBackdrop = backdropDown.current && backdropUp.current;
+        backdropDown.current = false;
+        backdropUp.current = false;
+        // A click's target is the common ancestor, so a press on the backdrop
+        // and a release inside the dialog still looks like a backdrop click.
+        // Close only when mousedown and mouseup both hit the backdrop itself.
+        if (!bothOnBackdrop || trapped) return;
         onClose();
       }}
     >
