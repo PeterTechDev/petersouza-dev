@@ -2,6 +2,8 @@ import { existsSync } from "node:fs";
 
 import { defineConfig, devices } from "@playwright/test";
 
+import { CHAT_RATE_WINDOW_MS } from "./e2e/chat-rate";
+
 const PORT = 3000;
 const localBaseURL = `http://127.0.0.1:${PORT}`;
 const previewBaseURL = process.env.PLAYWRIGHT_BASE_URL?.trim();
@@ -25,6 +27,7 @@ function webServerEnv(): Record<string, string> {
   }
   env.ANTHROPIC_API_KEY = "";
   env.OPENAI_API_KEY = "";
+  env.CHAT_RATE_WINDOW_MS = String(CHAT_RATE_WINDOW_MS);
   return env;
 }
 
