@@ -64,16 +64,26 @@ export function PlaygroundCheckout({ mode }: { mode: PlaygroundMode }) {
 
       <header className="px-5 sm:px-6 pt-6 pb-6">
         <div className="max-w-3xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <p className="text-sm tracking-[0.3em] uppercase mb-4 font-medium" style={{ color: theme.colors.accent }}>
+          <motion.div initial={{ y: 20 }} animate={{ y: 0 }} transition={{ duration: 0.6 }}>
+            <p
+              className="text-sm tracking-[0.3em] uppercase mb-4 font-medium"
+              style={{ color: theme.colors.accent, transition: "none" }}
+            >
               {t<string>("playground.kicker")}
             </p>
             <h1 className="text-4xl sm:text-5xl font-black mb-4">{t<string>("playground.title")}</h1>
-            <p className="text-base sm:text-lg leading-relaxed" style={{ color: theme.colors.textMuted }}>
+            <p
+              className="text-base sm:text-lg leading-relaxed"
+              style={{ color: theme.colors.textMuted, transition: "none" }}
+            >
               {t<string>("playground.subtitle")}
             </p>
             {mode === "planted" ? (
-              <p id={FOCUS_TRAP_WARNING_ID} className="text-base leading-relaxed mt-4">
+              <p
+                id={FOCUS_TRAP_WARNING_ID}
+                className="text-base leading-relaxed mt-4"
+                style={{ color: theme.colors.text, transition: "none" }}
+              >
                 {t<string>("playground.focusTrapWarning")}
               </p>
             ) : null}
