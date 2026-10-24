@@ -1,5 +1,6 @@
 "use client";
 
+import { type CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
@@ -76,7 +77,7 @@ export function About() {
             className={`about-stat text-center py-6 px-4 relative flex flex-col-reverse${
               i < stats.length - 1 ? " about-stat-divider" : ""
             }`}
-            style={{ "--about-stat-divider": theme.colors.cardBorder }}
+            style={{ "--about-stat-divider": theme.colors.cardBorder } as CSSProperties}
           >
             <dt
               className="text-xs mt-1.5 font-medium"
