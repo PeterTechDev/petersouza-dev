@@ -133,7 +133,7 @@ export const messages: Record<Locale, Messages> = {
       back: "Back to Portfolio",
       kicker: "LLM eval",
       title: "Testing this site's chat",
-      lede: "A deterministic suite for the portfolio chat. It uses fixed requests and mocked network responses, and it does not need a model API key. Stateless cases are meant to run in CI. This page records no score until a real run exists.",
+      lede: "A deterministic suite for the portfolio chat. It uses fixed requests and mocked network responses, and it does not need a model API key. The cases that do not expect 429 are meant to run in CI. This page records no score until a real run exists.",
       methodTitle: "Method",
       principles: [
         {
@@ -146,7 +146,7 @@ export const messages: Record<Locale, Messages> = {
         },
         {
           title: "CI and local",
-          body: "Length, invalid messages, malformed JSON, and the missing-key response do not use process memory. Those cases are the CI set. The 429 case needs more requests than the in-memory limit of 20, inside one server process, so it stays on a local run.",
+          body: "Every POST calls checkRateLimit first and consumes one of the 20 slots in process memory. That includes the length check, invalid messages, malformed JSON, and the missing-key response. Those four cases are the CI set because the status they expect is not 429. A run that stays on one process can fill the bucket by itself. The 429 case needs more requests than the limit of 20, inside one server process, so it stays on a local run.",
         },
       ],
       scopeTitle: "Code under test",
@@ -352,7 +352,7 @@ export const messages: Record<Locale, Messages> = {
       back: "Voltar ao portfólio",
       kicker: "Avaliação de LLM",
       title: "Como o chat deste site é testado",
-      lede: "Suíte determinística do chat do portfólio. Ela usa pedidos fixos e respostas de rede simuladas, e não precisa de chave de API de modelo. Os casos sem estado são feitos para rodar no CI. Esta página não publica nota enquanto não existir uma execução real.",
+      lede: "Suíte determinística do chat do portfólio. Ela usa pedidos fixos e respostas de rede simuladas, e não precisa de chave de API de modelo. Os casos que não esperam 429 são feitos para rodar no CI. Esta página não publica nota enquanto não existir uma execução real.",
       methodTitle: "Método",
       principles: [
         {
@@ -365,7 +365,7 @@ export const messages: Record<Locale, Messages> = {
         },
         {
           title: "CI e local",
-          body: "Tamanho, messages inválido, JSON malformado e a resposta sem chave não usam memória de processo. Esses casos formam o conjunto de CI. O 429 precisa de mais pedidos do que o limite em memória de 20, no mesmo processo do servidor, então fica numa execução local.",
+          body: "Todo POST chama checkRateLimit primeiro e consome 1 dos 20 espaços na memória do processo. Isso inclui tamanho, messages inválido, JSON malformado e a resposta sem chave. Esses quatro casos formam o conjunto de CI porque o status que esperam não é 429. Uma execução que permanece no mesmo processo pode encher o balde sozinha. O 429 precisa de mais pedidos do que o limite de 20, no mesmo processo do servidor, então fica numa execução local.",
         },
       ],
       scopeTitle: "Código sob teste",
