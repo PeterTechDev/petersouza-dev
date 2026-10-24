@@ -41,6 +41,10 @@ export default defineConfig({
   use: {
     baseURL,
     trace: "retain-on-failure",
+    // The chat launcher does not read prefers-reduced-motion (framer-motion
+    // runs anyway). a11y still waits until that motion settles. This only
+    // disables the Tailwind `motion-safe` ping ring.
+    reducedMotion: "reduce",
   },
   webServer: previewBaseURL
     ? undefined
