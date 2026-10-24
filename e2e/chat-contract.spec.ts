@@ -1,4 +1,4 @@
-import { type APIRequestContext, test } from "@playwright/test";
+import { type APIRequestContext, type TestInfo, test } from "@playwright/test";
 
 import { expect, test as chatTest } from "./chat-server";
 
@@ -183,19 +183,33 @@ chatTest.describe("rate limit on its own server", () => {
   });
 });
 
-function markSecurityRisk(description: string) {
+const RISK_STILL_OPEN =
+  "Security risk still present. Remove test.fail when the backlog item is fixed.";
+
+function annotateSecurityRisk(description: string) {
   chatTest.info().annotations.push({ type: "security-risk", description });
-  chatTest.fail(true, "Security risk still present. Remove test.fail when the backlog item is fixed.");
+}
+
+async function proveServerAnswered(
+  testInfo: TestInfo,
+  response: { status: number; raw: unknown },
+) {
+  expect(response.status, "server responded with a status").toEqual(expect.any(Number));
+  expect(response.raw, "server responded with a body").toEqual(expect.any(Object));
+  await testInfo.attach("risk-observation", {
+    body: JSON.stringify({ status: response.status, body: response.raw }),
+    contentType: "application/json",
+  });
+  chatTest.fail(true, RISK_STILL_OPEN);
 }
 
 chatTest.describe("security risks that fail until the route is fixed", () => {
-  chatTest.describe.configure({ mode: "serial" });
   chatTest.beforeEach(() => {
     chatTest.skip(Boolean(PREVIEW_BASE_URL), PREVIEW_API_SKIP);
   });
 
-  chatTest("earlier messages have no length limit", async ({ request, chatOrigin }) => {
-    markSecurityRisk(
+  chatTest("earlier messages have no length limit", async ({ request, chatOrigin }, testInfo) => {
+    annotateSecurityRisk(
       "Peter backlog item 1: histórico sem limite. Mensagens totalizando ~5000 caracteres passam da validação (503 sem chave). O esperado é 400.",
     );
     const messages = Array.from({ length: 10 }, () => ({
@@ -203,11 +217,12 @@ chatTest.describe("security risks that fail until the route is fixed", () => {
       content: "a".repeat(MAX_MESSAGE_LENGTH),
     }));
     const response = await readError(await postChat(request, chatOrigin, "/api/chat/", { messages }));
+    await proveServerAnswered(testInfo, response);
     expect(response.status, `observed ${response.status} ${JSON.stringify(response.raw)}`).toBe(400);
   });
 
-  chatTest("non-string content is not validated", async ({ request, chatOrigin }) => {
-    markSecurityRisk(
+  chatTest("non-string content is not validated", async ({ request, chatOrigin }, testInfo) => {
+    annotateSecurityRisk(
       "Peter backlog item 2: content não-string. Um número em content chega no 503 sem chave. O esperado é 400.",
     );
     const response = await readError(
@@ -215,11 +230,12 @@ chatTest.describe("security risks that fail until the route is fixed", () => {
         messages: [{ role: "user", content: 42 }],
       }),
     );
+    await proveServerAnswered(testInfo, response);
     expect(response.status, `observed ${response.status} ${JSON.stringify(response.raw)}`).toBe(400);
   });
 
-  chatTest("invalid requests still consume the rate-limit quota", async ({ request, chatOrigin }) => {
-    markSecurityRisk(
+  chatTest("invalid requests still consume the rate-limit quota", async ({ request, chatOrigin }, testInfo) => {
+    annotateSecurityRisk(
       "Peter backlog item 3: cota consumida antes do parse. Depois de 20 corpos inválidos, um POST válido não pode receber 429.",
     );
     for (let attempt = 1; attempt <= RATE_LIMIT; attempt += 1) {
@@ -230,14 +246,15 @@ chatTest.describe("security risks that fail until the route is fixed", () => {
     const valid = await readError(
       await postChat(request, chatOrigin, "/api/chat/", userMessage("What is Peter's current role?")),
     );
+    await proveServerAnswered(testInfo, valid);
     expect(
       valid.status,
       `valid after ${RATE_LIMIT} invalid observed ${valid.status} ${JSON.stringify(valid.raw)}`,
     ).not.toBe(429);
   });
 
-  chatTest("a client-supplied x-forwarded-for bypasses the 429", async ({ request, chatOrigin }) => {
-    markSecurityRisk(
+  chatTest("a client-supplied x-forwarded-for bypasses the 429", async ({ request, chatOrigin }, testInfo) => {
+    annotateSecurityRisk(
       "Peter backlog item 4: trocar x-forwarded-for não pode zerar o limite. provavelmente vale em produção (Cloudflare), não verificado.",
     );
     const payload = userMessage("What is Peter's current role?");
@@ -252,6 +269,7 @@ chatTest.describe("security risks that fail until the route is fixed", () => {
     const swapped = await readError(
       await postChat(request, chatOrigin, "/api/chat/", payload, { "x-forwarded-for": "203.0.113.50" }),
     );
+    await proveServerAnswered(testInfo, swapped);
     expect(swapped.status, `XFF swap observed ${swapped.status} ${JSON.stringify(swapped.raw)}`).toBe(429);
   });
 });
