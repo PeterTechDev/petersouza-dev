@@ -1,10 +1,10 @@
-# Peter Souza — AI Systems Builder & SDET
+# Peter Souza — QA Automation & AI Testing Engineer
 
-> Full-stack developer and AI specialist from Brazil. Building AI-powered products that help small businesses compete with enterprise tools.
+> Solo QA engineer at NDG Communications (USA). Playwright and TypeScript automation, test planning, manual testing, reports, and documentation. Open to remote QA/SDET roles. Based in Brazil (UTC-3).
 
 ## About
 
-Peter Souza is a software engineer and SDET based in Linhares, Espírito Santo, Brazil. He specializes in AI-first application development, test automation, and building multi-agent systems. Currently working as an SDET at NDG Communications while building AutoVendas — a B2B AI platform for Brazilian car dealerships.
+Peter Souza is a QA Automation & AI Testing Engineer based in Linhares, Espírito Santo, Brazil. He is the solo QA engineer at NDG Communications (USA, remote): test planning, manual testing, an automation suite built from scratch with Playwright and TypeScript, plus reports and documentation.
 
 - **Location:** Linhares, ES, Brazil
 - **Email:** peterleite.dev@gmail.com
@@ -21,22 +21,9 @@ Peter Souza is a software engineer and SDET based in Linhares, Espírito Santo, 
 - **Testing:** Playwright, TypeScript, Page Object Model, network interception, CI/CD pipelines
 - **Tools:** OpenAI API, ElevenLabs, Twilio, Sentry, GitHub Actions
 
-## Featured Projects
+## QA case studies
 
-### AutoVendas
-B2B AI platform for Brazilian used car dealerships. An AI workforce that handles WhatsApp lead qualification, inventory Q&A, and CRM automation. Multi-tenant SaaS with real paying customers.
-- Stack: Next.js, Supabase, Twilio, OpenAI, Vercel
-- URL: https://autovendas.vercel.app
-- Case Study: https://petersouza.dev/case-study/autovendas/
-
-### OpenClaw AI System
-Personal AI assistant platform running 9 specialized agents (T-800, Robin, Ego, Marvin, etc.) on a local Dell G15. Handles nightly builds, research, code review, content pipelines, and memory management. 100% custom, zero off-the-shelf agent framework.
-- Stack: Node.js, Claude API, custom orchestration layer
-
-### Mind Palace
-Internal ops dashboard for browsing brain docs, agent outputs, knowledge gaps, missions, and reports. Second brain made visible.
-- Stack: Next.js 15, Tailwind CSS, Tailscale
-- Internal: https://mindpalace.tail03ebe2.ts.net
+<!-- TODO: Add QA case studies when verified write-ups and repository links exist. AutoVendas, Vover, Mind Palace, and OpenClaw are not published as portfolio projects. -->
 
 ### NDG PR Dashboard
 Unified dashboard for monitoring open PRs across GitLab and Bitbucket for NDG Communications. Google OAuth restricted.
@@ -44,8 +31,7 @@ Unified dashboard for monitoring open PRs across GitLab and Bitbucket for NDG Co
 
 ## Professional Background
 
-- **SDET at NDG Communications** (June 2025–present) — Playwright + TypeScript automation, Page Object Model, CI pipelines
-- **4 years experience** — 2 years dev + 2 years SDET
+- **Solo QA engineer at NDG Communications** (USA, remote) — owns test planning, manual testing, a Playwright + TypeScript automation suite built from scratch, reports, and documentation
 - **AI Systems Architect** — Designing and shipping production multi-agent systems
 - **Contractor via Athyna** — USD $2,496/month base
 
@@ -55,7 +41,7 @@ Peter writes about AI engineering, agent architecture, and building software pro
 
 ## Contact
 
-For project inquiries, collaborations, or consulting:
+For remote QA and SDET roles:
 - Email: peterleite.dev@gmail.com
 - LinkedIn: https://www.linkedin.com/in/petertechdev/
 - GitHub: https://github.com/PeterTechDev
@@ -64,5 +50,6 @@ For project inquiries, collaborations, or consulting:
 
 - Speaks: English (professional), Portuguese (native)
 - Time zone: America/Sao_Paulo (BRT, UTC-3)
-- Available for: AI consulting, agent system design, test automation audits
-- Building toward: relocating to Australia or Canada, launching AutoVendas to 3+ paying clients
+- Available for: remote QA and SDET roles
+- CV: https://petersouza.dev/cv-peter-v2.pdf
+- Building toward: remote QA and SDET work

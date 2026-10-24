@@ -39,11 +39,16 @@ export async function fetchGitHubActivity(): Promise<GitHubActivity> {
     headers["Authorization"] = `Bearer ${process.env.GITHUB_TOKEN}`;
   }
 
-  // Fetch public events
-  const eventsRes = await fetch(
-    `https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=100`,
-    { headers, next: { revalidate: 21600 } }
-  );
+  // Fetch public events. A failed lookup should not break the static page.
+  let eventsRes: Response;
+  try {
+    eventsRes = await fetch(
+      `https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=100`,
+      { headers, next: { revalidate: 21600 } }
+    );
+  } catch {
+    return { commits: [], streak: 0, topLanguages: [] };
+  }
 
   if (!eventsRes.ok) {
     return { commits: [], streak: 0, topLanguages: [] };
@@ -124,7 +129,7 @@ function calculateStreak(commitDays: Set<string>): number {
 
   const today = new Date();
   let streak = 0;
-  let current = new Date(today);
+  const current = new Date(today);
 
   // Check today first, if no commit today start from yesterday
   const todayKey = current.toISOString().slice(0, 10);

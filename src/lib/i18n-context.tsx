@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useSyncExternalStore, type ReactNode } from "react";
 import { createTranslator, DEFAULT_LOCALE, LOCALES, type Locale } from "@/lib/i18n";
 
 type I18nContextValue = {
@@ -21,22 +21,32 @@ function normalizeLocale(raw: string | null | undefined): Locale | null {
   return null;
 }
 
-function getInitialLocale(): Locale {
-  if (typeof window === "undefined") return DEFAULT_LOCALE;
-  const fromQuery = normalizeLocale(new URLSearchParams(window.location.search).get("lang"));
-  if (fromQuery) return fromQuery;
+const LOCALE_EVENT = "ps-locale-change";
+
+function subscribeLocale(onStoreChange: () => void) {
+  window.addEventListener(LOCALE_EVENT, onStoreChange);
+  window.addEventListener("storage", onStoreChange);
+  return () => {
+    window.removeEventListener(LOCALE_EVENT, onStoreChange);
+    window.removeEventListener("storage", onStoreChange);
+  };
+}
+
+function readLocale(): Locale {
   const saved = normalizeLocale(localStorage.getItem("ps-locale"));
   if (saved) return saved;
-  const nav = normalizeLocale(window.navigator.language);
-  return nav ?? DEFAULT_LOCALE;
+  const fromQuery = normalizeLocale(new URLSearchParams(window.location.search).get("lang"));
+  if (fromQuery) return fromQuery;
+  return normalizeLocale(window.navigator.language) ?? DEFAULT_LOCALE;
 }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, _setLocale] = useState<Locale>(getInitialLocale);
+  // Server snapshot is always English. The client snapshot is read after hydration.
+  const locale = useSyncExternalStore(subscribeLocale, readLocale, () => DEFAULT_LOCALE);
 
   const setLocale = useCallback((next: Locale) => {
-    _setLocale(next);
-    if (typeof window !== "undefined") localStorage.setItem("ps-locale", next);
+    localStorage.setItem("ps-locale", next);
+    window.dispatchEvent(new Event(LOCALE_EVENT));
   }, []);
 
   const toggleLocale = useCallback(() => {

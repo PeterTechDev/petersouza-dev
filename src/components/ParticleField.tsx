@@ -114,27 +114,28 @@ function getSizeForShape(shape: string): number {
   }
 }
 
+function scrubNonFinite(values: Float32Array) {
+  for (let i = 0; i < values.length; i++) {
+    if (!Number.isFinite(values[i])) values[i] = 0;
+  }
+}
+
 function Particles() {
   const { theme } = useTheme();
   const meshRef = useRef<THREE.Points>(null);
-  const velocitiesRef = useRef<Float32Array>(new Float32Array(0));
   const mouseRef = useRef(new THREE.Vector2(0, 0));
   const { viewport } = useThree();
+  const [initialData] = useState(() =>
+    createParticles(theme.particles.count, theme.particles.speed)
+  );
+  const velocitiesRef = useRef<Float32Array>(initialData.velocities);
+  const particleKeyRef = useRef(`${theme.particles.count}:${theme.particles.speed}`);
 
   const texture = useMemo(() => getTextureForShape(theme.particles.shape), [theme.particles.shape]);
 
   useEffect(() => {
     return () => { texture?.dispose(); };
   }, [texture]);
-
-  useEffect(() => {
-    const data = createParticles(theme.particles.count, theme.particles.speed);
-    velocitiesRef.current = data.velocities;
-    if (meshRef.current) {
-      const geo = meshRef.current.geometry;
-      geo.setAttribute("position", new THREE.BufferAttribute(data.positions, 3));
-    }
-  }, [theme.particles.count, theme.particles.speed]);
 
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
@@ -147,27 +148,43 @@ function Particles() {
 
   useFrame((state) => {
     if (!meshRef.current) return;
+    const particleKey = `${theme.particles.count}:${theme.particles.speed}`;
+    if (particleKeyRef.current !== particleKey) {
+      particleKeyRef.current = particleKey;
+      const data = createParticles(theme.particles.count, theme.particles.speed);
+      scrubNonFinite(data.positions);
+      velocitiesRef.current = data.velocities;
+      const geo = meshRef.current.geometry;
+      geo.setAttribute("position", new THREE.BufferAttribute(data.positions, 3));
+      geo.computeBoundingSphere();
+    }
     const velocities = velocitiesRef.current;
     const positions = meshRef.current.geometry.attributes.position?.array as Float32Array;
-    if (!positions) return;
+    if (!positions || velocities.length !== positions.length) return;
     const count = positions.length / 3;
 
-    const mx = mouseRef.current.x * viewport.width * 0.5;
-    const my = mouseRef.current.y * viewport.height * 0.5;
+    const viewWidth = Number.isFinite(viewport.width) ? viewport.width : 0;
+    const viewHeight = Number.isFinite(viewport.height) ? viewport.height : 0;
+    const mx = mouseRef.current.x * viewWidth * 0.5;
+    const my = mouseRef.current.y * viewHeight * 0.5;
 
     for (let i = 0; i < count; i++) {
       const ix = i * 3;
       const iy = i * 3 + 1;
       const iz = i * 3 + 2;
+      const vx = velocities[ix];
+      const vy = velocities[iy];
+      const vz = velocities[iz];
+      if (!Number.isFinite(vx) || !Number.isFinite(vy) || !Number.isFinite(vz)) continue;
 
-      positions[ix] += velocities[ix];
-      positions[iy] += velocities[iy];
-      positions[iz] += velocities[iz];
+      positions[ix] += vx;
+      positions[iy] += vy;
+      positions[iz] += vz;
 
       const dx = positions[ix] - mx;
       const dy = positions[iy] - my;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 2.5) {
+      if (Number.isFinite(dist) && dist < 2.5 && viewWidth > 0 && viewHeight > 0) {
         const force = (2.5 - dist) * 0.008;
         positions[ix] += dx * force;
         positions[iy] += dy * force;
@@ -179,16 +196,17 @@ function Particles() {
         }
       }
     }
+    scrubNonFinite(positions);
     meshRef.current.geometry.attributes.position.needsUpdate = true;
+    const sphere = meshRef.current.geometry.boundingSphere;
+    if (sphere && !Number.isFinite(sphere.radius)) {
+      meshRef.current.geometry.computeBoundingSphere();
+    }
     meshRef.current.rotation.y = state.clock.elapsedTime * 0.02;
   });
 
-  const [initialData] = useState(
-    () => createParticles(theme.particles.count, theme.particles.speed)
-  );
-
   return (
-    <points ref={meshRef}>
+    <points ref={meshRef} frustumCulled={false}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
@@ -213,7 +231,6 @@ function Particles() {
 function MobileParticles() {
   const { theme } = useTheme();
   const meshRef = useRef<THREE.Points>(null);
-  const velocitiesRef = useRef<Float32Array>(new Float32Array(0));
 
   const texture = useMemo(() => getTextureForShape(theme.particles.shape), [theme.particles.shape]);
 
@@ -222,35 +239,38 @@ function MobileParticles() {
   }, [texture]);
 
   const mobileCount = Math.min(theme.particles.count, 30);
-  const [initialData] = useState(
-    () => createParticles(mobileCount, theme.particles.speed * 0.5)
+  const [initialData] = useState(() =>
+    createParticles(mobileCount, theme.particles.speed * 0.5)
   );
-
-  useEffect(() => {
-    velocitiesRef.current = initialData.velocities;
-  }, [initialData.velocities]);
+  const velocitiesRef = useRef<Float32Array>(initialData.velocities);
 
   useFrame((state) => {
     if (!meshRef.current) return;
     const velocities = velocitiesRef.current;
     const positions = meshRef.current.geometry.attributes.position.array as Float32Array;
+    if (velocities.length !== positions.length) return;
     const count = positions.length / 3;
     for (let i = 0; i < count; i++) {
-      positions[i * 3] += velocities[i * 3];
-      positions[i * 3 + 1] += velocities[i * 3 + 1];
-      positions[i * 3 + 2] += velocities[i * 3 + 2];
+      const vx = velocities[i * 3];
+      const vy = velocities[i * 3 + 1];
+      const vz = velocities[i * 3 + 2];
+      if (!Number.isFinite(vx) || !Number.isFinite(vy) || !Number.isFinite(vz)) continue;
+      positions[i * 3] += vx;
+      positions[i * 3 + 1] += vy;
+      positions[i * 3 + 2] += vz;
       for (let j = 0; j < 3; j++) {
         if (Math.abs(positions[i * 3 + j]) > 10) {
           positions[i * 3 + j] *= -0.9;
         }
       }
     }
+    scrubNonFinite(positions);
     meshRef.current.geometry.attributes.position.needsUpdate = true;
     meshRef.current.rotation.y = state.clock.elapsedTime * 0.02;
   });
 
   return (
-    <points ref={meshRef}>
+    <points ref={meshRef} frustumCulled={false}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"

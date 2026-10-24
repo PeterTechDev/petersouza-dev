@@ -3,7 +3,7 @@ import { PageWrapper } from "@/components/PageWrapper";
 import { AtriasCaseStudy } from "@/components/case-studies/AtriasCaseStudy";
 
 export const metadata: Metadata = {
-  title: "Átrias Wiki Case Study — Peter Souza",
+  title: "Átrias Wiki Case Study",
   description:
     "Building an interactive D&D world encyclopedia with Three.js 3D visualization, Sanity CMS, and an AI narrator powered by OpenAI and vector embeddings.",
   openGraph: {

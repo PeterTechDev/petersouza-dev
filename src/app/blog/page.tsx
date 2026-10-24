@@ -3,7 +3,7 @@ import { PageWrapper } from "@/components/PageWrapper";
 import { BlogIndex } from "@/components/blog/BlogIndex";
 
 export const metadata: Metadata = {
-  title: "Blog — Peter Souza",
+  title: "Blog",
   description:
     "Engineering, product thinking, and career stories. AI development, multi-agent systems, and building SaaS products.",
   openGraph: {

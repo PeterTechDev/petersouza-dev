@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
+import { createContext, useContext, useCallback, useEffect, useSyncExternalStore, ReactNode } from "react";
 import { themes, defaultTheme, Theme } from "./themes";
 
 interface ThemeContextType {
@@ -14,29 +14,38 @@ const ThemeContext = createContext<ThemeContextType | null>(null);
 
 const themeIds = Object.keys(themes);
 
-function getInitialTheme(): string {
-  if (typeof window === "undefined") return defaultTheme;
+const THEME_EVENT = "ps-theme-change";
+
+function subscribeTheme(onStoreChange: () => void) {
+  window.addEventListener(THEME_EVENT, onStoreChange);
+  window.addEventListener("storage", onStoreChange);
+  return () => {
+    window.removeEventListener(THEME_EVENT, onStoreChange);
+    window.removeEventListener("storage", onStoreChange);
+  };
+}
+
+function readTheme(): string {
   const saved = localStorage.getItem("ps-theme");
   return saved && themes[saved] ? saved : defaultTheme;
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [themeId, setThemeId] = useState(getInitialTheme);
+  // Server snapshot is the default theme. A saved theme is read after hydration.
+  const themeId = useSyncExternalStore(subscribeTheme, readTheme, () => defaultTheme);
 
   const setTheme = useCallback((id: string) => {
-    if (themes[id]) {
-      setThemeId(id);
-      localStorage.setItem("ps-theme", id);
-    }
+    if (!themes[id]) return;
+    localStorage.setItem("ps-theme", id);
+    window.dispatchEvent(new Event(THEME_EVENT));
   }, []);
 
   const cycleTheme = useCallback(() => {
-    setThemeId((prev) => {
-      const idx = themeIds.indexOf(prev);
-      const next = themeIds[(idx + 1) % themeIds.length];
-      localStorage.setItem("ps-theme", next);
-      return next;
-    });
+    const current = readTheme();
+    const idx = themeIds.indexOf(current);
+    const next = themeIds[(idx + 1) % themeIds.length];
+    localStorage.setItem("ps-theme", next);
+    window.dispatchEvent(new Event(THEME_EVENT));
   }, []);
 
   // Apply theme background to body for smooth transitions
