@@ -34,6 +34,8 @@ import {
   type PlaygroundMode,
 } from "@/lib/playground-bugs";
 
+const FOCUS_TRAP_WARNING_ID = "playground-focus-trap-warning";
+
 const SEVERITY_KEY = {
   critical: "playground.severityCritical",
   major: "playground.severityMajor",
@@ -71,7 +73,9 @@ export function PlaygroundCheckout({ mode }: { mode: PlaygroundMode }) {
               {t<string>("playground.subtitle")}
             </p>
             {mode === "planted" ? (
-              <p className="text-base leading-relaxed mt-4">{t<string>("playground.focusTrapWarning")}</p>
+              <p id={FOCUS_TRAP_WARNING_ID} className="text-base leading-relaxed mt-4">
+                {t<string>("playground.focusTrapWarning")}
+              </p>
             ) : null}
           </motion.div>
         </div>
@@ -384,6 +388,7 @@ function CheckoutForm({ mode }: { mode: PlaygroundMode }) {
             ref={noteTriggerRef}
             className="inline-flex items-center justify-center min-h-11 px-4 rounded-full border text-sm font-bold"
             style={{ borderColor: theme.colors.cardBorder, color: theme.colors.text }}
+            aria-describedby={mode === "planted" ? FOCUS_TRAP_WARNING_ID : undefined}
             onClick={() => setNoteOpen(true)}
           >
             {t<string>("playground.noteOpen")}
