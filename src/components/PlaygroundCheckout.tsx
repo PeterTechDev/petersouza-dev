@@ -433,6 +433,7 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
   const dialogRef = useRef<HTMLDivElement>(null);
   const noteRef = useRef<HTMLTextAreaElement>(null);
   const onCloseRef = useRef(onClose);
+  const backdropPressed = useRef(false);
   const trapped = keyboardTrapActive(mode);
   const dismissIsButton = noteDismissIsButton(mode);
 
@@ -513,13 +514,19 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
       className="fixed inset-0 z-[60] flex items-center justify-center px-4"
       style={{ background: "rgba(0, 0, 0, 0.72)" }}
       onMouseDown={(event) => {
-        if (event.target !== event.currentTarget) return;
-        if (trapped) return;
+        const onBackdrop = event.target === event.currentTarget;
+        backdropPressed.current = onBackdrop;
+        if (!onBackdrop || trapped) return;
         // Cancel the focus move to the body. The click below restores the opener.
         event.preventDefault();
       }}
       onClick={(event) => {
-        if (event.target !== event.currentTarget) return;
+        const pressedBackdrop = backdropPressed.current;
+        backdropPressed.current = false;
+        // A drag that starts in the textarea and ends on the backdrop still
+        // fires click with target === currentTarget. Close only when both
+        // events hit the backdrop itself, so the note text is kept.
+        if (!pressedBackdrop || event.target !== event.currentTarget) return;
         if (trapped) return;
         onClose();
       }}
