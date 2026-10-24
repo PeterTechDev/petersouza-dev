@@ -22,6 +22,14 @@ export const metadata: Metadata = {
     title: "Playground — Peter Souza",
     description: "Synthetic bug-bash checkout. Planted defects, with a fixed mode.",
   },
+  robots: {
+    index: false,
+    follow: true,
+    googleBot: {
+      index: false,
+      follow: true,
+    },
+  },
   alternates: {
     canonical: "https://petersouza.dev/playground/",
     languages: {
