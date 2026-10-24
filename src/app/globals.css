@@ -166,6 +166,21 @@
   font-style: italic;
 }
 
+/* Vertical rule between About stats. A real element here would be invalid inside the dt/dd group. */
+@media (min-width: 640px) {
+  .about-stat-divider::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 1px;
+    height: 2rem;
+    transform: translateY(-50%);
+    background: var(--about-stat-divider);
+    pointer-events: none;
+  }
+}
+
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,

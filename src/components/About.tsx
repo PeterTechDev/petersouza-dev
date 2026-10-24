@@ -59,7 +59,7 @@ export function About() {
 
       {/* Stats row — label then value in the DOM; number stays visually on top */}
       <motion.dl
-        className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 mb-14 m-0"
+        className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 mb-14"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -73,15 +73,11 @@ export function About() {
         {stats.map((stat, i) => (
           <div
             key={stat.label}
-            className="text-center py-6 px-4 relative flex flex-col-reverse"
+            className={`about-stat text-center py-6 px-4 relative flex flex-col-reverse${
+              i < stats.length - 1 ? " about-stat-divider" : ""
+            }`}
+            style={{ "--about-stat-divider": theme.colors.cardBorder }}
           >
-            {i < stats.length - 1 && (
-              <div
-                className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 w-px h-8"
-                style={{ background: theme.colors.cardBorder }}
-                aria-hidden="true"
-              />
-            )}
             <dt
               className="text-xs mt-1.5 font-medium"
               style={{ color: theme.colors.textMuted }}
