@@ -10,13 +10,20 @@ const ParticleField = dynamic(() => import("@/components/ParticleField"), {
   ssr: false,
 });
 
-export function PageWrapper({ children }: { children: React.ReactNode }) {
+export function PageWrapper({
+  children,
+  footer,
+}: {
+  children: React.ReactNode;
+  footer?: React.ReactNode;
+}) {
   return (
     <ThemeProvider>
       <I18nProvider>
         <ParticleField />
         <SiteHeader />
         <main className="relative pb-28">{children}</main>
+        {footer}
         <ThemeSwitcher />
       </I18nProvider>
     </ThemeProvider>
