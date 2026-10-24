@@ -1,174 +1,199 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { createTranslator, type Locale } from "@/lib/i18n";
-import {
-  CART_LINES,
-  PLAYGROUND_BUGS,
-  PLAYGROUND_FIXED_MODE,
-  PLAYGROUND_MODE_PARAM,
-  VALID_EMAIL_SAMPLE,
-  emailErrorKey,
-  observeBug,
-  type PlaygroundMode,
-} from "@/lib/playground-bugs";
+import { BUG_IDS, type BugId } from "@/lib/playground-bugs";
 
 /**
- * Each bug is driven from src/lib/playground-bugs.ts. Planted mode must still
- * show the defect. `?mode=fixed` must match the corrected observation. A bug
- * that stops reproducing, or a fixed mode that stops fixing it, fails here.
- * There is no second copy of the bug list in this file.
+ * BUG_IDS only enumerates which cases exist. Expected results are literals in
+ * this file, checked on the UI. Catalog functions and the reveal panel's
+ * "Observed" line use the same code as the checkout, so neither is an oracle.
  */
-const MODES = ["planted", "fixed"] as const satisfies readonly PlaygroundMode[];
+const MODES = ["planted", "fixed"] as const;
+type Mode = (typeof MODES)[number];
 
-const tEn = createTranslator("en").t;
-const tPt = createTranslator("pt-BR").t;
+const SAMPLE_EMAIL = "a@";
+const VALID_EMAIL = "qa@example.com";
+const PLANTED_SUBMIT_LABEL = "playground.checkout.ctaMissing";
+const FIXED_SUBMIT_LABEL = { en: "Place order", "pt-BR": "Fazer pedido" } as const;
+const PLACED = (count: number) => `Order placed. Count in this session: ${count}.`;
+const FIXED_EMAIL_ERROR = "Enter an email with a name, a domain, and a dot.";
 
-function t(locale: Locale) {
-  return locale === "en" ? tEn : tPt;
+/** Integer cents. The expected money is this sum, not the catalog's floor(). */
+const CART = [
+  { name: "Synthetic mug", cents: 1999 },
+  { name: "Synthetic sticker", cents: 29 },
+] as const;
+
+function formatCents(cents: number): string {
+  const whole = Math.trunc(cents / 100);
+  const fraction = Math.abs(cents % 100);
+  return `$${whole}.${String(fraction).padStart(2, "0")}`;
 }
 
-function playgroundUrl(mode: PlaygroundMode): string {
-  if (mode === "fixed") return `/playground/?${PLAYGROUND_MODE_PARAM}=${PLAYGROUND_FIXED_MODE}`;
-  return "/playground/";
+const CORRECT_LINES = CART.map((line) => formatCents(line.cents));
+const CORRECT_TOTAL = formatCents(CART.reduce((sum, line) => sum + line.cents, 0));
+const PLANTED_LINES = ["$19.98", "$0.28"] as const;
+const PLANTED_TOTAL = "$20.26";
+
+if (PLANTED_TOTAL === CORRECT_TOTAL || PLANTED_LINES.join() === CORRECT_LINES.join()) {
+  throw new Error("Planted prices must stay different from the integer-cent prices.");
 }
 
-async function openPlayground(page: Page, mode: PlaygroundMode, locale: Locale = "en") {
-  await page.addInitScript((value) => {
-    localStorage.setItem("ps-locale", value);
-  }, locale);
-  await page.goto(playgroundUrl(mode));
-  await expect(page.locator("html")).toHaveAttribute("lang", locale === "en" ? "en" : "pt-BR");
-  await expect(page.getByRole("heading", { level: 1, name: t(locale)("playground.title") })).toBeVisible();
+function routeFor(mode: Mode): string {
+  return mode === "fixed" ? "/playground/?mode=fixed" : "/playground/";
+}
+
+async function openPlayground(page: Page, mode: Mode) {
+  await page.goto(routeFor(mode));
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.getByRole("heading", { level: 1, name: "Bug-bash playground" })).toBeVisible();
   await expect(page.locator("[data-mode]")).toHaveAttribute("data-mode", mode);
 }
 
-for (const bug of PLAYGROUND_BUGS) {
-  for (const mode of MODES) {
-    test(`${bug.id} matches the fixture when mode is ${mode}`, async ({ page }) => {
-      const observed = observeBug(bug.id, mode);
-      await openPlayground(page, mode);
+async function checkValidation(page: Page, mode: Mode) {
+  await page.locator("#checkout-name").fill("Ada");
+  await page.locator("#checkout-email").fill(SAMPLE_EMAIL);
+  await page.locator("#checkout-submit").click();
+  const form = page.locator("form");
+  const status = form.getByRole("status");
+  if (mode === "planted") {
+    await expect(status).toHaveText(PLACED(1));
+    await expect(form.getByRole("alert")).toHaveCount(0);
+    return;
+  }
+  await expect(form.getByRole("alert")).toHaveText(FIXED_EMAIL_ERROR);
+  await expect(status).toHaveCount(0);
+}
 
-      switch (observed.id) {
-        case "validation": {
-          await page.locator("#checkout-name").fill("Ada");
-          await page.locator("#checkout-email").fill(observed.sample);
-          await page.locator("#checkout-submit").click();
-          const form = page.locator("form");
-          const status = form.getByRole("status");
-          if (observed.accepted) {
-            await expect(status).toHaveText(tEn("playground.placed", { count: 1 }));
-          } else {
-            // Next keeps an empty route announcer with role=alert outside the form.
-            await expect(form.getByRole("alert")).toHaveText(tEn(emailErrorKey(mode)));
-            await expect(status).toHaveCount(0);
-          }
-          break;
-        }
-        case "rounding": {
-          const items = page.getByRole("listitem");
-          await expect(items).toHaveCount(CART_LINES.length);
-          for (const [index, line] of CART_LINES.entries()) {
-            await expect(items.nth(index)).toContainText(tEn(line.nameKey));
-            await expect(items.nth(index)).toContainText(observed.lines[index]);
-          }
-          await expect(page.locator("#checkout-total")).toContainText(observed.total);
-          await expect(page.locator("#checkout-total")).toContainText(tEn("playground.total"));
-          break;
-        }
-        case "a11y-label": {
-          const email = page.locator("#checkout-email");
-          const labelText = tEn("playground.email");
-          if (observed.associated) {
-            await expect(email).toHaveAccessibleName(labelText);
-            await expect(page.locator('label[for="checkout-email"]')).toHaveText(labelText);
-          } else {
-            await expect(email).toHaveAccessibleName("");
-            expect(await email.evaluate((element) => (element as HTMLInputElement).labels?.length ?? 0)).toBe(0);
-            await expect(page.getByTestId("email-visual-label")).toHaveText(labelText);
-            await expect(page.locator('label[for="checkout-email"]')).toHaveCount(0);
-          }
-          break;
-        }
-        case "double-submit": {
-          await page.locator("#checkout-name").fill("Ada");
-          await page.locator("#checkout-email").fill(VALID_EMAIL_SAMPLE);
-          const submit = page.locator("#checkout-submit");
-          const status = page.locator("form").getByRole("status");
-          await submit.click();
-          if (observed.blocksRepeat) {
-            await expect(submit).toBeDisabled();
-            await expect(status).toHaveText(tEn("playground.placed", { count: 1 }));
-            await page.locator("form").evaluate((form) => {
-              (form as HTMLFormElement).requestSubmit();
-            });
-            await expect(status).toHaveText(tEn("playground.placed", { count: 1 }));
-            await expect(submit).toBeDisabled();
-          } else {
-            await expect(submit).toBeEnabled();
-            await submit.click();
-            await expect(status).toHaveText(tEn("playground.placed", { count: 2 }));
-            await expect(submit).toBeEnabled();
-          }
-          break;
-        }
-        case "i18n-string": {
-          const submit = page.locator("#checkout-submit");
-          await expect(submit).toHaveText(tEn(observed.key));
-          await page.getByRole("button", { name: tEn("ui.language.ariaLabel") }).click();
-          await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
-          await expect(submit).toHaveText(tPt(observed.key));
-          break;
-        }
-        case "keyboard-trap": {
-          const open = page.getByRole("button", { name: tEn("playground.noteOpen") });
-          await open.click();
-          const note = page.locator("#order-note");
-          await expect(note).toBeFocused();
-          await page.keyboard.press("Tab");
-          if (observed.trapped) {
-            await expect(note).toBeFocused();
-            await page.keyboard.press("Shift+Tab");
-            await expect(note).toBeFocused();
-            await page.keyboard.press("Escape");
-            await expect(page.getByRole("dialog")).toBeVisible();
-            await expect(note).toBeFocused();
-            await expect(page.getByRole("button", { name: tEn("playground.noteDismiss") })).toHaveCount(0);
-            await expect(page.getByTestId("note-dismiss")).toHaveText(tEn("playground.noteDismiss"));
-          } else {
-            const close = page.getByRole("button", { name: tEn("playground.noteDismiss") });
-            await expect(close).toBeFocused();
-            await page.keyboard.press("Shift+Tab");
-            await expect(note).toBeFocused();
-            await page.keyboard.press("Tab");
-            await expect(close).toBeFocused();
-            await page.keyboard.press("Escape");
-            await expect(page.getByRole("dialog")).toHaveCount(0);
-            await expect(open).toBeFocused();
-          }
-          break;
-        }
-        default: {
-          const unreachable: never = observed;
-          throw new Error(`Unhandled playground bug: ${JSON.stringify(unreachable)}`);
-        }
-      }
+async function checkRounding(page: Page, mode: Mode) {
+  const items = page.getByRole("listitem");
+  await expect(items).toHaveCount(CART.length);
+  const lines = mode === "fixed" ? CORRECT_LINES : PLANTED_LINES;
+  const total = mode === "fixed" ? CORRECT_TOTAL : PLANTED_TOTAL;
+  for (const [index, line] of CART.entries()) {
+    await expect(items.nth(index)).toContainText(line.name);
+    await expect(items.nth(index)).toContainText(lines[index]);
+  }
+  await expect(page.locator("#checkout-total")).toContainText("Total");
+  await expect(page.locator("#checkout-total")).toContainText(total);
+}
+
+async function checkLabel(page: Page, mode: Mode) {
+  const email = page.locator("#checkout-email");
+  if (mode === "fixed") {
+    await expect(email).toHaveAccessibleName("Email");
+    await expect(page.locator('label[for="checkout-email"]')).toHaveText("Email");
+    return;
+  }
+  await expect(email).toHaveAccessibleName("");
+  expect(await email.evaluate((element) => (element as HTMLInputElement).labels?.length ?? 0)).toBe(0);
+  await expect(page.getByTestId("email-visual-label")).toHaveText("Email");
+  await expect(page.locator('label[for="checkout-email"]')).toHaveCount(0);
+}
+
+async function checkDoubleSubmit(page: Page, mode: Mode) {
+  await page.locator("#checkout-name").fill("Ada");
+  await page.locator("#checkout-email").fill(VALID_EMAIL);
+  const submit = page.locator("#checkout-submit");
+  const status = page.locator("form").getByRole("status");
+  await submit.click();
+  await expect(status).toHaveText(PLACED(1));
+  if (mode === "fixed") {
+    await expect(submit).toBeDisabled();
+    await page.locator("form").evaluate((form) => {
+      (form as HTMLFormElement).requestSubmit();
+    });
+    await expect(status).toHaveText(PLACED(1));
+    await expect(submit).toBeDisabled();
+    return;
+  }
+  await expect(submit).toBeEnabled();
+  await submit.click();
+  await expect(status).toHaveText(PLACED(2));
+  await expect(submit).toBeEnabled();
+}
+
+async function checkI18n(page: Page, mode: Mode) {
+  const submit = page.locator("#checkout-submit");
+  if (mode === "planted") {
+    await expect(submit).toHaveText(PLANTED_SUBMIT_LABEL);
+    await page.getByRole("button", { name: "Switch language" }).click();
+    await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
+    await expect(submit).toHaveText(PLANTED_SUBMIT_LABEL);
+    return;
+  }
+  await expect(submit).toHaveText(FIXED_SUBMIT_LABEL.en);
+  await page.getByRole("button", { name: "Switch language" }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
+  await expect(submit).toHaveText(FIXED_SUBMIT_LABEL["pt-BR"]);
+}
+
+async function checkKeyboard(page: Page, mode: Mode) {
+  const open = page.getByRole("button", { name: "Order note" });
+  await open.click();
+  const note = page.locator("#order-note");
+  await expect(note).toBeFocused();
+  await page.keyboard.press("Tab");
+  if (mode === "planted") {
+    await expect(note).toBeFocused();
+    await page.keyboard.press("Shift+Tab");
+    await expect(note).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await expect(note).toBeFocused();
+    await expect(page.getByRole("button", { name: "Close" })).toHaveCount(0);
+    await expect(page.getByTestId("note-dismiss")).toHaveText("Close");
+    return;
+  }
+  const close = page.getByRole("button", { name: "Close" });
+  await expect(close).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
+  await expect(note).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(close).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(open).toBeFocused();
+}
+
+async function checkBug(page: Page, id: BugId, mode: Mode) {
+  switch (id) {
+    case "validation":
+      await checkValidation(page, mode);
+      return;
+    case "rounding":
+      await checkRounding(page, mode);
+      return;
+    case "a11y-label":
+      await checkLabel(page, mode);
+      return;
+    case "double-submit":
+      await checkDoubleSubmit(page, mode);
+      return;
+    case "i18n-string":
+      await checkI18n(page, mode);
+      return;
+    case "keyboard-trap":
+      await checkKeyboard(page, mode);
+      return;
+    default: {
+      const unreachable: never = id;
+      throw new Error(`Unhandled playground bug id ${unreachable}`);
+    }
+  }
+}
+
+for (const id of BUG_IDS) {
+  for (const mode of MODES) {
+    test(`${id} is ${mode === "planted" ? "present" : "gone"} on ${routeFor(mode)}`, async ({ page }) => {
+      await openPlayground(page, mode);
+      await checkBug(page, id, mode);
     });
   }
 }
 
-/**
- * The planted trap listens on the dialog node and removes that listener on
- * unmount. Leaving the page must restore ordinary Tab order: focus reaches
- * controls outside <main>, and it does not stay on one element.
- */
 async function openPlantedTrap(page: Page) {
-  const observed = observeBug("keyboard-trap", "planted");
-  if (observed.id !== "keyboard-trap") {
-    throw new Error(`keyboard-trap fixture returned ${observed.id}`);
-  }
-  expect(observed.trapped).toBe(true);
   await openPlayground(page, "planted");
-  await page.getByRole("button", { name: tEn("playground.noteOpen") }).click();
+  await page.getByRole("button", { name: "Order note" }).click();
   const note = page.locator("#order-note");
   await expect(note).toBeFocused();
   await page.keyboard.press("Tab");
@@ -178,10 +203,6 @@ async function openPlantedTrap(page: Page) {
 async function expectTabLeavesContent(page: Page) {
   await expect(page.locator("#order-note")).toHaveCount(0);
   await expect(page.getByRole("dialog")).toHaveCount(0);
-  // A client navigation can leave the sequential focus point inside <main>.
-  // Body is not focusable until it has a tabindex, so Tab would continue
-  // from that point and never reach the header. Focusing the body restarts
-  // Tab order at the top of the new page.
   await page.evaluate(() => {
     document.body.tabIndex = -1;
     document.body.focus();
@@ -214,7 +235,7 @@ async function expectTabLeavesContent(page: Page) {
 
 test("the planted keyboard trap does not leak after the back link", async ({ page }) => {
   await openPlantedTrap(page);
-  await page.getByRole("link", { name: tEn("playground.back") }).evaluate((link: HTMLAnchorElement) => {
+  await page.getByRole("link", { name: "Back to portfolio" }).evaluate((link: HTMLAnchorElement) => {
     link.click();
   });
   await expect(page.getByRole("heading", { level: 1, name: "Peter Souza" })).toBeVisible();
