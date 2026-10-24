@@ -17,6 +17,11 @@ Live at → **[petersouza.dev](https://petersouza.dev)**
 - **Case studies** — AutoVendas & Átrias Wiki with technical deep-dives
 - **Blog** — Engineering lessons from shipping real products to real users
 - **PT-BR / EN i18n** — Because Brazil is home
+- **Bug-bash playground** — Synthetic checkout at `/playground/` with six bugs planted on purpose. `?mode=fixed` turns them off.
+
+## Bug-bash playground and axe
+
+`/playground/` is a test fixture, not production UI. The zero-violation gate for `?mode=fixed` is `e2e/playground-a11y.spec.ts`. That same spec scans planted mode and expects the axe rule `label` on `#checkout-email`. Do not "fix" the planted bugs in the default mode.
 
 ---
 
@@ -24,12 +29,12 @@ Live at → **[petersouza.dev](https://petersouza.dev)**
 
 | Layer | Tech |
 |-------|------|
-| Framework | Next.js 16 (App Router, static export) |
+| Framework | Next.js 16 (App Router) |
 | Styling | Tailwind CSS |
 | Animation | Framer Motion |
 | 3D | Three.js (particle field) |
 | Icons | Lucide React |
-| Deploy | Vercel |
+| Deploy | Live site: Cloudflare Workers via OpenNext (`deploy.yml` on push to `main`). Vercel also deploys `main`, and that deploy does not serve the live site. |
 
 ---
 

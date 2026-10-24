@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
 import Link from "next/link";
-import { ArrowDown, Download, Github, Linkedin, Mail, BookOpen, ShieldCheck, MessageCircle } from "lucide-react";
+import { ArrowDown, Download, Github, Linkedin, Mail, BookOpen, ShieldCheck, MessageCircle, Bug } from "lucide-react";
 
 const MotionLink = motion.create(Link);
 
@@ -198,6 +198,19 @@ export function Hero() {
             >
               <MessageCircle size={18} />
               {t<string>("hero.aiTesting")}
+            </MotionLink>
+            <MotionLink
+              href="/playground/"
+              className="inline-flex items-center justify-center gap-2 min-h-11 px-6 sm:px-8 py-3 rounded-full font-bold text-sm sm:text-base border transition-all"
+              style={{
+                color: theme.colors.text,
+                borderColor: theme.colors.cardBorder,
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Bug size={18} />
+              {t<string>("hero.playground")}
             </MotionLink>
           </div>
         </motion.div>
