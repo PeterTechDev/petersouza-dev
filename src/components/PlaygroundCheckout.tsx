@@ -455,8 +455,19 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
   const onCloseRef = useRef(onClose);
   const backdropDown = useRef(false);
   const backdropUp = useRef(false);
+  const inertNodes = useRef<HTMLElement[]>([]);
   const trapped = keyboardTrapActive(mode);
   const dismissIsButton = noteDismissIsButton(mode);
+
+  function releaseInert() {
+    for (const node of inertNodes.current) node.inert = false;
+    inertNodes.current = [];
+  }
+
+  function requestClose() {
+    releaseInert();
+    onClose();
+  }
 
   useEffect(() => {
     onCloseRef.current = onClose;
@@ -500,18 +511,62 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
 
     dialog.addEventListener("keydown", handleKey);
 
-    // Fixed mode only. The dialog listener does not close on Escape. This
-    // capture listener does, including when focus has left the dialog.
+    // The dialog is rendered inside the page, so inert on body would freeze
+    // the dialog too. Fixed mode marks every sibling along the path from the
+    // dialog up to body: the checkout behind it, the header, the theme
+    // switcher, and the Ask widget. The dialog and its backdrop stay active.
+    // Planted mode does not do this.
+    const marked: HTMLElement[] = [];
+    if (!trapped) {
+      let current: HTMLElement | null = dialog;
+      while (current !== null && current !== document.body) {
+        const parent: HTMLElement | null = current.parentElement;
+        if (parent === null) break;
+        for (const sibling of parent.children) {
+          if (sibling === current || !(sibling instanceof HTMLElement) || sibling.inert) continue;
+          sibling.inert = true;
+          marked.push(sibling);
+        }
+        current = parent;
+      }
+      inertNodes.current = marked;
+    }
+
+    function focusableInDialog(): HTMLElement[] {
+      return [...dialog.querySelectorAll<HTMLElement>("button, textarea, input, a[href]")].filter(
+        (element) => !element.hasAttribute("disabled"),
+      );
+    }
+
+    // Fixed mode only. Escape still closes when focus has left the dialog.
+    // Tab from the body (after a title or label click) never reaches the
+    // dialog listener, so this capture handler brings it back inside.
     // Planted mode does not register it and keeps swallowing Escape.
     function handleDocumentKey(event: globalThis.KeyboardEvent) {
-      if (trapped || event.key !== "Escape") return;
+      if (trapped) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+        for (const node of marked) node.inert = false;
+        inertNodes.current = [];
+        onCloseRef.current();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const active = document.activeElement;
+      if (active instanceof Node && dialog.contains(active)) return;
+      const focusable = focusableInDialog();
+      if (focusable.length === 0) return;
       event.preventDefault();
       event.stopPropagation();
-      onCloseRef.current();
+      const target = event.shiftKey ? focusable[focusable.length - 1] : focusable[0];
+      target.focus();
     }
     if (!trapped) document.addEventListener("keydown", handleDocumentKey, true);
 
     return () => {
+      for (const node of marked) node.inert = false;
+      inertNodes.current = [];
       dialog.removeEventListener("keydown", handleKey);
       document.removeEventListener("keydown", handleDocumentKey, true);
     };
@@ -524,7 +579,7 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
         type="button"
         className="inline-flex items-center justify-center min-h-11 px-4 rounded-full text-sm font-bold"
         style={{ background: theme.colors.gradient, color: theme.isDark ? theme.colors.bg : "#ffffff" }}
-        onClick={onClose}
+        onClick={requestClose}
       >
         {t<string>("playground.noteDismiss")}
       </button>
@@ -536,7 +591,7 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
         data-testid="note-dismiss"
         className="inline-flex items-center justify-center min-h-11 px-4 rounded-full text-sm font-bold cursor-pointer"
         style={{ background: theme.colors.gradient, color: theme.isDark ? theme.colors.bg : "#ffffff" }}
-        onClick={onClose}
+        onClick={requestClose}
       >
         {t<string>("playground.noteDismiss")}
       </span>
@@ -566,7 +621,7 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
         // and a release inside the dialog still looks like a backdrop click.
         // Close only when mousedown and mouseup both hit the backdrop itself.
         if (!bothOnBackdrop || trapped) return;
-        onClose();
+        requestClose();
       }}
     >
       <div
