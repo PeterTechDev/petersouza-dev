@@ -131,49 +131,43 @@ export function PlaygroundCheckout({ mode }: { mode: PlaygroundMode }) {
             <p className="text-sm" style={{ color: theme.colors.textMuted }}>
               {t<string>("playground.revealHint")}
             </p>
-            {revealed ? (
-              <div id="bug-reports" className="space-y-4">
-                <h2 id="bug-reports-heading" className="text-xl font-black">
-                  {t<string>("playground.reportsTitle")}
-                </h2>
-                {PLAYGROUND_BUGS.map((bug) => {
-                  const active = isBugActive(bug.id, mode);
-                  return (
-                    <article
-                      key={bug.id}
-                      className="rounded-2xl border p-5 sm:p-6 space-y-3"
-                      style={{ background: theme.colors.card, borderColor: theme.colors.cardBorder }}
-                    >
-                      <div className="flex flex-wrap items-baseline justify-between gap-2">
-                        <h3 className="text-lg font-bold">{bug.title[locale]}</h3>
-                        <p className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>
-                          {t<string>("playground.severity")}: {t<string>(SEVERITY_KEY[bug.severity])}
-                          {" · "}
-                          {active ? t<string>("playground.active") : t<string>("playground.inactive")}
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>
-                          {t<string>("playground.steps")}
-                        </h4>
-                        <ol className="mt-1 list-decimal pl-5 space-y-1 text-sm">
-                          {bug.steps[locale].map((step) => (
-                            <li key={step}>{step}</li>
-                          ))}
-                        </ol>
-                      </div>
-                      <ReportLine label={t<string>("playground.expected")} text={bug.expected[locale]} />
-                      <ReportLine label={t<string>("playground.actual")} text={bug.actual[locale]} />
-                      <ReportLine label={t<string>("playground.observed")} text={observationText(observeBug(bug.id, mode), t)} />
-                    </article>
-                  );
-                })}
-              </div>
-            ) : (
-              <h2 id="bug-reports-heading" className="sr-only">
+            <div id="bug-reports" className="space-y-4" hidden={!revealed}>
+              <h2 id="bug-reports-heading" className="text-xl font-black">
                 {t<string>("playground.reportsTitle")}
               </h2>
-            )}
+              {PLAYGROUND_BUGS.map((bug) => {
+                const active = isBugActive(bug.id, mode);
+                return (
+                  <article
+                    key={bug.id}
+                    className="rounded-2xl border p-5 sm:p-6 space-y-3"
+                    style={{ background: theme.colors.card, borderColor: theme.colors.cardBorder }}
+                  >
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <h3 className="text-lg font-bold">{bug.title[locale]}</h3>
+                      <p className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>
+                        {t<string>("playground.severity")}: {t<string>(SEVERITY_KEY[bug.severity])}
+                        {" · "}
+                        {active ? t<string>("playground.active") : t<string>("playground.inactive")}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>
+                        {t<string>("playground.steps")}
+                      </h4>
+                      <ol className="mt-1 list-decimal pl-5 space-y-1 text-sm">
+                        {bug.steps[locale].map((step) => (
+                          <li key={step}>{step}</li>
+                        ))}
+                      </ol>
+                    </div>
+                    <ReportLine label={t<string>("playground.expected")} text={bug.expected[locale]} />
+                    <ReportLine label={t<string>("playground.actual")} text={bug.actual[locale]} />
+                    <ReportLine label={t<string>("playground.observed")} text={observationText(observeBug(bug.id, mode), t)} />
+                  </article>
+                );
+              })}
+            </div>
           </section>
         </div>
       </div>
