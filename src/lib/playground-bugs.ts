@@ -12,15 +12,16 @@ export { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM };
  * both read this file. If a report and the form disagree, this file is wrong.
  *
  * AXE GATE
- * The planted mode fails an axe scan on purpose (missing accessible name and
- * a keyboard trap) and must not fail CI. `?mode=fixed` stays in the gate and
- * must have zero violations.
+ * Planted mode is scanned. e2e/playground-a11y.spec.ts on #11 expects the
+ * axe rule `label` on #checkout-email. That URL is not left out of the scan.
  *
- * The axe gate applies only after #6 (quality gate), #10 (AI-testing specs),
- * and #11 (playground specs) are merged. No spec on this branch imports a path
- * list from this file. The playground axe spec scans the literal URL
- * `?mode=fixed` and leaves the planted URL out of that scan. `?lang=` does
- * not change that. playwright.config does not exclude the route.
+ * The zero-violation gate for `?mode=fixed` is that same spec and applies
+ * with #11 alone. #6 does not list `/playground` in e2e/a11y.spec.ts ROUTES
+ * (that file says it does not exclude the URL). #10 excludes `/playground`
+ * and `/playground/` with AXE_EXCLUDED_ROUTES in e2e/a11y.spec.ts. No spec on
+ * this branch imports a path list from this file. The fixed URL in the spec
+ * is the literal `/playground/?mode=fixed`. `?lang=` does not change that.
+ * playwright.config does not exclude the route.
  */
 
 export const VALIDATION_SAMPLE = "a@";

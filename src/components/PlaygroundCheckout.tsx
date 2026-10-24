@@ -526,12 +526,16 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
 
     dialog.addEventListener("keydown", handleKey);
 
-    // The dialog is rendered inside the page, so inert on body would freeze
-    // the dialog too. Fixed mode marks every sibling along the path from the
-    // dialog up to body, then keeps watching those parents: ParticleField
-    // mounts later (dynamic, ssr:false) and any portal that appears after
-    // open must be marked too. Only nodes this effect marks are cleared.
-    // Planted mode does not do this.
+    // The dialog stays inside the page, so inert on body would freeze it too.
+    // Fixed mode marks each sibling on the path from the dialog up to body
+    // when that sibling does not already have inert, and watches those parents
+    // with one MutationObserver (childList). A new element sibling off the
+    // path is marked the same way, which is how the late ParticleField
+    // (dynamic, ssr: false) gets inert. Close clears inert only on the nodes
+    // this effect recorded, so a third party that also sets inert on one of
+    // those nodes loses it. The observer repeats the path check that
+    // markInertSibling already does, and inertObservers holds that single
+    // observer in an array. Planted mode does not do this.
     if (!trapped) {
       const watched: { parent: HTMLElement; pathChild: HTMLElement }[] = [];
       let current: HTMLElement | null = dialog;

@@ -19,9 +19,9 @@ Live at → **[petersouza.dev](https://petersouza.dev)**
 
 ## Bug-bash playground and axe
 
-`/playground/` is a test fixture, not production UI. The planted mode has a missing accessible name and a keyboard trap, so an axe scan of that mode is expected to fail.
+`/playground/` is a test fixture, not production UI. Planted mode is scanned. `e2e/playground-a11y.spec.ts` on #11 expects the axe rule `label` on `#checkout-email` and does not leave that URL out of the scan.
 
-Exclude only the planted mode from the axe gate. `?mode=fixed` stays in the gate and must have zero violations. That gate applies only after #6 (quality gate), #10 (AI-testing specs), and #11 (playground specs) are merged. No spec on this branch imports a shared path list. The playground axe spec writes `/playground/?mode=fixed` as a literal, scans that URL, and leaves the planted URL out of that scan. `playwright.config` does not exclude the route. Do not "fix" the planted bugs in the default mode.
+The zero-violation gate for `?mode=fixed` is that same spec and applies with #11 alone. #6 does not list `/playground` in `e2e/a11y.spec.ts` `ROUTES` (that file says it does not exclude the URL). #10 excludes `/playground` and `/playground/` with `AXE_EXCLUDED_ROUTES` in `e2e/a11y.spec.ts`. The fixed URL is the literal `/playground/?mode=fixed`. `playwright.config` does not exclude the route. Do not "fix" the planted bugs in the default mode.
 
 ---
 
@@ -34,7 +34,7 @@ Exclude only the planted mode from the axe gate. `?mode=fixed` stays in the gate
 | Animation | Framer Motion |
 | 3D | Three.js (particle field) |
 | Icons | Lucide React |
-| Deploy | Cloudflare Workers via OpenNext (production). Vercel builds previews only. |
+| Deploy | Live site: Cloudflare Workers via OpenNext (`deploy.yml` on push to `main`). Vercel also deploys `main`, and that deploy does not serve the live site. |
 
 ---
 

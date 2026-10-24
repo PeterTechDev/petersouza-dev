@@ -4,8 +4,8 @@ import { PlaygroundCheckout } from "@/components/PlaygroundCheckout";
 import { modeFromParam } from "@/lib/playground-bugs";
 import { siteLocale, siteName, siteOgImage } from "@/lib/site-metadata";
 
-// Only the planted mode stays out of the axe gate. ?mode=fixed must have zero violations.
-// The axe gate applies only after #6, #10, and #11 merge. This route does not export a path list.
+// The ?mode=fixed zero-violation gate is e2e/playground-a11y.spec.ts on #11 and applies with #11 alone.
+// That spec also scans planted mode and expects the axe rule `label` on #checkout-email. This route does not export a path list.
 
 export const metadata: Metadata = {
   title: "Playground",
