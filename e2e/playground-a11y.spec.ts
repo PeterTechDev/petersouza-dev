@@ -207,6 +207,7 @@ async function expectInertSignature(page: Page, signature: string) {
 
 const NOTE_CLOSE = { en: "Close", "pt-BR": "Fechar" } as const;
 const REVEAL = { en: "Reveal bugs", "pt-BR": "Revelar bugs" } as const;
+const HIDE = { en: "Hide bugs", "pt-BR": "Esconder bugs" } as const;
 const EMAIL_ERROR = {
   en: "Enter an email with a name, a domain, and a dot.",
   "pt-BR": "Informe um e-mail com nome, domínio e um ponto.",
@@ -363,9 +364,11 @@ for (const locale of LOCALES) {
 
   test(`fixed mode with the bug panel open has zero axe violations (${locale.id})`, async ({ page }) => {
     await openFixedLocale(page, locale);
-    const reveal = page.getByRole("button", { name: REVEAL[locale.id] });
+    const reveal = page.locator('button[aria-controls="bug-reports"]');
+    await expect(reveal).toHaveText(REVEAL[locale.id]);
     await reveal.click();
     await expect(reveal).toHaveAttribute("aria-expanded", "true");
+    await expect(reveal).toHaveText(HIDE[locale.id]);
     await expect(page.locator("#bug-reports")).toBeVisible();
     await scanFixedState(page);
   });
