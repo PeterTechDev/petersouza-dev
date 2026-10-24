@@ -479,6 +479,12 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
       onMouseDown={(event) => {
         if (event.target !== event.currentTarget) return;
         if (trapped) return;
+        // Cancel the focus move to the body. The click below restores the opener.
+        event.preventDefault();
+      }}
+      onClick={(event) => {
+        if (event.target !== event.currentTarget) return;
+        if (trapped) return;
         onClose();
       }}
     >
