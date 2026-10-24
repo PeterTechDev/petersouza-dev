@@ -36,14 +36,14 @@ export function AiTestingShowcase() {
       className="min-h-screen"
       style={{ background: theme.colors.bg, color: theme.colors.text }}
     >
-      <nav className="px-5 sm:px-6 py-6 pr-28">
+      <nav className="px-5 sm:px-6 py-6">
         <div className="max-w-3xl mx-auto">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 min-h-11 text-sm font-medium transition-colors"
+            className="inline-flex items-center gap-2 min-h-11 text-sm font-medium"
             style={{ color: theme.colors.textMuted }}
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={16} aria-hidden="true" />
             {t<string>("aiTesting.back")}
           </Link>
         </div>
@@ -276,20 +276,35 @@ export function AiTestingShowcase() {
         </div>
       </div>
 
-      <footer className="px-5 sm:px-6 py-8 border-t" style={{ borderColor: theme.colors.cardBorder }}>
-        <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
-          <Link
-            href="/"
-            className="inline-flex items-center min-h-11 text-sm font-medium"
-            style={{ color: theme.colors.accent }}
-          >
-            {t<string>("aiTesting.footerHome")}
-          </Link>
-          <span className="text-xs" style={{ color: theme.colors.textMuted }}>
-            © {new Date().getFullYear()} Peter Souza
-          </span>
-        </div>
-      </footer>
     </div>
+  );
+}
+
+export function AiTestingFooter() {
+  const { theme } = useTheme();
+  const { t } = useLocale();
+
+  return (
+    <footer
+      className="px-5 sm:px-6 py-8 border-t"
+      style={{
+        background: theme.colors.bg,
+        color: theme.colors.text,
+        borderColor: theme.colors.cardBorder,
+      }}
+    >
+      <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
+        <Link
+          href="/"
+          className="inline-flex items-center min-h-11 text-sm font-medium"
+          style={{ color: theme.colors.accent }}
+        >
+          {t<string>("aiTesting.footerHome")}
+        </Link>
+        <span className="text-xs" style={{ color: theme.colors.textMuted }}>
+          © {new Date().getFullYear()} Peter Souza
+        </span>
+      </div>
+    </footer>
   );
 }

@@ -130,7 +130,7 @@ export const messages: Record<Locale, Messages> = {
       },
     },
     aiTesting: {
-      back: "Back to Portfolio",
+      back: "Back to portfolio",
       kicker: "Chat API & UI tests",
       title: "Testing this site's chat",
       lede: "A deterministic suite for the portfolio chat. It uses fixed requests and mocked network responses, and it does not need a model API key. The cases that do not expect 429 are meant to run in CI. This page records no score until a real run exists.",
@@ -433,7 +433,7 @@ export const messages: Record<Locale, Messages> = {
         "Abrir: botão com aria-label \"Open Ask Me Anything chat\". Fechar: aria-label \"Close chat\". Escape também fecha o painel.",
         "Enviar: aria-label \"Send message\". Enter envia. Input vazio ou só com espaço não é enviado, porque o widget aplica trim antes.",
         "Uma resposta OK (qualquer 2xx) com { \"reply\": \"<texto fixo>\" } renderiza esse texto como mensagem do assistente. O widget olha res.ok, não um único status.",
-        "Um 429 cumprido não mostra o erro JSON da rota. A mensagem do assistente é exatamente: You've reached the session limit. Refresh the page to start a new conversation!",
+        "Se o mock responde 429, o widget não mostra o JSON de erro da rota. A mensagem do assistente é exatamente: You've reached the session limit. Refresh the page to start a new conversation!",
         "Qualquer outro fulfillment não-OK, ou um pedido que falha, renderiza exatamente: Oops, something went wrong. Try again in a moment.",
         "Uma resposta OK sem reply renderiza: Sorry, something went wrong.",
         "O cliente envia messages, sessionCount e conversationId, lido da chave ps-chat-session no localStorage. A rota ignora sessionCount e não lê conversationId.",

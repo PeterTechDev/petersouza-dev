@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageWrapper } from "@/components/PageWrapper";
-import { AiTestingShowcase } from "@/components/ai-testing/AiTestingShowcase";
+import { AiTestingFooter, AiTestingShowcase } from "@/components/ai-testing/AiTestingShowcase";
 
 export const metadata: Metadata = {
   title: "AI testing",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 
 export default function AiTestingPage() {
   return (
-    <PageWrapper>
+    <PageWrapper footer={<AiTestingFooter />}>
       <AiTestingShowcase />
     </PageWrapper>
   );
