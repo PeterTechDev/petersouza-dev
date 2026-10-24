@@ -146,33 +146,35 @@ export function AtriasCaseStudy() {
             >
               Scale
             </h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <dl className="grid grid-cols-2 lg:grid-cols-4 gap-4 m-0">
               {results.map((r) => (
                 <div
                   key={r.label}
-                  className="rounded-2xl border p-5 sm:p-6 text-center"
+                  className="rounded-2xl border p-5 sm:p-6 text-center flex flex-col-reverse justify-end"
                   style={{
                     background: theme.colors.card,
                     borderColor: theme.colors.cardBorder,
                   }}
                 >
-                  <r.icon
-                    size={20}
-                    className="mx-auto mb-3"
-                    style={{ color: theme.colors.accent }}
-                  />
-                  <h3
-                    className="text-2xl sm:text-3xl font-black mb-1"
-                    style={{ color: theme.colors.text, fontFamily: "inherit" }}
-                  >
-                    {r.metric}
-                  </h3>
-                  <p className="text-xs leading-snug" style={{ color: theme.colors.textMuted }}>
+                  <dt className="text-xs leading-snug" style={{ color: theme.colors.textMuted }}>
                     {r.label}
-                  </p>
+                  </dt>
+                  <dd className="m-0">
+                    <r.icon
+                      size={20}
+                      className="mx-auto mb-3"
+                      style={{ color: theme.colors.accent }}
+                    />
+                    <span
+                      className="block text-2xl sm:text-3xl font-black mb-1"
+                      style={{ color: theme.colors.text, fontFamily: "inherit" }}
+                    >
+                      {r.metric}
+                    </span>
+                  </dd>
                 </div>
               ))}
-            </div>
+            </dl>
           </motion.section>
 
           {/* Problem */}
@@ -344,7 +346,7 @@ export function AtriasCaseStudy() {
                     className="text-xs px-2 py-1 rounded-full font-medium"
                     style={{
                       background: theme.colors.accent + "15",
-                      color: theme.colors.accent,
+                      color: theme.colors.chipText,
                     }}
                   >
                     {t.group}
