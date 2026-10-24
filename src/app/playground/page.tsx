@@ -5,7 +5,7 @@ import { modeFromParam } from "@/lib/playground-bugs";
 import { siteLocale, siteName, siteOgImage } from "@/lib/site-metadata";
 
 // Axe exclusion: see AXE_EXCLUDED_PATHS in src/lib/playground-bugs.ts.
-// This route stays out of the axe gate in both the planted mode and ?mode=fixed.
+// Only the planted mode stays out of the axe gate. ?mode=fixed must have zero violations.
 
 export const metadata: Metadata = {
   title: "Playground",

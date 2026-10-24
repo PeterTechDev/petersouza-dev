@@ -12,18 +12,21 @@ export { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM };
  * both read this file. If a report and the form disagree, this file is wrong.
  *
  * AXE GATE EXCLUSION
- * Keep /playground out of the future axe accessibility gate. The default mode
- * plants a missing accessible name and a keyboard trap, so an axe scan of this
- * route is expected to fail and must not fail CI.
+ * Keep the planted /playground out of the future axe accessibility gate. The
+ * default mode plants a missing accessible name and a keyboard trap, so an axe
+ * scan of that mode is expected to fail and must not fail CI. `?mode=fixed`
+ * stays in the gate and must have zero violations.
  *
  * Automação QA applies this exclusion in the axe spec, not in playwright.config.
- * Import AXE_EXCLUDED_PATHS from this module. Skip every URL whose pathname is
- * listed here, with or without `?mode=fixed` and `?lang=`. Suggested check:
+ * Import AXE_EXCLUDED_PATHS from this module. Skip the path only when `mode`
+ * is not `fixed`. `?lang=` does not change that. Suggested check:
  *
- *   const path = new URL(page.url()).pathname.replace(/\/$/, "") || "/";
- *   const skipAxe = AXE_EXCLUDED_PATHS.some(
- *     (excluded) => excluded.replace(/\/$/, "") === path,
- *   );
+ *   const url = new URL(page.url());
+ *   const path = url.pathname.replace(/\/$/, "") || "/";
+ *   const fixed = url.searchParams.get(PLAYGROUND_MODE_PARAM)?.toLowerCase() === PLAYGROUND_FIXED_MODE;
+ *   const skipAxe =
+ *     !fixed &&
+ *     AXE_EXCLUDED_PATHS.some((excluded) => excluded.replace(/\/$/, "") === path);
  */
 export const AXE_EXCLUDED_PATHS = ["/playground", "/playground/"] as const;
 

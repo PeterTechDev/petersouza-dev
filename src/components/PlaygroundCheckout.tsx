@@ -122,6 +122,7 @@ export function PlaygroundCheckout({ mode }: { mode: PlaygroundMode }) {
                 className="inline-flex items-center justify-center min-h-11 px-5 rounded-full border text-sm font-bold"
                 style={{ borderColor: theme.colors.cardBorder, color: theme.colors.text }}
                 aria-expanded={revealed}
+                aria-controls="bug-reports"
                 onClick={() => setRevealed((open) => !open)}
               >
                 {revealed ? t<string>("playground.hide") : t<string>("playground.reveal")}
@@ -130,49 +131,43 @@ export function PlaygroundCheckout({ mode }: { mode: PlaygroundMode }) {
             <p className="text-sm" style={{ color: theme.colors.textMuted }}>
               {t<string>("playground.revealHint")}
             </p>
-            {revealed ? (
-              <div id="bug-reports" className="space-y-4">
-                <h2 id="bug-reports-heading" className="text-xl font-black">
-                  {t<string>("playground.reportsTitle")}
-                </h2>
-                {PLAYGROUND_BUGS.map((bug) => {
-                  const active = isBugActive(bug.id, mode);
-                  return (
-                    <article
-                      key={bug.id}
-                      className="rounded-2xl border p-5 sm:p-6 space-y-3"
-                      style={{ background: theme.colors.card, borderColor: theme.colors.cardBorder }}
-                    >
-                      <div className="flex flex-wrap items-baseline justify-between gap-2">
-                        <h3 className="text-lg font-bold">{bug.title[locale]}</h3>
-                        <p className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>
-                          {t<string>("playground.severity")}: {t<string>(SEVERITY_KEY[bug.severity])}
-                          {" · "}
-                          {active ? t<string>("playground.active") : t<string>("playground.inactive")}
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>
-                          {t<string>("playground.steps")}
-                        </h4>
-                        <ol className="mt-1 list-decimal pl-5 space-y-1 text-sm">
-                          {bug.steps[locale].map((step) => (
-                            <li key={step}>{step}</li>
-                          ))}
-                        </ol>
-                      </div>
-                      <ReportLine label={t<string>("playground.expected")} text={bug.expected[locale]} />
-                      <ReportLine label={t<string>("playground.actual")} text={bug.actual[locale]} />
-                      <ReportLine label={t<string>("playground.observed")} text={observationText(observeBug(bug.id, mode), t)} />
-                    </article>
-                  );
-                })}
-              </div>
-            ) : (
-              <h2 id="bug-reports-heading" className="sr-only">
+            <div id="bug-reports" className="space-y-4" hidden={!revealed}>
+              <h2 id="bug-reports-heading" className="text-xl font-black">
                 {t<string>("playground.reportsTitle")}
               </h2>
-            )}
+              {PLAYGROUND_BUGS.map((bug) => {
+                const active = isBugActive(bug.id, mode);
+                return (
+                  <article
+                    key={bug.id}
+                    className="rounded-2xl border p-5 sm:p-6 space-y-3"
+                    style={{ background: theme.colors.card, borderColor: theme.colors.cardBorder }}
+                  >
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <h3 className="text-lg font-bold">{bug.title[locale]}</h3>
+                      <p className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>
+                        {t<string>("playground.severity")}: {t<string>(SEVERITY_KEY[bug.severity])}
+                        {" · "}
+                        {active ? t<string>("playground.active") : t<string>("playground.inactive")}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>
+                        {t<string>("playground.steps")}
+                      </h4>
+                      <ol className="mt-1 list-decimal pl-5 space-y-1 text-sm">
+                        {bug.steps[locale].map((step) => (
+                          <li key={step}>{step}</li>
+                        ))}
+                      </ol>
+                    </div>
+                    <ReportLine label={t<string>("playground.expected")} text={bug.expected[locale]} />
+                    <ReportLine label={t<string>("playground.actual")} text={bug.actual[locale]} />
+                    <ReportLine label={t<string>("playground.observed")} text={observationText(observeBug(bug.id, mode), t)} />
+                  </article>
+                );
+              })}
+            </div>
           </section>
         </div>
       </div>
@@ -506,7 +501,22 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
     }
 
     dialog.addEventListener("keydown", handleKey);
-    return () => dialog.removeEventListener("keydown", handleKey);
+
+    // Fixed mode only. Clicking the title, or releasing the pointer outside
+    // the dialog, moves focus to the body. The dialog listener then misses
+    // Escape. Planted mode keeps the trap.
+    function handleDocumentKey(event: globalThis.KeyboardEvent) {
+      if (trapped || event.key !== "Escape") return;
+      event.preventDefault();
+      event.stopPropagation();
+      onCloseRef.current();
+    }
+    if (!trapped) document.addEventListener("keydown", handleDocumentKey, true);
+
+    return () => {
+      dialog.removeEventListener("keydown", handleKey);
+      document.removeEventListener("keydown", handleDocumentKey, true);
+    };
   }, [trapped]);
 
   let dismiss: ReactNode;
@@ -564,10 +574,18 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
       <div
         ref={dialogRef}
         role="dialog"
-        aria-modal={trapped ? undefined : true}
+        aria-modal="true"
         aria-labelledby="order-note-title"
         className="w-full max-w-md rounded-2xl border p-5 space-y-3"
         style={{ background: theme.colors.bg, borderColor: theme.colors.cardBorder, color: theme.colors.text }}
+        onMouseDown={(event) => {
+          if (trapped) return;
+          const target = event.target;
+          if (!(target instanceof Element)) return;
+          if (target.closest("button, textarea, input, select, a[href]")) return;
+          // Keep focus inside when the pointer hits a non-focusable area.
+          event.preventDefault();
+        }}
       >
         <h2 id="order-note-title" className="text-lg font-black">
           {t<string>("playground.noteTitle")}
