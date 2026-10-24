@@ -145,7 +145,7 @@ export function AskMeAnythingWidget() {
   }
 
   return (
-    <>
+    <aside aria-label="Chat">
       {/* Chat Panel */}
       <AnimatePresence>
         {open && (
@@ -321,6 +321,7 @@ export function AskMeAnythingWidget() {
               transition={{ delay: 0.3, duration: 0.3 }}
               className="px-3 py-1.5 rounded-full text-xs font-medium shadow-lg pointer-events-none select-none"
               style={{ backgroundColor: COLORS.accent, color: COLORS.onAccent }}
+              aria-hidden="true"
             >
               Ask me anything ✨
             </motion.div>
@@ -368,6 +369,6 @@ export function AskMeAnythingWidget() {
           </AnimatePresence>
         </motion.button>
       </motion.div>
-    </>
+    </aside>
   );
 }

@@ -298,8 +298,8 @@ export default function ParticleField() {
   );
 
   return (
-    <div className="fixed inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
+    <div className="fixed inset-0 -z-10" aria-hidden="true">
+      <Canvas camera={{ position: [0, 0, 8], fov: 60 }} tabIndex={-1}>
         {isMobile ? <MobileParticles /> : <Particles />}
       </Canvas>
     </div>
