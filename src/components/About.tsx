@@ -74,7 +74,7 @@ export function About() {
         {stats.map((stat, i) => (
           <div
             key={stat.label}
-            className={`text-center py-6 px-4 relative flex flex-col-reverse ${
+            className={`text-center py-6 px-4 relative flex flex-col-reverse justify-end ${
               i < stats.length - 1 ? "about-stat-divider" : ""
             }`}
             style={{ "--about-stat-divider": theme.colors.cardBorder } as CSSProperties}
