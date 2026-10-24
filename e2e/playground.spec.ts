@@ -161,6 +161,9 @@ for (const bug of PLAYGROUND_BUGS) {
  */
 async function openPlantedTrap(page: Page) {
   const observed = observeBug("keyboard-trap", "planted");
+  if (observed.id !== "keyboard-trap") {
+    throw new Error(`keyboard-trap fixture returned ${observed.id}`);
+  }
   expect(observed.trapped).toBe(true);
   await openPlayground(page, "planted");
   await page.getByRole("button", { name: tEn("playground.noteOpen") }).click();
