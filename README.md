@@ -1,6 +1,6 @@
 # petersouza.dev
 
-[![Quality](https://github.com/PeterTechDev/petersouza-dev/actions/workflows/quality.yml/badge.svg?branch=main)](https://github.com/PeterTechDev/petersouza-dev/actions/workflows/quality.yml)
+[![Quality](https://github.com/PeterTechDev/petersouza-dev/actions/workflows/quality.yml/badge.svg?branch=main&event=push)](https://github.com/PeterTechDev/petersouza-dev/actions/workflows/quality.yml)
 
 > *"The world doesn't need more arguments. It needs more people who build things."*
 
