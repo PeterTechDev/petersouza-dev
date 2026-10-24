@@ -2,10 +2,49 @@ import { existsSync } from "node:fs";
 
 import { defineConfig, devices } from "@playwright/test";
 
-const PORT = 3000;
+/**
+ * Shared machine: other agents already bind port 3000. Use a port in
+ * 3300–3399, for example PLAYWRIGHT_PORT=3300. Nobody should use 3000 there.
+ * PLAYWRIGHT_BASE_URL still wins over PLAYWRIGHT_PORT.
+ *
+ * reuseExistingServer stays false unless PLAYWRIGHT_REUSE_SERVER=1, and never
+ * in CI. Reusing another agent's server can false-green a run (the server
+ * under test is a different checkout) and can bill an LLM if that process
+ * still has API keys.
+ */
+const PORT = Number(process.env.PLAYWRIGHT_PORT ?? "3000");
+if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) {
+  throw new Error(`PLAYWRIGHT_PORT must be an integer port, received ${process.env.PLAYWRIGHT_PORT}`);
+}
+
+function allowedPreviewBaseURL(): string | undefined {
+  const raw = process.env.PLAYWRIGHT_BASE_URL?.trim();
+  if (!raw) return undefined;
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    throw new Error(`PLAYWRIGHT_BASE_URL is not a URL: ${raw}`);
+  }
+  const host = url.hostname;
+  const allowed =
+    host === "localhost" ||
+    host === "127.0.0.1" ||
+    host.endsWith(".vercel.app") ||
+    host === "petersouza.dev" ||
+    host.endsWith(".petersouza.dev");
+  if (!allowed) {
+    throw new Error(
+      `PLAYWRIGHT_BASE_URL host ${host} is not allowed. Use localhost, 127.0.0.1, *.vercel.app, or petersouza.dev.`,
+    );
+  }
+  return raw;
+}
+
 const localBaseURL = `http://127.0.0.1:${PORT}`;
-const previewBaseURL = process.env.PLAYWRIGHT_BASE_URL?.trim();
+const previewBaseURL = allowedPreviewBaseURL();
 const baseURL = previewBaseURL || localBaseURL;
+const reuseExistingServer = !process.env.CI && process.env.PLAYWRIGHT_REUSE_SERVER === "1";
 
 /**
  * CI builds first (`npm run build`), then this server serves that build.
@@ -51,7 +90,7 @@ export default defineConfig({
     : {
         command: webServerCommand(),
         url: localBaseURL,
-        reuseExistingServer: !process.env.CI,
+        reuseExistingServer,
         timeout: 180_000,
         env: webServerEnv(),
       },

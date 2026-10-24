@@ -55,8 +55,10 @@ async function openFixed(page: Page, copy: Copy) {
   await page.goto(FIXED_URL);
   await expect(page.locator("html")).toHaveAttribute("lang", copy.htmlLang);
   await expect(page.locator("[data-mode]")).toHaveAttribute("data-mode", "fixed");
-  await page.getByLabel(copy.name).fill(NAME_VALUE);
-  await page.getByLabel(copy.email).fill(EMAIL_VALUE);
+  // Ids, not accessible names: a missing email label must not fail this
+  // setup before the focus assertions run.
+  await page.locator("#checkout-name").fill(NAME_VALUE);
+  await page.locator("#checkout-email").fill(EMAIL_VALUE);
   const open = page.getByRole("button", { name: copy.open });
   await open.click();
   const dialog = page.getByRole("dialog");
@@ -93,11 +95,13 @@ async function pressTitleReleaseOnBackdrop(page: Page, title: Locator) {
 }
 
 async function expectInside(dialog: Locator, page: Page) {
-  const summary = await activeSummary(page);
-  expect(
-    await dialog.evaluate((node) => node.contains(document.activeElement)),
-    `active element is outside the dialog (${summary})`,
-  ).toBe(true);
+  await expect
+    .poll(async () => {
+      const inside = await dialog.evaluate((node) => node.contains(document.activeElement));
+      if (inside) return "inside";
+      return `outside (${await activeSummary(page)})`;
+    })
+    .toBe("inside");
 }
 
 /**
@@ -202,6 +206,34 @@ for (const copy of LOCALES) {
   }) => {
     const { open, dialog, note } = await openFixed(page, copy);
     await pressTitleReleaseOnBackdrop(page, dialog.getByRole("heading", { name: copy.title }));
+    await expect(dialog).toBeVisible();
+    await expectKeysStayInsideAndDoNotOrder(
+      page,
+      dialog,
+      note,
+      dialog.getByRole("button", { name: copy.close }),
+      open,
+      copy.placedOne,
+    );
+  });
+
+  test(`double-clicking the order-note title keeps focus in the dialog (${copy.id})`, async ({ page }) => {
+    const { open, dialog, note } = await openFixed(page, copy);
+    await dialog.getByRole("heading", { name: copy.title }).click({ clickCount: 2 });
+    await expect(dialog).toBeVisible();
+    await expectKeysStayInsideAndDoNotOrder(
+      page,
+      dialog,
+      note,
+      dialog.getByRole("button", { name: copy.close }),
+      open,
+      copy.placedOne,
+    );
+  });
+
+  test(`double-clicking the order-note label keeps focus in the dialog (${copy.id})`, async ({ page }) => {
+    const { open, dialog, note } = await openFixed(page, copy);
+    await dialog.getByText(copy.noteLabel, { exact: true }).click({ clickCount: 2 });
     await expect(dialog).toBeVisible();
     await expectKeysStayInsideAndDoNotOrder(
       page,

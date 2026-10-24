@@ -85,7 +85,9 @@ async function checkLabel(page: Page, mode: Mode) {
     return;
   }
   await expect(email).toHaveAccessibleName("");
-  expect(await email.evaluate((element) => (element as HTMLInputElement).labels?.length ?? 0)).toBe(0);
+  await expect
+    .poll(() => email.evaluate((element) => (element as HTMLInputElement).labels?.length ?? 0))
+    .toBe(0);
   await expect(page.getByTestId("email-visual-label")).toHaveText("Email");
   await expect(page.locator('label[for="checkout-email"]')).toHaveCount(0);
 }
@@ -244,20 +246,42 @@ async function expectTabLeavesContent(page: Page) {
   expect(new Set(seen).size, `Tab stayed on one element: ${seen.join(" -> ")}`).toBeGreaterThan(1);
 }
 
+/**
+ * The planted trap listens on the dialog node. A full `page.goto` loads a new
+ * document, so a listener leak cannot survive it and that case cannot fail.
+ * The back link is a Next.js client navigation: `window` stays, and a document
+ * keydown listener that still calls preventDefault on Tab fails the assertions
+ * below (focus never leaves <main>, and Tab does not visit a second element).
+ */
 test("the planted keyboard trap does not leak after the back link", async ({ page }) => {
   await openPlantedTrap(page);
   await page.getByRole("link", { name: "Back to portfolio" }).evaluate((link: HTMLAnchorElement) => {
     link.click();
   });
   await expect(page.getByRole("heading", { level: 1, name: "Peter Souza" })).toBeVisible();
+  await expect.poll(() => new URL(page.url()).pathname).toBe("/");
   await expectTabLeavesContent(page);
 });
 
-test("the planted keyboard trap does not leak after goto", async ({ page }) => {
-  await openPlantedTrap(page);
-  await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1, name: "Peter Souza" })).toBeVisible();
-  await expectTabLeavesContent(page);
+test("`?mode=FIXED` runs fixed mode", async ({ page }) => {
+  await page.goto("/playground/?mode=FIXED");
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.locator("[data-mode]")).toHaveAttribute("data-mode", "fixed");
+  await expect(page.locator("#checkout-submit")).toHaveText(FIXED_SUBMIT_LABEL.en);
+  await expect(page.locator("#checkout-email")).toHaveAccessibleName("Email");
+  await expect(page.locator('label[for="checkout-email"]')).toHaveCount(1);
+});
+
+test("`?mode=FIXED` runs fixed mode in pt-BR", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("ps-locale", "pt-BR");
+  });
+  await page.goto("/playground/?mode=FIXED");
+  await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
+  await expect(page.locator("[data-mode]")).toHaveAttribute("data-mode", "fixed");
+  await expect(page.locator("#checkout-submit")).toHaveText(FIXED_SUBMIT_LABEL["pt-BR"]);
+  await expect(page.locator("#checkout-email")).toHaveAccessibleName("E-mail");
+  await expect(page.locator('label[for="checkout-email"]')).toHaveCount(1);
 });
 
 const OG_ROUTES = ["/playground/", "/playground/?mode=fixed"] as const;
