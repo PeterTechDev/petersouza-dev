@@ -9,7 +9,8 @@ export interface QualityRun {
 }
 
 export type QualityReport =
-  | { state: "unavailable"; runs: [] }
+  | { state: "empty"; runs: [] }
+  | { state: "error"; runs: [] }
   | { state: "ready"; runs: QualityRun[] };
 
 const GITHUB_OWNER = "PeterTechDev";
@@ -18,8 +19,12 @@ const QUALITY_WORKFLOW = "quality.yml";
 const RUN_LIMIT = 8;
 const REVALIDATE_SECONDS = 21600;
 
-function unavailable(): QualityReport {
-  return { state: "unavailable", runs: [] };
+function emptyReport(): QualityReport {
+  return { state: "empty", runs: [] };
+}
+
+function errorReport(): QualityReport {
+  return { state: "error", runs: [] };
 }
 
 function githubHeaders(): HeadersInit {
@@ -91,27 +96,30 @@ export async function fetchQualityRuns(): Promise<QualityReport> {
       { headers: githubHeaders(), next: { revalidate: REVALIDATE_SECONDS } },
     );
   } catch {
-    return unavailable();
+    return errorReport();
   }
 
-  if (!response.ok) return unavailable();
+  // A missing workflow file is 404. That is "not yet run", not an API failure.
+  if (response.status === 404) return emptyReport();
+  if (!response.ok) return errorReport();
 
   let body: unknown;
   try {
     body = await response.json();
   } catch {
-    return unavailable();
+    return errorReport();
   }
 
-  if (!body || typeof body !== "object") return unavailable();
+  if (!body || typeof body !== "object") return errorReport();
   const workflowRuns = (body as { workflow_runs?: unknown }).workflow_runs;
-  if (!Array.isArray(workflowRuns)) return unavailable();
+  if (!Array.isArray(workflowRuns)) return errorReport();
+  if (workflowRuns.length === 0) return emptyReport();
 
   const runs = workflowRuns
     .slice(0, RUN_LIMIT)
     .map(asRun)
     .filter((run): run is QualityRun => run !== null);
 
-  if (runs.length === 0) return unavailable();
+  if (runs.length === 0) return errorReport();
   return { state: "ready", runs };
 }

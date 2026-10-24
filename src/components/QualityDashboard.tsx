@@ -164,14 +164,17 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
           <h2 id="quality-runs-heading" className="sr-only">
             {t<string>("quality.title")}
           </h2>
-          {report.state === "unavailable" ? (
+          {report.state === "ready" ? (
+            report.runs.map((run) => runCard(run))
+          ) : (
             <div role="status" className="space-y-4">
-              <p className="text-lg font-semibold">{t<string>("quality.unavailableTitle")}</p>
-              <p style={{ color: theme.colors.textMuted }}>{t<string>("quality.notYetRun")}</p>
+              <p className="text-lg font-semibold">
+                {report.state === "empty"
+                  ? t<string>("quality.notYetRun")
+                  : t<string>("quality.unavailableTitle")}
+              </p>
               {runCard(null)}
             </div>
-          ) : (
-            report.runs.map((run) => runCard(run))
           )}
           <p className="text-sm pt-2" style={{ color: theme.colors.textMuted }}>
             {t<string>("quality.source")}
