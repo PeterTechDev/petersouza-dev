@@ -1,8 +1,8 @@
-import { expect, test, type APIRequestContext, type Page, type Route, type TestInfo } from "@playwright/test";
+import { expect, test, type Page, type Route } from "@playwright/test";
+
+import { test as chatTest } from "./chat-server";
 
 const CHAT_PATH = "/api/chat/";
-const MAX_MESSAGE_LENGTH = 500;
-const RATE_LIMIT = 20;
 
 const USER_MESSAGE = "Where is Peter based?";
 const MOCK_REPLY = "He is based in Linhares, Brazil.";
@@ -14,117 +14,30 @@ const SEND_MESSAGE = "Send message";
 const CHAT_TITLE = "Ask Me Anything 💭";
 const CHAT_READY_TIMEOUT_MS = 15_000;
 
-const VALID_MESSAGE = "What is Peter's current role?";
-const TOO_LONG_MESSAGE = "a".repeat(MAX_MESSAGE_LENGTH + 1);
-const AT_LIMIT_MESSAGE = "b".repeat(MAX_MESSAGE_LENGTH);
-
 const PREVIEW_BASE_URL = process.env.PLAYWRIGHT_BASE_URL?.trim();
-
-/**
- * Feature 3 runs the 429 case only outside CI. Each attempt uses its own
- * X-Forwarded-For bucket, so this is not an ordering race between workers.
- * The skip is the local-only gate: the test sends 21 real POSTs to exhaust
- * the in-memory 20/hour window. It is not hiding a product failure.
- */
-const LOCAL_RATE_LIMIT_REASON =
-  "Local-only by feature 3. Sends 21 real POSTs from one IP to exhaust the in-memory 20-request window and expects 429. Unique X-Forwarded-For values keep this off other tests, so it is not skipped for being order-dependent. Unset CI to run it.";
 
 const PREVIEW_API_SKIP =
   "PLAYWRIGHT_BASE_URL is set. Real POST /api/chat calls are skipped so a preview or production host is never billed for LLM traffic and does not share its rate-limit window with this suite. UI tests mock /api/chat with page.route and still run.";
 
-function clientIp(testInfo: TestInfo, slot: string): string {
-  return [
-    "qa",
-    testInfo.workerIndex,
-    testInfo.repeatEachIndex,
-    testInfo.retry,
-    slot,
-  ].join("-");
-}
-
-async function postChat(request: APIRequestContext, ip: string, body: string | Record<string, unknown>) {
-  return request.post(CHAT_PATH, {
-    headers: {
-      "content-type": "application/json",
-      "x-forwarded-for": ip,
-    },
-    data: body,
-  });
-}
-
-test.describe("real POST /api/chat", () => {
-  test.beforeEach(() => {
-    test.skip(Boolean(PREVIEW_BASE_URL), PREVIEW_API_SKIP);
+// Length, the no-key 503 text, invalid message arrays, and 429 after N valid
+// posts live in chat-contract.spec.ts. This file keeps the unparsed-body case,
+// which that contract does not cover, and the mocked widget UI.
+chatTest.describe("real POST /api/chat", () => {
+  chatTest.beforeEach(() => {
+    chatTest.skip(Boolean(PREVIEW_BASE_URL), PREVIEW_API_SKIP);
   });
 
-  test("returns 400 when the latest message is longer than 500 characters", async ({ request }, testInfo) => {
-    const tooLong = await postChat(request, clientIp(testInfo, "too-long"), {
-      messages: [{ role: "user", content: TOO_LONG_MESSAGE }],
-    });
-    expect(tooLong.status()).toBe(400);
-    const tooLongBody = (await tooLong.json()) as { error?: string };
-    expect(tooLongBody.error).toContain(String(MAX_MESSAGE_LENGTH));
-
-    const atLimit = await postChat(request, clientIp(testInfo, "at-limit"), {
-      messages: [{ role: "user", content: AT_LIMIT_MESSAGE }],
-    });
-    expect(atLimit.status()).toBe(503);
-  });
-
-  test("returns 503 when no LLM API key is configured", async ({ request }, testInfo) => {
-    const response = await postChat(request, clientIp(testInfo, "no-key"), {
-      messages: [{ role: "user", content: VALID_MESSAGE }],
-    });
-    expect(response.status()).toBe(503);
-    const body = (await response.json()) as { error?: string };
-    expect(body.error).toBe("No AI API key configured.");
-  });
-
-  test("returns 400 when messages are missing, empty, or not an array", async ({ request }, testInfo) => {
-    const cases = [
-      { slot: "missing", body: {} },
-      { slot: "empty", body: { messages: [] } },
-      { slot: "string", body: { messages: "hello" } },
-    ];
-
-    for (const [index, entry] of cases.entries()) {
-      const response = await postChat(request, clientIp(testInfo, `${entry.slot}-${index}`), entry.body);
-      expect(response.status(), entry.slot).toBe(400);
-      const body = (await response.json()) as { error?: string };
-      expect(body.error, entry.slot).toBe("Invalid messages");
-    }
-  });
-
-  // Contract: a body that is not JSON is 400. route.ts does not do that.
-  // req.json() throws and the generic catch returns 500 "Internal server error".
-  // Leave this red until the route returns 400. Do not skip it.
-  // Buffer keeps Playwright from JSON.stringifying the payload into a valid string.
-  test("returns 400 when the JSON body cannot be parsed", async ({ request }, testInfo) => {
-    const response = await request.post(CHAT_PATH, {
-      headers: {
-        "content-type": "application/json",
-        "x-forwarded-for": clientIp(testInfo, "bad-json"),
-      },
+  // Contract: a body that is not JSON is 400 with a JSON error.
+  // Buffer keeps Playwright from JSON.stringifying the payload into a quoted string.
+  chatTest("returns 400 when the JSON body cannot be parsed", async ({ request, chatOrigin }) => {
+    const response = await request.post(`${chatOrigin}${CHAT_PATH}`, {
+      headers: { "content-type": "application/json" },
       data: Buffer.from("{"),
     });
     expect(response.status()).toBe(400);
-  });
-
-  test("returns 429 on the 21st POST from the same IP @local-only", async ({ request }, testInfo) => {
-    test.skip(!!process.env.CI, LOCAL_RATE_LIMIT_REASON);
-
-    const ip = clientIp(testInfo, "rate-limit");
-    const payload = { messages: [{ role: "user", content: VALID_MESSAGE }] };
-
-    for (let attempt = 1; attempt <= RATE_LIMIT; attempt += 1) {
-      const response = await postChat(request, ip, payload);
-      expect(response.status(), `request ${attempt}`).toBe(503);
-    }
-
-    const blocked = await postChat(request, ip, payload);
-    expect(blocked.status()).toBe(429);
-    const body = (await blocked.json()) as { error?: string };
-    expect(body.error).toBe("You've sent too many messages. Please wait a while before trying again.");
+    const body = (await response.json()) as { error?: string };
+    expect(body.error).toEqual(expect.any(String));
+    expect(body.error?.length ?? 0).toBeGreaterThan(0);
   });
 });
 
