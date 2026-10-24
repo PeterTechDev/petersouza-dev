@@ -131,7 +131,7 @@ export const messages: Record<Locale, Messages> = {
     },
     aiTesting: {
       back: "Back to Portfolio",
-      kicker: "LLM eval",
+      kicker: "Chat API & UI tests",
       title: "Testing this site's chat",
       lede: "A deterministic suite for the portfolio chat. It uses fixed requests and mocked network responses, and it does not need a model API key. The cases that do not expect 429 are meant to run in CI. This page records no score until a real run exists.",
       methodTitle: "Method",
@@ -350,7 +350,7 @@ export const messages: Record<Locale, Messages> = {
     },
     aiTesting: {
       back: "Voltar ao portfólio",
-      kicker: "Avaliação de LLM",
+      kicker: "Testes da API e da UI do chat",
       title: "Como o chat deste site é testado",
       lede: "Suíte determinística do chat do portfólio. Ela usa pedidos fixos e respostas de rede simuladas, e não precisa de chave de API de modelo. Os casos que não esperam 429 são feitos para rodar no CI. Esta página não publica nota enquanto não existir uma execução real.",
       methodTitle: "Método",
