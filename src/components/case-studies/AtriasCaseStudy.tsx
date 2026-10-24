@@ -161,12 +161,12 @@ export function AtriasCaseStudy() {
                     className="mx-auto mb-3"
                     style={{ color: theme.colors.accent }}
                   />
-                  <p
+                  <h3
                     className="text-2xl sm:text-3xl font-black mb-1"
-                    style={{ color: theme.colors.text }}
+                    style={{ color: theme.colors.text, fontFamily: "inherit" }}
                   >
                     {r.metric}
-                  </p>
+                  </h3>
                   <p className="text-xs leading-snug" style={{ color: theme.colors.textMuted }}>
                     {r.label}
                   </p>
@@ -325,9 +325,12 @@ export function AtriasCaseStudy() {
                   }}
                 >
                   <div>
-                    <p className="text-sm font-bold" style={{ color: theme.colors.text }}>
+                    <h3
+                      className="text-sm font-bold"
+                      style={{ color: theme.colors.text, fontFamily: "inherit" }}
+                    >
                       {t.name}
-                    </p>
+                    </h3>
                     <p className="text-xs" style={{ color: theme.colors.textMuted }}>
                       {t.role}
                     </p>
