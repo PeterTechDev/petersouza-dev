@@ -58,14 +58,24 @@ function runUrl(value: unknown): string | null {
   return value;
 }
 
-function durationMs(status: string, startedAt: unknown, updatedAt: unknown): number | null {
-  if (status !== "completed") return null;
-  const start = isoOrNull(startedAt);
-  const end = isoOrNull(updatedAt);
-  if (!start || !end) return null;
-  const elapsed = Date.parse(end) - Date.parse(start);
-  if (!Number.isFinite(elapsed) || elapsed < 0) return null;
-  return elapsed;
+function reportedDurationMs(body: unknown): number | null {
+  if (!body || typeof body !== "object") return null;
+  const ms = (body as { run_duration_ms?: unknown }).run_duration_ms;
+  if (typeof ms !== "number" || !Number.isFinite(ms) || ms < 0) return null;
+  return ms;
+}
+
+async function fetchReportedDuration(id: number, headers: HeadersInit): Promise<number | null> {
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/runs/${id}/timing`,
+      { headers, next: { revalidate: REVALIDATE_SECONDS } },
+    );
+    if (!response.ok) return null;
+    return reportedDurationMs(await response.json());
+  } catch {
+    return null;
+  }
 }
 
 function asRun(value: unknown): QualityRun | null {
@@ -83,17 +93,18 @@ function asRun(value: unknown): QualityRun | null {
     conclusion,
     startedAt: isoOrNull(raw.run_started_at) ?? isoOrNull(raw.created_at),
     sha: shortSha(raw.head_sha),
-    durationMs: durationMs(raw.status, raw.run_started_at, raw.updated_at),
+    durationMs: null,
     url: runUrl(raw.html_url),
   };
 }
 
 export async function fetchQualityRuns(): Promise<QualityReport> {
+  const headers = githubHeaders();
   let response: Response;
   try {
     response = await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${QUALITY_WORKFLOW}/runs?per_page=${RUN_LIMIT}`,
-      { headers: githubHeaders(), next: { revalidate: REVALIDATE_SECONDS } },
+      { headers, next: { revalidate: REVALIDATE_SECONDS } },
     );
   } catch {
     return errorReport();
@@ -121,5 +132,13 @@ export async function fetchQualityRuns(): Promise<QualityReport> {
     .filter((run): run is QualityRun => run !== null);
 
   if (runs.length === 0) return errorReport();
-  return { state: "ready", runs };
+
+  const withDuration = await Promise.all(
+    runs.map(async (run) => {
+      if (run.status !== "completed") return run;
+      return { ...run, durationMs: await fetchReportedDuration(run.id, headers) };
+    }),
+  );
+
+  return { state: "ready", runs: withDuration };
 }
