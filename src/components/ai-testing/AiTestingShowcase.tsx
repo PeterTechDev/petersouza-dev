@@ -274,7 +274,7 @@ export function AiTestingShowcase() {
               </p>
               <dl className="grid gap-3 sm:grid-cols-2">
                 {detailRows.map((row) => (
-                  <div key={row.label}>
+                  <div key={row.id}>
                     <dt className="text-xs font-bold tracking-wide uppercase mb-1" style={{ color: theme.colors.textMuted }}>
                       {row.label}
                     </dt>

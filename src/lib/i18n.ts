@@ -222,7 +222,6 @@ export const messages: Record<Locale, Messages> = {
         "The input maxLength is 500, the same ceiling the route enforces with a greater-than check: at most 500 characters (UTF-16 code units), and 500 is accepted. The greeting and the error strings above are hardcoded English.",
       ],
       resultsTitle: "Results",
-      resultsStatus: "Not yet run",
       resultsBody: "This page does not read a workflow, an artifact, or a local report. Specs for the suite are not in this repository yet. Until a real run exists, there is nothing to count.",
       resultRows: [
         { id: "status", label: "Status", value: "Not yet run" },
@@ -441,7 +440,6 @@ export const messages: Record<Locale, Messages> = {
         "O maxLength do input é 500, o mesmo teto que a rota aplica com uma comparação de maior que: no máximo 500 caracteres (unidades UTF-16), e 500 é aceito. A saudação e as strings de erro acima estão fixas em inglês.",
       ],
       resultsTitle: "Resultados",
-      resultsStatus: "Ainda não executado",
       resultsBody: "Esta página não lê workflow, artefato nem relatório local. Os specs da suíte ainda não estão neste repositório. Enquanto não existir uma execução real, não há o que contar.",
       resultRows: [
         { id: "status", label: "Status", value: "Ainda não executado" },
