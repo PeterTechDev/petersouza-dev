@@ -4,8 +4,8 @@ import { PlaygroundCheckout } from "@/components/PlaygroundCheckout";
 import { modeFromParam } from "@/lib/playground-bugs";
 import { siteLocale, siteName, siteOgImage } from "@/lib/site-metadata";
 
-// The ?mode=fixed zero-violation gate is e2e/playground-a11y.spec.ts on #11 and applies with #11 alone.
-// That spec also scans planted mode and expects the axe rule `label` on #checkout-email. This route does not export a path list.
+// e2e/playground-a11y.spec.ts is the zero-violation gate for ?mode=fixed.
+// That same spec scans planted mode and expects the axe rule `label` on #checkout-email.
 
 export const metadata: Metadata = {
   title: "Playground",

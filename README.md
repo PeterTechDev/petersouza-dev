@@ -19,9 +19,7 @@ Live at → **[petersouza.dev](https://petersouza.dev)**
 
 ## Bug-bash playground and axe
 
-`/playground/` is a test fixture, not production UI. Planted mode is scanned. `e2e/playground-a11y.spec.ts` on #11 expects the axe rule `label` on `#checkout-email` and does not leave that URL out of the scan.
-
-The zero-violation gate for `?mode=fixed` is that same spec and applies with #11 alone. #6 does not list `/playground` in `e2e/a11y.spec.ts` `ROUTES` (that file says it does not exclude the URL). #10 excludes `/playground` and `/playground/` with `AXE_EXCLUDED_ROUTES` in `e2e/a11y.spec.ts`. The fixed URL is the literal `/playground/?mode=fixed`. `playwright.config` does not exclude the route. Do not "fix" the planted bugs in the default mode.
+`/playground/` is a test fixture, not production UI. The zero-violation gate for `?mode=fixed` is `e2e/playground-a11y.spec.ts`. That same spec scans planted mode and expects the axe rule `label` on `#checkout-email`. Do not "fix" the planted bugs in the default mode.
 
 ---
 
