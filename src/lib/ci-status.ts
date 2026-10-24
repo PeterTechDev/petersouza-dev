@@ -16,6 +16,7 @@ export type QualityReport =
 const GITHUB_OWNER = "PeterTechDev";
 const GITHUB_REPO = "petersouza-dev";
 const QUALITY_WORKFLOW = "quality.yml";
+const QUALITY_BRANCH = "main";
 const RUN_LIMIT = 8;
 const REVALIDATE_SECONDS = 21600;
 
@@ -121,14 +122,14 @@ export async function fetchQualityRuns(): Promise<QualityReport> {
   let response: Response;
   try {
     response = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${QUALITY_WORKFLOW}/runs?per_page=${RUN_LIMIT}`,
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${QUALITY_WORKFLOW}/runs?branch=${QUALITY_BRANCH}&per_page=${RUN_LIMIT}`,
       { headers, next: { revalidate: REVALIDATE_SECONDS } },
     );
   } catch {
     return errorReport();
   }
 
-  // A missing workflow file is 404. That is "not yet run", not an API failure.
+  // No workflow yet, or no run on main: the published site has not been checked.
   if (response.status === 404) return emptyReport();
   if (!response.ok) return errorReport();
 
