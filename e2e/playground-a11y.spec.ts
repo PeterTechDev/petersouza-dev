@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { NodeResult, Result } from "axe-core";
-import { expect, test, type Locator } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 /**
  * Planted /playground is not a clean-page gate: it plants a missing email
@@ -93,6 +93,50 @@ test("axe reports the missing email label in planted mode", async ({ page }) => 
   expect(targets).toContain("checkout-email");
 });
 
+const NOTE_OPEN = { en: "Order note", "pt-BR": "Nota do pedido" } as const;
+
+/**
+ * The particle field is a next/dynamic chunk (ssr: false). Recognize that
+ * response by the markup it ships, not by a content hash, and do not let the
+ * browser run it until `release` is called.
+ */
+async function holdParticleFieldChunk(page: Page) {
+  let heldRequests = 0;
+  let released = false;
+  let openGate: () => void = () => {};
+  const gate = new Promise<void>((resolve) => {
+    openGate = resolve;
+  });
+
+  await page.route("**/_next/static/chunks/**", async (route) => {
+    const url = route.request().url();
+    if (url.includes(".map")) {
+      await route.continue();
+      return;
+    }
+    const response = await route.fetch();
+    const body = await response.body();
+    const source = body.toString("utf8");
+    const isParticleField = source.includes("fixed inset-0 -z-10") && source.includes("pointsMaterial");
+    if (!isParticleField) {
+      await route.fulfill({ response, body });
+      return;
+    }
+    heldRequests += 1;
+    await gate;
+    await route.fulfill({ response, body });
+  });
+
+  return {
+    heldRequests: () => heldRequests,
+    release() {
+      if (released) return;
+      released = true;
+      openGate();
+    },
+  };
+}
+
 for (const locale of LOCALES) {
   test(`/playground/?mode=fixed has zero axe violations (${locale.id})`, async ({ page }) => {
     await page.addInitScript((value) => {
@@ -106,5 +150,42 @@ for (const locale of LOCALES) {
 
     const results = await new AxeBuilder({ page }).analyze();
     expect(formatViolations(results.violations), "axe violations of any severity").toBe("");
+  });
+
+  test(`opening the order note before the particle field mounts still has zero axe violations (${locale.id})`, async ({
+    page,
+  }) => {
+    const particle = await holdParticleFieldChunk(page);
+    await page.addInitScript((value) => {
+      localStorage.setItem("ps-locale", value);
+    }, locale.storage);
+    try {
+      await page.goto(FIXED_URL);
+      await expect(page.locator("html")).toHaveAttribute("lang", locale.htmlLang);
+      await expect(page.locator("[data-mode]")).toHaveAttribute("data-mode", "fixed");
+      // The lazy chunk is requested when the page hydrates. Holding it is what
+      // keeps the field out of the document until the dialog is already open.
+      await expect.poll(() => particle.heldRequests(), { timeout: READY_TIMEOUT_MS }).toBeGreaterThan(0);
+
+      const open = page.getByRole("button", { name: NOTE_OPEN[locale.id] });
+      const dialog = page.getByRole("dialog");
+      await expect(async () => {
+        if ((await dialog.count()) === 0) await open.click();
+        await expect(dialog).toBeVisible({ timeout: 1_000 });
+      }).toPass({ timeout: READY_TIMEOUT_MS });
+
+      const field = page.locator(".-z-10");
+      expect(await field.count(), "ParticleField was already mounted when the dialog opened").toBe(0);
+
+      particle.release();
+      await expect(field).toBeVisible();
+      await expect(field.locator("canvas")).toBeAttached();
+      expect(await field.count(), "ParticleField was absent when axe ran").toBeGreaterThan(0);
+
+      const results = await new AxeBuilder({ page }).analyze();
+      expect(formatViolations(results.violations), "axe violations of any severity").toBe("");
+    } finally {
+      particle.release();
+    }
   });
 }
