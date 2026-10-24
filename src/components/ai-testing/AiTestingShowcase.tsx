@@ -243,10 +243,7 @@ export function AiTestingShowcase() {
                 borderColor: theme.colors.cardBorder,
               }}
             >
-              <p
-                className="text-3xl sm:text-4xl font-black mb-3"
-                role="status"
-              >
+              <p className="text-3xl sm:text-4xl font-black mb-3">
                 {resultsStatus}
               </p>
               <p className="text-sm sm:text-base leading-relaxed mb-6" style={{ color: theme.colors.textMuted }}>
