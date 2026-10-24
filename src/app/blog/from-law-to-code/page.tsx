@@ -12,9 +12,20 @@ export const metadata: Metadata = {
     title: post.title,
     description: post.description,
     url: `https://petersouza.dev/blog/${post.slug}/`,
+    siteName: "Peter Souza",
+    locale: "en_US",
+    alternateLocale: ["pt_BR"],
     type: "article",
     publishedTime: post.date,
     tags: post.tags,
+    images: [
+      {
+        url: "https://petersouza.dev/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Peter Souza — QA Automation & AI Testing Engineer",
+      },
+    ],
   },
   alternates: { canonical: `https://petersouza.dev/blog/${post.slug}/` },
 };

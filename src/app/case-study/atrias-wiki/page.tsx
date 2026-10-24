@@ -11,7 +11,18 @@ export const metadata: Metadata = {
     description:
       "Interactive D&D world encyclopedia. 176+ entities, 7 continents in 3D, AI narrator with RAG.",
     url: "https://petersouza.dev/case-study/atrias-wiki/",
+    siteName: "Peter Souza",
+    locale: "en_US",
+    alternateLocale: ["pt_BR"],
     type: "website",
+    images: [
+      {
+        url: "https://petersouza.dev/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Peter Souza — QA Automation & AI Testing Engineer",
+      },
+    ],
   },
   alternates: { canonical: "https://petersouza.dev/case-study/atrias-wiki/" },
 };
