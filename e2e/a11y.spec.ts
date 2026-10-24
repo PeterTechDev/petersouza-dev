@@ -2,6 +2,8 @@ import AxeBuilder from "@axe-core/playwright";
 import type { NodeResult, Result } from "axe-core";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
+import { AXE_EXCLUDED_PATHS } from "@/lib/playground-bugs";
+
 /**
  * Locale is client-only: localStorage key `ps-locale` (`en` | `pt-BR`).
  * The server render is English; the client then sets `<html lang>`.
@@ -12,13 +14,17 @@ const LOCALES = [
 ] as const;
 
 /**
- * Feature 2 (`/playground`) is a bug-bash with planted accessibility defects
- * (missing label, keyboard trap, and others). That page is a demo, not a
- * product surface, so it is excluded from this gate. It is not shipped on
- * this branch; the filter stays so listing it below cannot turn those
- * planted bugs into a failing quality check.
+ * Planted /playground stays out of this product gate. AXE_EXCLUDED_PATHS is
+ * the single source, and it is pathname-only, so a pathname check also
+ * matches `/playground/?mode=fixed`. Fixed mode is not listed in
+ * PRODUCT_ROUTES for that reason. playground-a11y.spec.ts scans `?mode=fixed`
+ * and expects zero violations of every severity. Do not add that URL here:
+ * this filter would skip it.
  */
-const AXE_EXCLUDED_ROUTES = ["/playground", "/playground/"] as const;
+function isAxeExcluded(route: string): boolean {
+  const path = new URL(route, "http://127.0.0.1").pathname.replace(/\/$/, "") || "/";
+  return AXE_EXCLUDED_PATHS.some((excluded) => (excluded.replace(/\/$/, "") || "/") === path);
+}
 
 const PRODUCT_ROUTES = [
   "/",
@@ -31,9 +37,7 @@ const PRODUCT_ROUTES = [
   "/case-study/atrias-wiki/",
 ] as const;
 
-const ROUTES = PRODUCT_ROUTES.filter(
-  (route) => !(AXE_EXCLUDED_ROUTES as readonly string[]).includes(route),
-);
+const ROUTES = PRODUCT_ROUTES.filter((route) => !isAxeExcluded(route));
 
 const CHAT_OPEN_LABEL = "Open Ask Me Anything chat";
 const CHAT_BADGE = "Ask me anything ✨";
