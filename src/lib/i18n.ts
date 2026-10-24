@@ -157,7 +157,7 @@ export const messages: Record<Locale, Messages> = {
       orderTitle: "What POST does, in order",
       order: [
         "Rate limit runs first, against an in-memory map. A blocked IP receives 429 before the body is parsed.",
-        "req.json() parses the body. Invalid JSON throws, and the catch returns 500.",
+        "req.json() parses the body. Invalid JSON throws, and the catch returns 500. A body that is the JSON value null parses successfully; destructuring messages from null throws, and the same catch returns 500. That null body is not a 400.",
         "messages must be a non-empty array. Otherwise the response is 400 with error Invalid messages.",
         "Only the last message is length-checked. content.length greater than 500 returns 400. A length of 500 is allowed. sessionCount and conversationId are not read.",
         "ANTHROPIC_API_KEY, when set, calls claude-3-haiku-20240307 with the last 10 messages and max_tokens 512. Otherwise OPENAI_API_KEY, when set, calls gpt-4o-mini the same way. A non-OK provider response returns 502 with error AI service error. When both keys are absent the response is 503 with error No AI API key configured.",
@@ -189,7 +189,7 @@ export const messages: Record<Locale, Messages> = {
           status: "500",
           title: "Malformed JSON",
           expect: "500 and error \"Internal server error\".",
-          detail: "req.json() throws, and the route's catch returns 500. A body that is not JSON does not return 400.",
+          detail: "req.json() throws on invalid JSON, and the route's catch returns 500. A body that is not JSON does not return 400. The JSON value null does parse; reading messages off that null throws, and the catch returns 500 as well.",
         },
         {
           id: "no-key",
@@ -376,7 +376,7 @@ export const messages: Record<Locale, Messages> = {
       orderTitle: "O que o POST faz, em ordem",
       order: [
         "O rate limit roda primeiro, num Map em memória. Um IP bloqueado recebe 429 antes do parse do body.",
-        "req.json() lê o body. JSON inválido lança erro, e o catch devolve 500.",
+        "req.json() lê o body. JSON inválido lança erro, e o catch devolve 500. Um body cujo valor JSON é null faz parse; desestruturar messages a partir de null lança, e o mesmo catch devolve 500. Esse body null não é um 400.",
         "messages precisa ser um array não vazio. Caso contrário a resposta é 400 com erro Invalid messages.",
         "Só a última mensagem tem o tamanho verificado. content.length maior que 500 devolve 400. Comprimento 500 é aceito. sessionCount e conversationId não são lidos.",
         "ANTHROPIC_API_KEY, quando definida, chama claude-3-haiku-20240307 com as últimas 10 mensagens e max_tokens 512. Senão, OPENAI_API_KEY, quando definida, chama gpt-4o-mini do mesmo modo. Resposta não-OK do provedor devolve 502 com erro AI service error. Sem as duas chaves, a resposta é 503 com erro No AI API key configured.",
@@ -408,7 +408,7 @@ export const messages: Record<Locale, Messages> = {
           status: "500",
           title: "JSON malformado",
           expect: "500 e erro \"Internal server error\".",
-          detail: "req.json() lança, e o catch da rota devolve 500. Um body que não é JSON não devolve 400.",
+          detail: "req.json() lança em JSON inválido, e o catch da rota devolve 500. Um body que não é JSON não devolve 400. O valor JSON null faz parse; ler messages desse null lança, e o catch também devolve 500.",
         },
         {
           id: "no-key",
