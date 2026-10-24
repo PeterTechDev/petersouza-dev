@@ -308,7 +308,7 @@ function CheckoutForm({ mode }: { mode: PlaygroundMode }) {
               id="checkout-name"
               name="name"
               type="text"
-              autoComplete="name"
+              autoComplete="off"
               value={name}
               aria-invalid={nameError || undefined}
               aria-describedby={nameError ? "checkout-name-error" : undefined}
@@ -340,7 +340,7 @@ function CheckoutForm({ mode }: { mode: PlaygroundMode }) {
               id="checkout-email"
               name="email"
               type="text"
-              autoComplete="email"
+              autoComplete="off"
               value={email}
               aria-invalid={emailError || undefined}
               aria-describedby={emailError ? "checkout-email-error" : undefined}
