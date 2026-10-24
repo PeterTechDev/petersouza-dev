@@ -5,7 +5,7 @@ import { modeFromParam } from "@/lib/playground-bugs";
 import { siteLocale, siteName, siteOgImage } from "@/lib/site-metadata";
 
 // Only the planted mode stays out of the axe gate. ?mode=fixed must have zero violations.
-// Axe specs do not import a path list from this route. The fixed URL is scanned on its own.
+// The axe gate applies only after #6, #10, and #11 merge. This route does not export a path list.
 
 export const metadata: Metadata = {
   title: "Playground",

@@ -16,10 +16,11 @@ export { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM };
  * a keyboard trap) and must not fail CI. `?mode=fixed` stays in the gate and
  * must have zero violations.
  *
- * No spec imports a path list from this file. The quality-gate spec keeps its
- * own route list. The playground axe spec scans the literal URL `?mode=fixed`
- * and leaves the planted URL out of that scan. `?lang=` does not change that.
- * playwright.config does not exclude the route.
+ * The axe gate applies only after #6 (quality gate), #10 (AI-testing specs),
+ * and #11 (playground specs) are merged. No spec on this branch imports a path
+ * list from this file. The playground axe spec scans the literal URL
+ * `?mode=fixed` and leaves the planted URL out of that scan. `?lang=` does
+ * not change that. playwright.config does not exclude the route.
  */
 
 export const VALIDATION_SAMPLE = "a@";

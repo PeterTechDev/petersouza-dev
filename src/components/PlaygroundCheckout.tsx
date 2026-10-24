@@ -447,6 +447,12 @@ function CheckoutForm({ mode }: { mode: PlaygroundMode }) {
   );
 }
 
+function focusableInDialog(dialog: HTMLElement): HTMLElement[] {
+  return [...dialog.querySelectorAll<HTMLElement>("button, textarea, input, a[href]")].filter(
+    (element) => !element.hasAttribute("disabled"),
+  );
+}
+
 function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => void }) {
   const { theme } = useTheme();
   const { t } = useLocale();
@@ -456,12 +462,23 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
   const backdropDown = useRef(false);
   const backdropUp = useRef(false);
   const inertNodes = useRef<HTMLElement[]>([]);
+  const inertObservers = useRef<MutationObserver[]>([]);
   const trapped = keyboardTrapActive(mode);
   const dismissIsButton = noteDismissIsButton(mode);
+
+  function markInertSibling(node: Element, pathChild: HTMLElement | null) {
+    if (!(node instanceof HTMLElement)) return;
+    if (pathChild !== null && (node === pathChild || node.contains(pathChild))) return;
+    if (node.inert) return;
+    node.inert = true;
+    inertNodes.current.push(node);
+  }
 
   function releaseInert() {
     for (const node of inertNodes.current) node.inert = false;
     inertNodes.current = [];
+    for (const observer of inertObservers.current) observer.disconnect();
+    inertObservers.current = [];
   }
 
   function requestClose() {
@@ -493,9 +510,7 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
         return;
       }
 
-      const focusable = [...dialog.querySelectorAll<HTMLElement>("button, textarea, input, a[href]")].filter(
-        (element) => !element.hasAttribute("disabled"),
-      );
+      const focusable = focusableInDialog(dialog);
       if (focusable.length === 0) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
@@ -513,29 +528,35 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
 
     // The dialog is rendered inside the page, so inert on body would freeze
     // the dialog too. Fixed mode marks every sibling along the path from the
-    // dialog up to body: the checkout behind it, the header, the theme
-    // switcher, and the Ask widget. The dialog and its backdrop stay active.
+    // dialog up to body, then keeps watching those parents: ParticleField
+    // mounts later (dynamic, ssr:false) and any portal that appears after
+    // open must be marked too. Only nodes this effect marks are cleared.
     // Planted mode does not do this.
-    const marked: HTMLElement[] = [];
     if (!trapped) {
+      const watched: { parent: HTMLElement; pathChild: HTMLElement }[] = [];
       let current: HTMLElement | null = dialog;
       while (current !== null && current !== document.body) {
         const parent: HTMLElement | null = current.parentElement;
         if (parent === null) break;
-        for (const sibling of parent.children) {
-          if (sibling === current || !(sibling instanceof HTMLElement) || sibling.inert) continue;
-          sibling.inert = true;
-          marked.push(sibling);
-        }
+        for (const sibling of parent.children) markInertSibling(sibling, current);
+        watched.push({ parent, pathChild: current });
         current = parent;
       }
-      inertNodes.current = marked;
-    }
 
-    function focusableInDialog(): HTMLElement[] {
-      return [...dialog.querySelectorAll<HTMLElement>("button, textarea, input, a[href]")].filter(
-        (element) => !element.hasAttribute("disabled"),
-      );
+      const observer = new MutationObserver((records) => {
+        for (const record of records) {
+          const parent = record.target;
+          if (!(parent instanceof HTMLElement)) continue;
+          const pathChild = watched.find((entry) => entry.parent === parent)?.pathChild ?? null;
+          for (const added of record.addedNodes) {
+            if (!(added instanceof HTMLElement)) continue;
+            if (pathChild !== null && (added === pathChild || added.contains(pathChild))) continue;
+            markInertSibling(added, pathChild);
+          }
+        }
+      });
+      for (const entry of watched) observer.observe(entry.parent, { childList: true });
+      inertObservers.current = [observer];
     }
 
     // Fixed mode only. Escape still closes when focus has left the dialog.
@@ -547,15 +568,14 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
       if (event.key === "Escape") {
         event.preventDefault();
         event.stopPropagation();
-        for (const node of marked) node.inert = false;
-        inertNodes.current = [];
+        releaseInert();
         onCloseRef.current();
         return;
       }
       if (event.key !== "Tab") return;
       const active = document.activeElement;
       if (active instanceof Node && dialog.contains(active)) return;
-      const focusable = focusableInDialog();
+      const focusable = focusableInDialog(dialog);
       if (focusable.length === 0) return;
       event.preventDefault();
       event.stopPropagation();
@@ -565,8 +585,7 @@ function NoteDialog({ mode, onClose }: { mode: PlaygroundMode; onClose: () => vo
     if (!trapped) document.addEventListener("keydown", handleDocumentKey, true);
 
     return () => {
-      for (const node of marked) node.inert = false;
-      inertNodes.current = [];
+      releaseInert();
       dialog.removeEventListener("keydown", handleKey);
       document.removeEventListener("keydown", handleDocumentKey, true);
     };
