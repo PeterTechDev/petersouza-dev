@@ -1,3 +1,7 @@
+import { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM } from "@/lib/playground-bugs";
+
+const fixedModeQuery = `?${PLAYGROUND_MODE_PARAM}=${PLAYGROUND_FIXED_MODE}`;
+
 export type Locale = "en" | "pt-BR";
 
 export const LOCALES: readonly Locale[] = ["en", "pt-BR"] as const;
@@ -133,7 +137,7 @@ export const messages: Record<Locale, Messages> = {
       kicker: "Test fixture",
       title: "Bug-bash playground",
       subtitle:
-        "Synthetic checkout for practice. The bugs on this page are planted on purpose. Do not fix the default mode. Use ?mode=fixed to run the corrected checkout.",
+        `Synthetic checkout for practice. The bugs on this page are planted on purpose. Do not fix the default mode. Use ${fixedModeQuery} to run the corrected checkout.`,
       warning:
         "Test playground. Defects in the default mode are intentional. The reveal panel and the form both read src/lib/playground-bugs.ts.",
       back: "Back to portfolio",
@@ -142,7 +146,7 @@ export const messages: Record<Locale, Messages> = {
       modePlanted: "Planted bugs",
       modeFixed: "Fixed",
       modePlantedHint: "Default. Defects on this page are intentional.",
-      modeFixedHint: "Query ?mode=fixed. Every planted bug is off.",
+      modeFixedHint: `Query ${fixedModeQuery}. Every planted bug is off.`,
       cartTitle: "Cart",
       total: "Total",
       formTitle: "Checkout",
@@ -307,16 +311,16 @@ export const messages: Record<Locale, Messages> = {
       kicker: "Fixture de teste",
       title: "Playground de bug-bash",
       subtitle:
-        "Checkout sintético para praticar. Os bugs desta página foram plantados de propósito. Não corrija o modo padrão. Use ?mode=fixed para rodar o checkout corrigido.",
+        `Checkout sintético para praticar. Os bugs desta página foram plantados de propósito. Não corrija o modo padrão. Use ${fixedModeQuery} para rodar o checkout corrigido.`,
       warning:
         "Playground de teste. Os defeitos do modo padrão são intencionais. O painel de revelar bugs e o formulário leem src/lib/playground-bugs.ts.",
       back: "Voltar ao portfólio",
       synthetic: "Fixture sintético em USD. Estes preços não são uma loja.",
       modeLabel: "Modo",
       modePlanted: "Bugs plantados",
-      modeFixed: "Fixed",
+      modeFixed: "Corrigido",
       modePlantedHint: "Padrão. Os defeitos desta página são intencionais.",
-      modeFixedHint: "Query ?mode=fixed. Todos os bugs plantados estão desligados.",
+      modeFixedHint: `Query ${fixedModeQuery}. Todos os bugs plantados estão desligados.`,
       cartTitle: "Carrinho",
       total: "Total",
       formTitle: "Checkout",

@@ -69,8 +69,8 @@ export function modeFromParam(value: string | string[] | undefined): PlaygroundM
   return raw === PLAYGROUND_FIXED_MODE ? "fixed" : "planted";
 }
 
-export function isBugActive(id: BugId, mode: PlaygroundMode): boolean {
-  return mode !== "fixed" && BUG_IDS.some((bugId) => bugId === id);
+export function isBugActive(_id: BugId, mode: PlaygroundMode): boolean {
+  return mode !== PLAYGROUND_FIXED_MODE;
 }
 
 export function playgroundHref(mode: PlaygroundMode, locale: Locale): string {
@@ -154,6 +154,11 @@ const plantedLinePrices = CART_LINES.map((line) => formatMoney(displayedLineCent
 const fixedLinePrices = CART_LINES.map((line) => formatMoney(displayedLineCents(line.cents, "fixed")));
 const plantedTotal = formatMoney(displayedTotalCents("planted"));
 const fixedTotal = formatMoney(displayedTotalCents("fixed"));
+const fixedModeQuery = `?${PLAYGROUND_MODE_PARAM}=${PLAYGROUND_FIXED_MODE}`;
+const lineCountWord: Record<Locale, string> = {
+  en: (["zero", "one", "two"] as const)[CART_LINES.length] ?? String(CART_LINES.length),
+  "pt-BR": (["zero", "um", "dois"] as const)[CART_LINES.length] ?? String(CART_LINES.length),
+};
 
 export const PLAYGROUND_BUGS: readonly PlaygroundBug[] = [
   {
@@ -187,12 +192,12 @@ export const PLAYGROUND_BUGS: readonly PlaygroundBug[] = [
     title: { en: "Cart rounding", "pt-BR": "Arredondamento do carrinho" },
     steps: {
       en: [
-        "Read the two line prices and the cart total.",
-        "Open the same page with ?mode=fixed and compare the figures.",
+        `Read the ${lineCountWord.en} line prices and the cart total.`,
+        `Open the same page with ${fixedModeQuery} and compare the figures.`,
       ],
       "pt-BR": [
-        "Leia os dois preços e o total do carrinho.",
-        "Abra a mesma página com ?mode=fixed e compare os valores.",
+        `Leia os ${lineCountWord["pt-BR"]} preços e o total do carrinho.`,
+        `Abra a mesma página com ${fixedModeQuery} e compare os valores.`,
       ],
     },
     expected: {
