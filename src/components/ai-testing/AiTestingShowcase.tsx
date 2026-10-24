@@ -134,7 +134,7 @@ export function AiTestingShowcase() {
             <h2 id="ai-testing-order" className="text-2xl sm:text-3xl font-black mb-4">
               {t<string>("aiTesting.orderTitle")}
             </h2>
-            <ol className="space-y-3 list-none">
+            <ol className="space-y-3 list-none" role="list">
               {order.map((step, index) => (
                 <li
                   key={step}
