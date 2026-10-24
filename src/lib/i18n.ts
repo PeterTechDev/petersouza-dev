@@ -1,6 +1,4 @@
-import { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM } from "@/lib/playground-mode";
-
-const fixedModeQuery = `?${PLAYGROUND_MODE_PARAM}=${PLAYGROUND_FIXED_MODE}`;
+import { fixedModeQuery } from "@/lib/playground-mode";
 
 export type Locale = "en" | "pt-BR";
 

@@ -9,3 +9,5 @@
 
 export const PLAYGROUND_MODE_PARAM = "mode";
 export const PLAYGROUND_FIXED_MODE = "fixed";
+
+export const fixedModeQuery = `?${PLAYGROUND_MODE_PARAM}=${PLAYGROUND_FIXED_MODE}`;

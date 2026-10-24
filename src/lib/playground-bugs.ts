@@ -1,5 +1,5 @@
 import type { Locale } from "@/lib/i18n";
-import { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM } from "@/lib/playground-mode";
+import { fixedModeQuery, PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM } from "@/lib/playground-mode";
 
 export { PLAYGROUND_FIXED_MODE, PLAYGROUND_MODE_PARAM };
 
@@ -154,7 +154,6 @@ const plantedLinePrices = CART_LINES.map((line) => formatMoney(displayedLineCent
 const fixedLinePrices = CART_LINES.map((line) => formatMoney(displayedLineCents(line.cents, "fixed")));
 const plantedTotal = formatMoney(displayedTotalCents("planted"));
 const fixedTotal = formatMoney(displayedTotalCents("fixed"));
-const fixedModeQuery = `?${PLAYGROUND_MODE_PARAM}=${PLAYGROUND_FIXED_MODE}`;
 const lineCountWord: Record<Locale, string> = {
   en: (["zero", "one", "two"] as const)[CART_LINES.length] ?? String(CART_LINES.length),
   "pt-BR": (["zero", "um", "dois"] as const)[CART_LINES.length] ?? String(CART_LINES.length),
