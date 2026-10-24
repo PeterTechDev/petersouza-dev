@@ -98,16 +98,23 @@ This isn't a demo — it's a production system that ships real code through a bu
 // ── Server-side IP rate limiting ──────────────────────────────────────────────
 // Simple in-memory store: ip → { count, windowStart }
 // Resets per IP after the rate window. Production default is 1 hour.
-// CHAT_RATE_WINDOW_MS overrides that window in milliseconds when it is a
-// positive finite number. Unset, empty, or invalid values keep the default.
+// CHAT_RATE_WINDOW_MS overrides that window in milliseconds only when it is
+// an integer of at least MIN_RATE_WINDOW_MS. Unset, empty, non-integer, or
+// smaller values keep the default. A value of 1 would expire the window on
+// the next check and leave the limiter open.
 const RATE_LIMIT = 20;
 const DEFAULT_RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const MIN_RATE_WINDOW_MS = 1000;
 
 function getRateWindowMs(): number {
   const raw = process.env.CHAT_RATE_WINDOW_MS;
-  if (raw == null || raw.trim() === "") return DEFAULT_RATE_WINDOW_MS;
-  const parsed = Number(raw);
-  if (!Number.isFinite(parsed) || parsed <= 0) return DEFAULT_RATE_WINDOW_MS;
+  if (raw == null) return DEFAULT_RATE_WINDOW_MS;
+  const trimmed = raw.trim();
+  if (!/^[0-9]+$/.test(trimmed)) return DEFAULT_RATE_WINDOW_MS;
+  const parsed = Number(trimmed);
+  if (!Number.isSafeInteger(parsed) || parsed < MIN_RATE_WINDOW_MS) {
+    return DEFAULT_RATE_WINDOW_MS;
+  }
   return parsed;
 }
 
