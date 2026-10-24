@@ -95,27 +95,29 @@ export function QualityDashboard({ report }: { report: QualityReport }) {
       run === null
         ? t<string>(report.state === "error" ? "quality.errorCardName" : "quality.emptyCardName")
         : null;
-    const commitValue = placeholderName ? (
-      <>
-        {missing}
-        <span className="sr-only"> {placeholderName}</span>
-      </>
-    ) : (
-      sha
-    );
+    const labelId = `quality-run-${cardKey}-name`;
 
     return (
       <article
         key={cardKey}
-        aria-labelledby={commitId}
+        aria-labelledby={placeholderName ? labelId : commitId}
         className="rounded-2xl border p-5 sm:p-6"
         style={{ background: theme.colors.card, borderColor: theme.colors.cardBorder }}
       >
+        {placeholderName ? (
+          <span id={labelId} className="sr-only">
+            {missing} {placeholderName}
+          </span>
+        ) : null}
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {field(t<string>("quality.fields.status"), status)}
           {field(t<string>("quality.fields.conclusion"), conclusion)}
           {field(t<string>("quality.fields.date"), date)}
-          {field(t<string>("quality.fields.commit"), commitValue, commitId)}
+          {field(
+            t<string>("quality.fields.commit"),
+            placeholderName ? missing : sha,
+            placeholderName ? undefined : commitId,
+          )}
           {field(t<string>("quality.fields.duration"), duration)}
           <div className="min-w-0">
             <dt className="text-xs font-semibold tracking-wide uppercase" style={{ color: theme.colors.textMuted }}>
