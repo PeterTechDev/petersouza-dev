@@ -97,9 +97,19 @@ This isn't a demo — it's a production system that ships real code through a bu
 
 // ── Server-side IP rate limiting ──────────────────────────────────────────────
 // Simple in-memory store: ip → { count, windowStart }
-// Resets per IP after RATE_WINDOW_MS (1 hour).
+// Resets per IP after the rate window. Production default is 1 hour.
+// CHAT_RATE_WINDOW_MS overrides that window in milliseconds when it is a
+// positive finite number. Unset, empty, or invalid values keep the default.
 const RATE_LIMIT = 20;
-const RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+const DEFAULT_RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+function getRateWindowMs(): number {
+  const raw = process.env.CHAT_RATE_WINDOW_MS;
+  if (raw == null || raw.trim() === "") return DEFAULT_RATE_WINDOW_MS;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || parsed <= 0) return DEFAULT_RATE_WINDOW_MS;
+  return parsed;
+}
 
 interface RateEntry {
   count: number;
@@ -118,9 +128,10 @@ function getClientIp(req: NextRequest): string {
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
+  const windowMs = getRateWindowMs();
   const entry = rateLimitMap.get(ip);
 
-  if (!entry || now - entry.windowStart > RATE_WINDOW_MS) {
+  if (!entry || now - entry.windowStart > windowMs) {
     // New window
     rateLimitMap.set(ip, { count: 1, windowStart: now });
     return true; // allowed
