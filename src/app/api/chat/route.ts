@@ -146,14 +146,26 @@ async function allowChatRequest(key: string): Promise<boolean> {
 
 // ── Message length constraint ─────────────────────────────────────────────────
 const MAX_MESSAGE_LENGTH = 500;
+// The route had no history ceiling. These stand in until Peter picks the real ones.
+const MAX_HISTORY_MESSAGES = 20;
+const MAX_HISTORY_MESSAGE_CHARS = 4000;
 
 // ── Request body ──────────────────────────────────────────────────────────────
 
-type JsonObjectResult =
-  | { ok: true; value: Record<string, unknown> }
-  | { ok: false; error: string };
+type ChatMessage = { role: string; content: string };
 
-async function readJsonObject(req: NextRequest): Promise<JsonObjectResult> {
+type ParseResult<T> = { ok: true; value: T } | { ok: false; error: string };
+
+function isJsonObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isChatMessage(value: unknown): value is ChatMessage {
+  if (!isJsonObject(value)) return false;
+  return typeof value.role === "string" && typeof value.content === "string";
+}
+
+async function readJsonObject(req: NextRequest): Promise<ParseResult<Record<string, unknown>>> {
   let body: unknown;
   try {
     body = await req.json();
@@ -161,11 +173,48 @@ async function readJsonObject(req: NextRequest): Promise<JsonObjectResult> {
     return { ok: false, error: "Invalid JSON body. Expected a JSON object." };
   }
 
-  if (body === null || typeof body !== "object" || Array.isArray(body)) {
+  if (!isJsonObject(body)) {
     return { ok: false, error: "Request body must be a JSON object." };
   }
 
-  return { ok: true, value: body as Record<string, unknown> };
+  return { ok: true, value: body };
+}
+
+function parseMessages(value: unknown): ParseResult<ChatMessage[]> {
+  if (!Array.isArray(value) || value.length === 0) {
+    return { ok: false, error: "Invalid messages" };
+  }
+
+  if (value.length > MAX_HISTORY_MESSAGES) {
+    return {
+      ok: false,
+      error: `Too many messages. Please keep the history to ${MAX_HISTORY_MESSAGES} messages or fewer.`,
+    };
+  }
+
+  const messages: ChatMessage[] = [];
+  for (const item of value) {
+    if (!isChatMessage(item)) {
+      return { ok: false, error: "Invalid messages" };
+    }
+    if (item.content.length > MAX_HISTORY_MESSAGE_CHARS) {
+      return {
+        ok: false,
+        error: `Message too long. Please keep each message under ${MAX_HISTORY_MESSAGE_CHARS} characters.`,
+      };
+    }
+    messages.push({ role: item.role, content: item.content });
+  }
+
+  const last = messages[messages.length - 1];
+  if (last.content.length > MAX_MESSAGE_LENGTH) {
+    return {
+      ok: false,
+      error: `Message too long. Please keep messages under ${MAX_MESSAGE_LENGTH} characters.`,
+    };
+  }
+
+  return { ok: true, value: messages };
 }
 
 // ── Route handlers ────────────────────────────────────────────────────────────
@@ -200,30 +249,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: parsed.error }, { status: 400 });
     }
 
-    const { messages } = parsed.value as {
-      messages: Array<{ role: string; content: string }>;
-    };
+    const messagesResult = parseMessages(parsed.value.messages);
+    if (!messagesResult.ok) {
+      return NextResponse.json({ error: messagesResult.error }, { status: 400 });
+    }
+    const messages = messagesResult.value;
     // Note: sessionCount from the client is intentionally ignored — we enforce
     // limits server-side via IP tracking above.
-
-    // ── Validate messages ─────────────────────────────────────────────────────
-    if (!messages || !Array.isArray(messages) || messages.length === 0) {
-      return NextResponse.json({ error: "Invalid messages" }, { status: 400 });
-    }
-
-    // ── Validate message length ───────────────────────────────────────────────
-    const lastMessage = messages[messages.length - 1];
-    if (
-      lastMessage?.content &&
-      lastMessage.content.length > MAX_MESSAGE_LENGTH
-    ) {
-      return NextResponse.json(
-        {
-          error: `Message too long. Please keep messages under ${MAX_MESSAGE_LENGTH} characters.`,
-        },
-        { status: 400 }
-      );
-    }
 
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
     const openaiKey = process.env.OPENAI_API_KEY;
