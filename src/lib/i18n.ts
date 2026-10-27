@@ -78,6 +78,22 @@ export const messages: Record<Locale, Messages> = {
         aiAssistedQa: "AI-assisted QA",
         alsoWorkedWith: "Also worked with",
       },
+      techs: {
+        cicdQuality: [
+          "GitHub Actions (sharding, quality gates)",
+          "Docker",
+          "Git",
+          "Jira",
+          "Zephyr Scale",
+        ],
+        aiAssistedQa: [
+          "LLM evals",
+          "AI agents for test generation",
+          "LangChain",
+          "RAG",
+          "OpenAI API",
+        ],
+      },
     },
     contact: {
       kicker: "Contact",
@@ -396,6 +412,22 @@ export const messages: Record<Locale, Messages> = {
         cicdQuality: "CI/CD e Qualidade",
         aiAssistedQa: "QA assistido por IA",
         alsoWorkedWith: "Também trabalhei com",
+      },
+      techs: {
+        cicdQuality: [
+          "GitHub Actions (shards, quality gates)",
+          "Docker",
+          "Git",
+          "Jira",
+          "Zephyr Scale",
+        ],
+        aiAssistedQa: [
+          "Evals de LLM",
+          "Agentes de geração de testes",
+          "LangChain",
+          "RAG",
+          "OpenAI API",
+        ],
       },
     },
     contact: {

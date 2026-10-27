@@ -19,19 +19,19 @@ const categories = [
   {
     nameKey: "cicdQuality",
     icon: GitBranch,
-    techs: ["GitHub Actions (sharding, quality gates)", "Docker", "Git", "Jira", "Zephyr Scale"],
+    techsKey: "skills.techs.cicdQuality",
   },
   {
     nameKey: "aiAssistedQa",
     icon: Brain,
-    techs: ["LLM evals", "AI agents for test generation", "LangChain", "RAG", "OpenAI API"],
+    techsKey: "skills.techs.aiAssistedQa",
   },
   {
     nameKey: "alsoWorkedWith",
     icon: Layers,
     techs: ["Cypress", "Selenium", "Java/JUnit", "Next.js", "React", "Supabase", "Vercel"],
   },
-];
+] as const;
 
 export function Skills() {
   const { theme } = useTheme();
@@ -93,7 +93,7 @@ export function Skills() {
                   </h3>
                 </div>
                 <div className="flex flex-wrap gap-2 sm:ml-4">
-                  {cat.techs.map((tech) => (
+                  {("techsKey" in cat ? t<string[]>(cat.techsKey) : cat.techs).map((tech) => (
                     <span
                       key={tech}
                       className="text-sm px-3 py-1.5 rounded-full font-medium"
