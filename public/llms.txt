@@ -1,10 +1,10 @@
-# Peter Souza — QA Automation & AI Testing Engineer
+# Peter Souza — SDET · QA Automation & AI-assisted Testing
 
-> Solo QA engineer at NDG Communications (USA). Playwright and TypeScript automation, test planning, manual testing, reports, and documentation. Open to remote QA/SDET roles. Based in Brazil (UTC-3).
+> SDET at NDG Communications (USA, remote). Playwright and TypeScript automation, test planning, manual testing, reports, and documentation. Open to remote QA/SDET roles. Based in Brazil (UTC-3).
 
 ## About
 
-Peter Souza is a QA Automation & AI Testing Engineer based in Linhares, Espírito Santo, Brazil. He is the solo QA engineer at NDG Communications (USA, remote): test planning, manual testing, an automation suite built from scratch with Playwright and TypeScript, plus reports and documentation.
+Peter Souza is an SDET (QA Automation & AI-assisted Testing) based in Linhares, Espírito Santo, Brazil. He is the SDET at NDG Communications (USA, remote): test planning, manual testing, an automation suite built from scratch with Playwright and TypeScript, plus reports and documentation.
 
 - **Location:** Linhares, ES, Brazil
 - **Email:** peterleite.dev@gmail.com
@@ -31,9 +31,8 @@ Unified dashboard for monitoring open PRs across GitLab and Bitbucket for NDG Co
 
 ## Professional Background
 
-- **Solo QA engineer at NDG Communications** (USA, remote) — owns test planning, manual testing, a Playwright + TypeScript automation suite built from scratch, reports, and documentation
+- **SDET at NDG Communications** (USA, remote) — owns test planning, manual testing, a Playwright + TypeScript automation suite built from scratch, reports, and documentation
 - **AI Systems Architect** — Designing and shipping production multi-agent systems
-- **Contractor via Athyna** — USD $2,496/month base
 
 ## Content & Writing
 

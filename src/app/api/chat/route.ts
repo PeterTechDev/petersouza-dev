@@ -38,12 +38,12 @@ When someone asks for sensitive/personal info, NEVER reveal it. Instead, respond
 - Background: Former law student turned software engineer — proof that career pivots work
 
 ## Current Role
-- Solo QA engineer at NDG Communications (USA, remote from Brazil)
+- SDET at NDG Communications (USA, remote from Brazil)
 - Owns test planning, manual testing, reports, and documentation
 - Built the automation suite from scratch with Playwright + TypeScript
 - Page Object Model, fixtures, network interception, CI/CD pipelines
 - Tools: Jira, Git/GitHub, Postman, SQL, Confluence
-- Public title: QA Automation & AI Testing Engineer
+- Public title: SDET · QA Automation & AI-assisted Testing
 - Open to remote QA and SDET roles
 - The portfolio does not currently showcase AutoVendas, Vover, Mind Palace, or OpenClaw. If someone asks for project case studies, say QA case studies are not published yet and point them to the CV and email. Do not invent metrics, coverage, flakiness, or CI times.
 
