@@ -64,15 +64,16 @@ async function openInLocale(page: Page, route: string, locale: (typeof LOCALES)[
   }, locale.storage);
   await page.goto(route);
   await expect(page.locator("html")).toHaveAttribute("lang", locale.htmlLang);
-  await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible({
-    timeout: READY_TIMEOUT_MS,
-  });
+  // The h1 is in the server HTML at opacity 0. theme-ready is added on
+  // documentElement only after ThemeProvider hydrates, two frames later.
+  await expect(page.locator("html")).toHaveClass(/theme-ready/, { timeout: READY_TIMEOUT_MS });
 }
 
 type TextOpacitySnapshot = {
   faint: number;
   total: number;
   signature: string;
+  sample: string;
 };
 
 /**
@@ -107,6 +108,7 @@ async function textOpacitySnapshot(page: Page): Promise<TextOpacitySnapshot> {
     let faint = 0;
     let total = 0;
     const partial: string[] = [];
+    const samples: string[] = [];
     while (walker.nextNode()) {
       const text = walker.currentNode.textContent ?? "";
       if (!text.trim()) continue;
@@ -127,16 +129,62 @@ async function textOpacitySnapshot(page: Page): Promise<TextOpacitySnapshot> {
       }
       if (hidden) continue;
       total += 1;
-      if (minOpacity < 0.1) faint += 1;
+      if (minOpacity < 0.1) {
+        faint += 1;
+        if (samples.length < 6) samples.push(text.trim().replace(/\s+/g, " ").slice(0, 40));
+      }
       if (minOpacity < 0.99) partial.push(minOpacity.toFixed(2));
     }
     partial.sort();
-    return { faint, total, signature: partial.join(",") };
+    return { faint, total, signature: partial.join(","), sample: samples.join(" | ") };
+  });
+}
+
+async function revealFaintText(page: Page) {
+  // A fast scroll can jump past a whileInView block before its observer runs.
+  // Bring each still-hidden block into view so the entrance can start.
+  await page.evaluate(async () => {
+    const skip = new Set(["SCRIPT", "STYLE", "NOSCRIPT"]);
+    const seen = new Set<Element>();
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const text = walker.currentNode.textContent ?? "";
+      if (!text.trim()) continue;
+      const start = walker.currentNode.parentElement;
+      if (!start || skip.has(start.tagName)) continue;
+      let current: Element | null = start;
+      let hiddenRoot: Element | null = null;
+      let hidden = false;
+      while (current && current instanceof HTMLElement) {
+        const style = getComputedStyle(current);
+        if (style.display === "none" || style.visibility === "hidden") {
+          hidden = true;
+          break;
+        }
+        const opacity = Number(style.opacity);
+        if (Number.isFinite(opacity) && opacity < 0.1) hiddenRoot = current;
+        current = current.parentElement;
+      }
+      if (hidden || !hiddenRoot || seen.has(hiddenRoot)) continue;
+      seen.add(hiddenRoot);
+      hiddenRoot.scrollIntoView({ block: "center" });
+      // once:true only sticks after the observer fires. Two frames is not
+      // enough for that under load, so wait until this block leaves opacity 0.
+      const deadline = performance.now() + 1500;
+      while (performance.now() < deadline) {
+        await new Promise<void>((resolve) => {
+          requestAnimationFrame(() => resolve());
+        });
+        const opacity = Number(getComputedStyle(hiddenRoot).opacity);
+        if (Number.isFinite(opacity) && opacity >= 0.1) break;
+      }
+    }
   });
 }
 
 async function revealPageForAxe(page: Page) {
   await scrollPageToEnd(page);
+  await revealFaintText(page);
   await expect
     .poll(
       async () => {
@@ -149,7 +197,7 @@ async function revealPageForAxe(page: Page) {
         );
         const second = await textOpacitySnapshot(page);
         if (first.faint !== 0 || second.faint !== 0) {
-          return `faint ${second.faint} of ${second.total}`;
+          return `faint ${second.faint} of ${second.total}: ${second.sample}`;
         }
         if (first.signature !== second.signature) return `animating ${second.signature}`;
         return "settled";
