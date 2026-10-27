@@ -59,7 +59,7 @@ npm run dev
 
 Open [localhost:3000](http://localhost:3000).
 
-`CHAT_RATE_WINDOW_MS` overrides the in-memory chat rate-limit window, in milliseconds. It is applied only when the value is an integer of at least 1000. Unset, empty, non-integer, or smaller values keep the production default of 1 hour. The cap stays 20 requests per IP per window.
+`/api/chat` allows 20 requests per 60 seconds. Production uses the Workers Rate Limiting binding `CHAT_RATE_LIMITER` (`wrangler.jsonc`), keyed by `cf-connecting-ip`. Local `next dev` and `next start` have no Workers context, so they use an in-memory fallback with the same 20 requests and 60 seconds, and every request without `cf-connecting-ip` shares the key `local`.
 
 ---
 

@@ -1,3 +1,4 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { NextRequest, NextResponse } from "next/server";
 
 import { getClientIp } from "@/lib/request-ip";
@@ -98,52 +99,49 @@ This isn't a demo — it's a production system that ships real code through a bu
 - Instagram: @devsavisado`;
 
 // ── Server-side IP rate limiting ──────────────────────────────────────────────
-// Simple in-memory store: ip → { count, windowStart }
-// Resets per IP after the rate window. Production default is 1 hour.
-// CHAT_RATE_WINDOW_MS overrides that window in milliseconds only when it is
-// an integer of at least MIN_RATE_WINDOW_MS. Unset, empty, non-integer, or
-// smaller values keep the default. A value of 1 would expire the window on
-// the next check and leave the limiter open.
+// Production calls the Workers binding CHAT_RATE_LIMITER (wrangler.jsonc).
+// That binding only accepts a period of 10 or 60 seconds. The previous window
+// was 1 hour, so the count stays 20 and the period is 60 seconds: the closer
+// of the two, and the stricter one. CHAT_RATE_WINDOW_MS is not read.
 const RATE_LIMIT = 20;
-const DEFAULT_RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
-const MIN_RATE_WINDOW_MS = 1000;
+const DEV_RATE_WINDOW_MS = 60 * 1000;
 
-function getRateWindowMs(): number {
-  const raw = process.env.CHAT_RATE_WINDOW_MS;
-  if (raw == null) return DEFAULT_RATE_WINDOW_MS;
-  const trimmed = raw.trim();
-  if (!/^[0-9]+$/.test(trimmed)) return DEFAULT_RATE_WINDOW_MS;
-  const parsed = Number(trimmed);
-  if (!Number.isSafeInteger(parsed) || parsed < MIN_RATE_WINDOW_MS) {
-    return DEFAULT_RATE_WINDOW_MS;
-  }
-  return parsed;
-}
-
-interface RateEntry {
+interface DevRateEntry {
   count: number;
   windowStart: number;
 }
 
-const rateLimitMap = new Map<string, RateEntry>();
+// Dev only. next dev and next start have no Workers context, so this map
+// stands in for the binding. It is not used when CHAT_RATE_LIMITER is present.
+const devRateLimitMap = new Map<string, DevRateEntry>();
 
-function checkRateLimit(ip: string): boolean {
+function allowDevRequest(key: string): boolean {
   const now = Date.now();
-  const windowMs = getRateWindowMs();
-  const entry = rateLimitMap.get(ip);
-
-  if (!entry || now - entry.windowStart > windowMs) {
-    // New window
-    rateLimitMap.set(ip, { count: 1, windowStart: now });
-    return true; // allowed
+  const entry = devRateLimitMap.get(key);
+  if (!entry || now - entry.windowStart >= DEV_RATE_WINDOW_MS) {
+    devRateLimitMap.set(key, { count: 1, windowStart: now });
+    return true;
   }
-
-  if (entry.count >= RATE_LIMIT) {
-    return false; // blocked
-  }
-
+  if (entry.count >= RATE_LIMIT) return false;
   entry.count += 1;
-  return true; // allowed
+  return true;
+}
+
+function readRateLimiter(): CloudflareEnv["CHAT_RATE_LIMITER"] | null {
+  try {
+    const limiter = getCloudflareContext().env.CHAT_RATE_LIMITER;
+    if (limiter == null || typeof limiter.limit !== "function") return null;
+    return limiter;
+  } catch {
+    return null;
+  }
+}
+
+async function allowChatRequest(key: string): Promise<boolean> {
+  const limiter = readRateLimiter();
+  if (!limiter) return allowDevRequest(key);
+  const outcome = await limiter.limit({ key });
+  return outcome.success;
 }
 
 // ── Message length constraint ─────────────────────────────────────────────────
@@ -185,9 +183,9 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    // ── IP-based rate limiting (server-enforced) ──────────────────────────────
+    // Count this request before reading the body, so an invalid payload spends quota too.
     const ip = getClientIp(req.headers);
-    if (!checkRateLimit(ip)) {
+    if (!(await allowChatRequest(ip))) {
       return NextResponse.json(
         {
           error:
