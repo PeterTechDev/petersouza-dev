@@ -38,11 +38,11 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://petersouza.dev"),
   title: {
-    default: "Peter Souza — QA Automation & AI Testing Engineer",
+    default: "Peter Souza — SDET · QA Automation & AI-assisted Testing",
     template: "%s — Peter Souza",
   },
   description:
-    "Peter Souza is a QA Automation & AI Testing Engineer in Brazil (UTC-3) and the solo QA engineer at NDG Communications (USA). Playwright and TypeScript, test planning, manual testing, and LLM system testing. Open to remote QA and SDET roles.",
+    "Peter Souza is an SDET · QA Automation & AI-assisted Testing in Brazil (UTC-3) and the SDET at NDG Communications (USA). Playwright and TypeScript, test planning, manual testing, and LLM system testing. Open to remote QA and SDET roles.",
   keywords: [
     "Peter Souza",
     "QA Automation",
@@ -58,9 +58,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Peter Souza", url: "https://petersouza.dev" }],
   creator: "Peter Souza",
   openGraph: {
-    title: "Peter Souza — QA Automation & AI Testing Engineer",
+    title: "Peter Souza — SDET · QA Automation & AI-assisted Testing",
     description:
-      "QA Automation & AI Testing Engineer in Brazil (UTC-3). Solo QA at NDG Communications (USA). Playwright, TypeScript, and LLM system testing. Open to remote QA and SDET roles.",
+      "SDET · QA Automation & AI-assisted Testing in Brazil (UTC-3). SDET at NDG Communications (USA). Playwright, TypeScript, and LLM system testing. Open to remote QA and SDET roles.",
     url: "https://petersouza.dev",
     siteName,
     locale: siteLocale,
@@ -70,9 +70,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Peter Souza — QA Automation & AI Testing Engineer",
+    title: "Peter Souza — SDET · QA Automation & AI-assisted Testing",
     description:
-      "QA Automation & AI Testing Engineer in Brazil. Solo QA at NDG Communications. Open to remote QA and SDET roles.",
+      "SDET · QA Automation & AI-assisted Testing in Brazil. SDET at NDG Communications. Open to remote QA and SDET roles.",
     images: [siteOgImage.url],
     creator: "@petersouza",
   },
@@ -104,7 +104,7 @@ const jsonLd = {
   jobTitle: "SDET · QA Automation & AI-assisted Testing",
   email: "peterleite.dev@gmail.com",
   description:
-    "QA Automation & AI Testing Engineer in Brazil. Solo QA engineer at NDG Communications, working remotely for a US company.",
+    "SDET · QA Automation & AI-assisted Testing in Brazil. SDET at NDG Communications, working remotely for a US company.",
   sameAs: [
     "https://github.com/PeterTechDev",
     "https://www.linkedin.com/in/petertechdev/",
