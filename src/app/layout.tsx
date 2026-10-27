@@ -101,7 +101,7 @@ const jsonLd = {
   "@type": "Person",
   name: "Peter Souza",
   url: "https://petersouza.dev",
-  jobTitle: "QA Automation & AI Testing Engineer",
+  jobTitle: "SDET · QA Automation & AI-assisted Testing",
   email: "peterleite.dev@gmail.com",
   description:
     "QA Automation & AI Testing Engineer in Brazil. Solo QA engineer at NDG Communications, working remotely for a US company.",
