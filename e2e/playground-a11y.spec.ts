@@ -14,7 +14,6 @@ const LOCALES = [
 ] as const;
 
 const FIXED_URL = "/playground/?mode=fixed";
-const CHAT_BADGE = "Ask me anything ✨";
 const READY_TIMEOUT_MS = 15_000;
 
 function formatSelector(selector: NodeResult["target"][number]): string {
@@ -41,11 +40,10 @@ function formatViolations(violations: Result[]): string {
 }
 
 /**
- * AskMeAnythingWidget animates the launcher with framer-motion (1.5s delay,
- * then a spring) and does not read prefers-reduced-motion. The playground
- * title does the same for 0.6s. reducedMotion in the Playwright config only
- * stops the Tailwind ping. Wait until opacity and transform have settled on
- * the element and its ancestors before scanning.
+ * The playground title animates with framer-motion for 0.6s and does not read
+ * prefers-reduced-motion. reducedMotion in the Playwright config only stops
+ * the Tailwind ping. Wait until opacity and transform have settled on the
+ * element and its ancestors before scanning.
  */
 async function waitUntilMotionSettled(locator: Locator) {
   await expect(locator).toBeVisible({ timeout: READY_TIMEOUT_MS });
@@ -294,7 +292,6 @@ async function openFixedLocale(page: Page, locale: (typeof LOCALES)[number]) {
 
 async function scanFixedState(page: Page) {
   await waitUntilMotionSettled(page.getByRole("heading", { level: 1 }));
-  await waitUntilMotionSettled(page.getByText(CHAT_BADGE));
   await revealPageForAxe(page);
   const results = await new AxeBuilder({ page }).analyze();
   expect(formatViolations(results.violations), "axe violations of any severity").toBe("");
@@ -366,7 +363,6 @@ for (const locale of LOCALES) {
     await expect(page.locator("html")).toHaveAttribute("lang", locale.htmlLang);
     await expect(page.locator("[data-mode]")).toHaveAttribute("data-mode", "fixed");
     await waitUntilMotionSettled(page.getByRole("heading", { level: 1 }));
-    await waitUntilMotionSettled(page.getByText(CHAT_BADGE));
 
     const results = await new AxeBuilder({ page }).analyze();
     expect(formatViolations(results.violations), "axe violations of any severity").toBe("");

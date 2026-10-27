@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 /**
- * Public routes on this branch, plus /ai-testing from the feature page.
+ * Public routes on this branch.
  * /quality is not in the tree. /playground is covered with the playground specs.
  * A page-level openGraph object replaces the layout tags, so image, site name,
  * and locale have to be present on the page itself.
@@ -15,7 +15,6 @@ const PUBLIC_ROUTES = [
   "/blog/from-qa-to-ai/",
   "/blog/why-i-built-a-multi-agent-ai-team/",
   "/case-study/atrias-wiki/",
-  "/ai-testing/",
 ] as const;
 
 const OG_PROPERTIES = ["og:image", "og:site_name", "og:locale"] as const;

@@ -73,9 +73,6 @@ jobs:
 
       - name: Run Playwright
         run: npx playwright test
-        env:
-          ANTHROPIC_API_KEY: ""
-          OPENAI_API_KEY: ""
 
       - name: Upload Playwright report
         if: always()

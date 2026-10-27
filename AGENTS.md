@@ -6,7 +6,7 @@ Peter Souza's personal site, live at https://petersouza.dev.
 
 - Next.js 16 (App Router), React 19, TypeScript in strict mode.
 - Tailwind CSS 4. Write full class names; never build one with `${...}`, or Tailwind will not see it.
-- Not a static export. There is an API route (`src/app/api/chat/route.ts`) and dynamic pages such as `/playground`.
+- Not a static export. There are dynamic pages such as `/playground`.
 - Two locales, EN and PT-BR, in `src/lib/i18n.ts`.
 - Tests: Playwright e2e in `e2e/` (`playwright.config.ts`). No unit tests yet.
 

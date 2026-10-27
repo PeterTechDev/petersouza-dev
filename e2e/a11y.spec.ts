@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { NodeResult, Result } from "axe-core";
-import { expect, test, type Locator, type Page } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 /**
  * Locale is client-only: localStorage key `ps-locale` (`en` | `pt-BR`).
@@ -29,9 +29,6 @@ const ROUTES = [
   "/case-study/atrias-wiki/",
 ] as const;
 
-const CHAT_OPEN_LABEL = "Open Ask Me Anything chat";
-const CHAT_BADGE = "Ask me anything ✨";
-const CHAT_PANEL_TITLE = "Ask Me Anything 💭";
 const READY_TIMEOUT_MS = 15_000;
 
 function isBlocking(violation: Result): boolean {
@@ -61,62 +58,22 @@ function formatViolations(violations: Result[]): string {
     .join("\n");
 }
 
-/**
- * AskMeAnythingWidget animates the launcher with framer-motion (1.5s delay,
- * then a spring) and does not read prefers-reduced-motion. Axe during that
- * spring sometimes misses the badge contrast. Wait until opacity and
- * transform on the element and its ancestors have settled.
- */
-async function waitUntilMotionSettled(locator: Locator) {
-  await expect(locator).toBeVisible({ timeout: READY_TIMEOUT_MS });
-  await expect
-    .poll(
-      () =>
-        locator.evaluate((element) => {
-          let current: Element | null = element;
-          while (current) {
-            const style = getComputedStyle(current);
-            if (Number(style.opacity) < 0.99) return `opacity ${style.opacity}`;
-            const transform = style.transform;
-            if (transform && transform !== "none") {
-              const match = /^matrix\(([^)]+)\)$/.exec(transform);
-              if (!match) return `transform ${transform}`;
-              const [a, b, c, d, tx, ty] = match[1].split(",").map((part) => Number(part.trim()));
-              const settled =
-                Math.abs(a - 1) < 0.02 &&
-                Math.abs(b) < 0.02 &&
-                Math.abs(c) < 0.02 &&
-                Math.abs(d - 1) < 0.02 &&
-                Math.abs(tx) < 1 &&
-                Math.abs(ty) < 1;
-              if (!settled) return `transform ${transform}`;
-            }
-            current = current.parentElement;
-          }
-          return "settled";
-        }),
-      { timeout: READY_TIMEOUT_MS },
-    )
-    .toBe("settled");
-}
-
 async function openInLocale(page: Page, route: string, locale: (typeof LOCALES)[number]) {
   await page.addInitScript((value) => {
     localStorage.setItem("ps-locale", value);
   }, locale.storage);
   await page.goto(route);
   await expect(page.locator("html")).toHaveAttribute("lang", locale.htmlLang);
-  await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible({
-    timeout: READY_TIMEOUT_MS,
-  });
-  await waitUntilMotionSettled(page.getByText(CHAT_BADGE));
-  await expect(page.getByRole("button", { name: CHAT_OPEN_LABEL })).toBeVisible();
+  // The h1 is in the server HTML at opacity 0. theme-ready is added on
+  // documentElement only after ThemeProvider hydrates, two frames later.
+  await expect(page.locator("html")).toHaveClass(/theme-ready/, { timeout: READY_TIMEOUT_MS });
 }
 
 type TextOpacitySnapshot = {
   faint: number;
   total: number;
   signature: string;
+  sample: string;
 };
 
 /**
@@ -151,6 +108,7 @@ async function textOpacitySnapshot(page: Page): Promise<TextOpacitySnapshot> {
     let faint = 0;
     let total = 0;
     const partial: string[] = [];
+    const samples: string[] = [];
     while (walker.nextNode()) {
       const text = walker.currentNode.textContent ?? "";
       if (!text.trim()) continue;
@@ -171,16 +129,62 @@ async function textOpacitySnapshot(page: Page): Promise<TextOpacitySnapshot> {
       }
       if (hidden) continue;
       total += 1;
-      if (minOpacity < 0.1) faint += 1;
+      if (minOpacity < 0.1) {
+        faint += 1;
+        if (samples.length < 6) samples.push(text.trim().replace(/\s+/g, " ").slice(0, 40));
+      }
       if (minOpacity < 0.99) partial.push(minOpacity.toFixed(2));
     }
     partial.sort();
-    return { faint, total, signature: partial.join(",") };
+    return { faint, total, signature: partial.join(","), sample: samples.join(" | ") };
+  });
+}
+
+async function revealFaintText(page: Page) {
+  // A fast scroll can jump past a whileInView block before its observer runs.
+  // Bring each still-hidden block into view so the entrance can start.
+  await page.evaluate(async () => {
+    const skip = new Set(["SCRIPT", "STYLE", "NOSCRIPT"]);
+    const seen = new Set<Element>();
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const text = walker.currentNode.textContent ?? "";
+      if (!text.trim()) continue;
+      const start = walker.currentNode.parentElement;
+      if (!start || skip.has(start.tagName)) continue;
+      let current: Element | null = start;
+      let hiddenRoot: Element | null = null;
+      let hidden = false;
+      while (current && current instanceof HTMLElement) {
+        const style = getComputedStyle(current);
+        if (style.display === "none" || style.visibility === "hidden") {
+          hidden = true;
+          break;
+        }
+        const opacity = Number(style.opacity);
+        if (Number.isFinite(opacity) && opacity < 0.1) hiddenRoot = current;
+        current = current.parentElement;
+      }
+      if (hidden || !hiddenRoot || seen.has(hiddenRoot)) continue;
+      seen.add(hiddenRoot);
+      hiddenRoot.scrollIntoView({ block: "center" });
+      // once:true only sticks after the observer fires. Two frames is not
+      // enough for that under load, so wait until this block leaves opacity 0.
+      const deadline = performance.now() + 1500;
+      while (performance.now() < deadline) {
+        await new Promise<void>((resolve) => {
+          requestAnimationFrame(() => resolve());
+        });
+        const opacity = Number(getComputedStyle(hiddenRoot).opacity);
+        if (Number.isFinite(opacity) && opacity >= 0.1) break;
+      }
+    }
   });
 }
 
 async function revealPageForAxe(page: Page) {
   await scrollPageToEnd(page);
+  await revealFaintText(page);
   await expect
     .poll(
       async () => {
@@ -193,7 +197,7 @@ async function revealPageForAxe(page: Page) {
         );
         const second = await textOpacitySnapshot(page);
         if (first.faint !== 0 || second.faint !== 0) {
-          return `faint ${second.faint} of ${second.total}`;
+          return `faint ${second.faint} of ${second.total}: ${second.sample}`;
         }
         if (first.signature !== second.signature) return `animating ${second.signature}`;
         return "settled";
@@ -224,15 +228,3 @@ for (const route of ROUTES) {
     });
   }
 }
-
-test("open chat on the home page has no serious or critical axe violations (en)", async ({ page }) => {
-  const english = LOCALES[0];
-  await openInLocale(page, "/", english);
-  await page.getByRole("button", { name: CHAT_OPEN_LABEL }).click();
-  await waitUntilMotionSettled(page.getByText(CHAT_PANEL_TITLE));
-  // The badge fades out after open. Scan only once AnimatePresence has removed it,
-  // or axe samples the half-transparent pill and the contrast ratio moves.
-  await expect(page.getByText(CHAT_BADGE)).toHaveCount(0, { timeout: READY_TIMEOUT_MS });
-  await expect(page.getByRole("button", { name: "Send message" })).toBeVisible();
-  await expectNoBlockingViolations(page);
-});

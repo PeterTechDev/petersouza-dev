@@ -59,8 +59,6 @@ npm run dev
 
 Open [localhost:3000](http://localhost:3000).
 
-`CHAT_RATE_WINDOW_MS` overrides the in-memory chat rate-limit window, in milliseconds. It is applied only when the value is an integer of at least 1000. Unset, empty, non-integer, or smaller values keep the production default of 1 hour. The cap stays 20 requests per IP per window.
-
 ---
 
 ## The Story

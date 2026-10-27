@@ -127,8 +127,6 @@ const jsonLd = {
   },
 };
 
-import { AskMeAnythingWidget } from "@/components/AskMeAnythingWidget";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -144,7 +142,6 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} ${bebasNeue.variable} ${orbitron.variable} ${playfair.variable} ${spaceMono.variable} ${dmSans.variable} font-sans antialiased`}>
         {children}
-        <AskMeAnythingWidget />
       </body>
     </html>
   );
