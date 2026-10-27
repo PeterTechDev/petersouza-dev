@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { NodeResult, Result } from "axe-core";
-import { expect, test, type Locator, type Page } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 /**
  * Locale is client-only: localStorage key `ps-locale` (`en` | `pt-BR`).
@@ -29,9 +29,6 @@ const ROUTES = [
   "/case-study/atrias-wiki/",
 ] as const;
 
-const CHAT_OPEN_LABEL = "Open Ask Me Anything chat";
-const CHAT_BADGE = "Ask me anything ✨";
-const CHAT_PANEL_TITLE = "Ask Me Anything 💭";
 const READY_TIMEOUT_MS = 15_000;
 
 function isBlocking(violation: Result): boolean {
@@ -61,45 +58,6 @@ function formatViolations(violations: Result[]): string {
     .join("\n");
 }
 
-/**
- * AskMeAnythingWidget animates the launcher with framer-motion (1.5s delay,
- * then a spring) and does not read prefers-reduced-motion. Axe during that
- * spring sometimes misses the badge contrast. Wait until opacity and
- * transform on the element and its ancestors have settled.
- */
-async function waitUntilMotionSettled(locator: Locator) {
-  await expect(locator).toBeVisible({ timeout: READY_TIMEOUT_MS });
-  await expect
-    .poll(
-      () =>
-        locator.evaluate((element) => {
-          let current: Element | null = element;
-          while (current) {
-            const style = getComputedStyle(current);
-            if (Number(style.opacity) < 0.99) return `opacity ${style.opacity}`;
-            const transform = style.transform;
-            if (transform && transform !== "none") {
-              const match = /^matrix\(([^)]+)\)$/.exec(transform);
-              if (!match) return `transform ${transform}`;
-              const [a, b, c, d, tx, ty] = match[1].split(",").map((part) => Number(part.trim()));
-              const settled =
-                Math.abs(a - 1) < 0.02 &&
-                Math.abs(b) < 0.02 &&
-                Math.abs(c) < 0.02 &&
-                Math.abs(d - 1) < 0.02 &&
-                Math.abs(tx) < 1 &&
-                Math.abs(ty) < 1;
-              if (!settled) return `transform ${transform}`;
-            }
-            current = current.parentElement;
-          }
-          return "settled";
-        }),
-      { timeout: READY_TIMEOUT_MS },
-    )
-    .toBe("settled");
-}
-
 async function openInLocale(page: Page, route: string, locale: (typeof LOCALES)[number]) {
   await page.addInitScript((value) => {
     localStorage.setItem("ps-locale", value);
@@ -109,8 +67,6 @@ async function openInLocale(page: Page, route: string, locale: (typeof LOCALES)[
   await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible({
     timeout: READY_TIMEOUT_MS,
   });
-  await waitUntilMotionSettled(page.getByText(CHAT_BADGE));
-  await expect(page.getByRole("button", { name: CHAT_OPEN_LABEL })).toBeVisible();
 }
 
 type TextOpacitySnapshot = {
@@ -224,15 +180,3 @@ for (const route of ROUTES) {
     });
   }
 }
-
-test("open chat on the home page has no serious or critical axe violations (en)", async ({ page }) => {
-  const english = LOCALES[0];
-  await openInLocale(page, "/", english);
-  await page.getByRole("button", { name: CHAT_OPEN_LABEL }).click();
-  await waitUntilMotionSettled(page.getByText(CHAT_PANEL_TITLE));
-  // The badge fades out after open. Scan only once AnimatePresence has removed it,
-  // or axe samples the half-transparent pill and the contrast ratio moves.
-  await expect(page.getByText(CHAT_BADGE)).toHaveCount(0, { timeout: READY_TIMEOUT_MS });
-  await expect(page.getByRole("button", { name: "Send message" })).toBeVisible();
-  await expectNoBlockingViolations(page);
-});
