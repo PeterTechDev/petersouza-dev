@@ -34,7 +34,7 @@ Live at → **[petersouza.dev](https://petersouza.dev)**
 | Animation | Framer Motion |
 | 3D | Three.js (particle field) |
 | Icons | Lucide React |
-| Deploy | Live site: Cloudflare Workers via OpenNext (`deploy.yml` on push to `main`). Vercel also deploys `main`, and that deploy does not serve the live site. |
+| Deploy | Cloudflare Workers via OpenNext. The `deploy` job in `quality.yml` ships `main` after the Quality checks pass (see `HOSTING.md`). |
 
 ---
 

@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Note: 'output: export' removed to enable API routes (chat widget) and ISR (GitHub strip)
-  // Primary deploy: Vercel (supports these features)
-  // Cloudflare: manual static export no longer available — use Vercel
+  // No 'output: export': the site has API routes (chat) and ISR (GitHub strip).
+  // Production is Cloudflare Workers via OpenNext; see HOSTING.md.
   images: { unoptimized: true },
   trailingSlash: true,
   devIndicators: false,
