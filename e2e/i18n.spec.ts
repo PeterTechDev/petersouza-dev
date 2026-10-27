@@ -11,7 +11,7 @@ const EN = {
   htmlLang: "en",
   toggle: "Switch language",
   availability: "Open to remote QA/SDET roles",
-  credentials: "Playwright/TypeScript · LLM system testing · remote from Brazil (UTC-3)",
+  credentials: "Playwright + TypeScript · LLM evals · remote from Brazil (UTC-3)",
   hiring: "Hiring?",
   downloadCv: "Download CV",
 } as const;
@@ -20,7 +20,7 @@ const PT = {
   htmlLang: "pt-BR",
   toggle: "Trocar idioma",
   availability: "Aberto a vagas remotas de QA/SDET",
-  credentials: "Playwright/TypeScript · testes de sistemas LLM · remoto desde o Brasil (UTC-3)",
+  credentials: "Playwright + TypeScript · Evals de LLM · remoto do Brasil (UTC-3)",
   hiring: "Contratando?",
   downloadCv: "Baixar CV",
 } as const;
@@ -29,7 +29,7 @@ async function expectEnglish(page: Page) {
   await expect(page.locator("html")).toHaveAttribute("lang", EN.htmlLang);
   await expect(page.getByRole("button", { name: EN.toggle })).toBeVisible();
   await expect(page.getByText(EN.availability)).toBeVisible();
-  await expect(page.getByText(EN.credentials)).toBeVisible();
+  await expect(page.getByText(EN.credentials, { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: EN.hiring, exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: EN.downloadCv })).toHaveCount(2);
   await expect(page.getByText(PT.availability)).toHaveCount(0);
@@ -39,7 +39,7 @@ async function expectPortuguese(page: Page) {
   await expect(page.locator("html")).toHaveAttribute("lang", PT.htmlLang);
   await expect(page.getByRole("button", { name: PT.toggle })).toBeVisible();
   await expect(page.getByText(PT.availability)).toBeVisible();
-  await expect(page.getByText(PT.credentials)).toBeVisible();
+  await expect(page.getByText(PT.credentials, { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: PT.hiring, exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: PT.downloadCv })).toHaveCount(2);
   await expect(page.getByText(EN.availability)).toHaveCount(0);

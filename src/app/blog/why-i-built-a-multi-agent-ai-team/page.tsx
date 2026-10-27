@@ -23,7 +23,7 @@ export const metadata: Metadata = {
         url: "https://petersouza.dev/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Peter Souza — QA Automation & AI Testing Engineer",
+        alt: "Peter Souza — SDET · QA Automation & AI-assisted Testing",
       },
     ],
   },

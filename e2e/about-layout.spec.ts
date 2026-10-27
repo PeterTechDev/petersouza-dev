@@ -1,10 +1,12 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
+import { AUTOMATED_TESTS_COUNT } from "../src/lib/about-metrics";
+
 /**
- * About stats. Copy is literal on purpose: the test does not import the app.
- * The base renders each stat as two paragraphs (number, then label). PR #9
- * uses a description list (label, then value) and reverses the column so the
- * number stays on top. Either role is accepted. The geometry is the check.
+ * About stats. The test count is AUTOMATED_TESTS_COUNT. Every other string is
+ * literal. The base renders each stat as two paragraphs (number, then label).
+ * A description list (label, then value) reverses the column so the number
+ * stays on top. Either role is accepted. The geometry is the check.
  *
  * The row fades in with framer-motion, which ignores prefers-reduced-motion.
  * The project sets reducedMotion, and this spec sets it again, then waits
@@ -19,16 +21,18 @@ const VIEWPORTS = [
   { width: 375, height: 800 },
 ] as const;
 
+const AUTOMATED_TESTS_VALUE = String(AUTOMATED_TESTS_COUNT);
+
 const LOCALES = [
   {
     id: "en",
     storage: "en",
     htmlLang: "en",
     stats: [
-      { value: "2+", label: "Years in QA" },
-      { value: "140", label: "Automated tests" },
-      { value: "11 min", label: "CI run time" },
-      { value: "5 hrs", label: "Regression time saved" },
+      { value: "5+", label: "Years in QA" },
+      { value: AUTOMATED_TESTS_VALUE, label: "Automated tests (Playwright + TS)" },
+      { value: "0% → 65%", label: "Critical-path coverage in 6 months" },
+      { value: "0", label: "Production rollbacks after moving to weekly releases" },
     ],
   },
   {
@@ -36,10 +40,10 @@ const LOCALES = [
     storage: "pt-BR",
     htmlLang: "pt-BR",
     stats: [
-      { value: "2+", label: "Anos em QA" },
-      { value: "140", label: "Testes automatizados" },
-      { value: "11 min", label: "Tempo de CI" },
-      { value: "5 h", label: "Tempo de regressão economizado" },
+      { value: "5+", label: "Anos em QA" },
+      { value: AUTOMATED_TESTS_VALUE, label: "Testes automatizados (Playwright + TS)" },
+      { value: "0% → 65%", label: "Cobertura dos fluxos críticos em 6 meses" },
+      { value: "0", label: "Rollbacks em produção após migrar para releases semanais" },
     ],
   },
 ] as const;
@@ -135,6 +139,13 @@ async function measureStats(about: Locator, stats: readonly StatCopy[]): Promise
     const number = statByRole(about, stat.value, ["definition", "paragraph"]);
     await expect(label).toHaveCount(1);
     await expect(number).toHaveCount(1);
+    if (stat.value === AUTOMATED_TESTS_VALUE) {
+      const rendered = (await number.innerText()).trim();
+      const parsed = Number(rendered);
+      expect(rendered, `${stat.label} equals AUTOMATED_TESTS_COUNT`).toBe(AUTOMATED_TESTS_VALUE);
+      expect(Number.isInteger(parsed), `${stat.label} renders an integer`).toBe(true);
+      expect(parsed, `${stat.label} renders a positive integer`).toBeGreaterThan(0);
+    }
     await waitUntilMotionSettled(number);
 
     const numberBox = await boxOf(number, stat.value);

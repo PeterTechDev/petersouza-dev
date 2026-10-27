@@ -3,30 +3,35 @@
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
-import { TestTube2, Brain, Monitor, Server } from "lucide-react";
+import { Brain, Database, GitBranch, Layers, TestTube2 } from "lucide-react";
 
 const categories = [
   {
-    nameKey: "qualityEngineering",
+    nameKey: "testAutomation",
     icon: TestTube2,
-    techs: ["Playwright", "TypeScript", "Cypress", "Postman", "Selenium", "Jest"],
+    techs: ["Playwright", "TypeScript", "JavaScript", "Jest", "Page Object Model", "Cucumber/Gherkin"],
   },
   {
-    nameKey: "aiAutomation",
+    nameKey: "apiData",
+    icon: Database,
+    techs: ["Postman", "REST Assured", "SQL", "PostgreSQL", "MySQL", "MongoDB", "Chrome DevTools"],
+  },
+  {
+    nameKey: "cicdQuality",
+    icon: GitBranch,
+    techsKey: "skills.techs.cicdQuality",
+  },
+  {
+    nameKey: "aiAssistedQa",
     icon: Brain,
-    techs: ["OpenAI API", "LangChain", "Multi-Agent Systems", "Whisper", "ElevenLabs"],
+    techsKey: "skills.techs.aiAssistedQa",
   },
   {
-    nameKey: "frontend",
-    icon: Monitor,
-    techs: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "Three.js"],
+    nameKey: "alsoWorkedWith",
+    icon: Layers,
+    techs: ["Cypress", "Selenium", "Java/JUnit", "Next.js", "React", "Supabase", "Vercel"],
   },
-  {
-    nameKey: "backendCloud",
-    icon: Server,
-    techs: ["Supabase", "Node.js", "Vercel", "Twilio", "PostgreSQL", "Sentry"],
-  },
-];
+] as const;
 
 export function Skills() {
   const { theme } = useTheme();
@@ -78,7 +83,7 @@ export function Skills() {
                   e.currentTarget.style.background = "transparent";
                 }}
               >
-                <div className="flex items-center gap-3 sm:w-[200px] shrink-0">
+                <div className="flex items-center gap-3 sm:w-64 shrink-0">
                   <cat.icon size={20} style={{ color: theme.colors.accent }} />
                   <h3
                     className="text-base font-bold"
@@ -88,7 +93,7 @@ export function Skills() {
                   </h3>
                 </div>
                 <div className="flex flex-wrap gap-2 sm:ml-4">
-                  {cat.techs.map((tech) => (
+                  {("techsKey" in cat ? t<string[]>(cat.techsKey) : cat.techs).map((tech) => (
                     <span
                       key={tech}
                       className="text-sm px-3 py-1.5 rounded-full font-medium"
