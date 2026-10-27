@@ -59,11 +59,11 @@ export const messages: Record<Locale, Messages> = {
         "I left law school to work in software. The role I want next is remote QA or SDET: planning, hands-on testing, and automation a team can trust.",
       stats: {
         qaYearsLabel: "Years in QA",
-        automatedTestsLabel: "Automated tests",
-        ciRunTimeLabel: "CI run time",
-        ciRunTimeValue: "{minutes} min",
-        regressionSavedLabel: "Regression time saved",
-        regressionSavedValue: "{hours} hrs",
+        automatedTestsLabel: "Automated tests (Playwright + TS)",
+        criticalPathLabel: "Critical-path coverage in 6 months",
+        criticalPathValue: "0% → 65%",
+        rollbacksLabel: "Production rollbacks after moving to weekly releases",
+        rollbacksValue: "0",
       },
       timeline: [
         { year: "2021", event: "Left law school and shipped the first production commit." },
@@ -389,11 +389,11 @@ export const messages: Record<Locale, Messages> = {
         "Saí da faculdade de Direito para trabalhar com software. A vaga que eu busco é QA ou SDET remoto: planejamento, teste na mão e automação em que o time confia.",
       stats: {
         qaYearsLabel: "Anos em QA",
-        automatedTestsLabel: "Testes automatizados",
-        ciRunTimeLabel: "Tempo de CI",
-        ciRunTimeValue: "{minutes} min",
-        regressionSavedLabel: "Tempo de regressão economizado",
-        regressionSavedValue: "{hours} h",
+        automatedTestsLabel: "Testes automatizados (Playwright + TS)",
+        criticalPathLabel: "Cobertura dos fluxos críticos em 6 meses",
+        criticalPathValue: "0% → 65%",
+        rollbacksLabel: "Rollbacks em produção após migrar para releases semanais",
+        rollbacksValue: "0",
       },
       timeline: [
         { year: "2021", event: "Saí da faculdade de Direito e fiz o primeiro commit de produção." },

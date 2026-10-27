@@ -4,12 +4,7 @@ import { type CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@/lib/theme-context";
 import { useLocale } from "@/lib/i18n-context";
-import {
-  AUTOMATED_TESTS,
-  CI_RUN_MINUTES,
-  QA_YEARS,
-  REGRESSION_HOURS_SAVED,
-} from "@/lib/about-metrics";
+import { AUTOMATED_TESTS_COUNT, QA_YEARS } from "@/lib/about-metrics";
 import { Code2, Trophy, Dices, Bot, BookOpen } from "lucide-react";
 
 const interestIcons = [Trophy, Dices, Bot, BookOpen];
@@ -20,14 +15,17 @@ export function About() {
 
   const stats = [
     { label: t<string>("about.stats.qaYearsLabel"), value: QA_YEARS },
-    { label: t<string>("about.stats.automatedTestsLabel"), value: AUTOMATED_TESTS },
     {
-      label: t<string>("about.stats.ciRunTimeLabel"),
-      value: t<string>("about.stats.ciRunTimeValue", { minutes: CI_RUN_MINUTES }),
+      label: t<string>("about.stats.automatedTestsLabel"),
+      value: String(AUTOMATED_TESTS_COUNT),
     },
     {
-      label: t<string>("about.stats.regressionSavedLabel"),
-      value: t<string>("about.stats.regressionSavedValue", { hours: REGRESSION_HOURS_SAVED }),
+      label: t<string>("about.stats.criticalPathLabel"),
+      value: t<string>("about.stats.criticalPathValue"),
+    },
+    {
+      label: t<string>("about.stats.rollbacksLabel"),
+      value: t<string>("about.stats.rollbacksValue"),
     },
   ];
 
@@ -86,7 +84,7 @@ export function About() {
               {stat.label}
             </dt>
             <dd
-              className="text-2xl sm:text-3xl font-black leading-none m-0"
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black leading-none m-0 whitespace-nowrap"
               style={{ color: theme.colors.text }}
             >
               {stat.value}
