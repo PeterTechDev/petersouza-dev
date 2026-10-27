@@ -102,13 +102,13 @@ export function About() {
         transition={{ delay: 0.2, duration: 0.6 }}
       >
         <p className="text-base sm:text-lg leading-relaxed mb-5" style={{ color: theme.colors.textMuted }}>
-          {t<string>("about.p2.beforeQuote")}
-          <strong style={{ color: theme.colors.accent }}>
-            {t<string>("about.p2.quote")}
-          </strong>
+          {t<string>("about.p1", { count: AUTOMATED_TESTS_COUNT })}
+        </p>
+        <p className="text-base sm:text-lg leading-relaxed mb-5" style={{ color: theme.colors.textMuted }}>
+          {t<string>("about.p2")}
         </p>
         <p className="text-base sm:text-lg leading-relaxed" style={{ color: theme.colors.textMuted }}>
-          {t<string>("about.p4")}
+          {t<string>("about.p3")}
         </p>
       </motion.div>
 

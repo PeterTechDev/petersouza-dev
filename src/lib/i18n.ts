@@ -43,20 +43,9 @@ export const messages: Record<Locale, Messages> = {
       title: "About",
       careerTimeline: "Career Timeline",
       outsideCode: "Outside the Code",
-      p1: {
-        beforeEm: "I'm a software engineer from Brazil who believes technology should solve real problems for real people. I dropped out of law school because I wanted to ",
-        em: "build things",
-        afterEm: ", not just argue about them.",
-      },
-      p2: {
-        beforeQuote:
-          "I'm the solo QA engineer at NDG Communications (USA). I own the quality practice end to end: test planning, manual testing, and an automation suite I built from scratch with Playwright and TypeScript, plus the reports and documentation that go with it. The question I keep asking is ",
-        quote: "\"Can the team trust this release?\"",
-      },
-      p3:
-        "When I'm not coding, I'm playing basketball, running D&D campaigns, or chasing my daughter around the house. I'm a firm believer that the best engineers are the ones who never stop being curious.",
-      p4:
-        "I left law school to work in software. The role I want next is remote QA or SDET: planning, hands-on testing, and automation a team can trust.",
+      p1: "I'm the SDET at NDG Communications (USA, remote). I built the company's first test automation framework from scratch with Playwright and TypeScript: {count} automated tests across 4 product surfaces, running in 4× sharded GitHub Actions against staging in about 8 minutes. Critical-path coverage went from 0% to 65% in six months, and releases moved from bi-weekly to weekly with zero production rollbacks.",
+      p2: "I also own the QA process around it: test planning, quality gates, release sign-off, and reports published through AWS S3 to email and Slack. Lately I'm bringing AI into the workflow, with agents that turn requirements into test cases and then into Playwright scripts, LLM evals for an end-user AI chat (in progress), and a QA Workspace that gives the team, and AI agents, one place for all test data.",
+      p3: "I left law school for software in 2021. The question I keep asking is \"Can the team trust this release?\"",
       stats: {
         qaYearsLabel: "Years in QA",
         automatedTestsLabel: "Automated tests (Playwright + TS)",
@@ -372,21 +361,9 @@ export const messages: Record<Locale, Messages> = {
       title: "Sobre",
       careerTimeline: "Trajetória",
       outsideCode: "Fora do Código",
-      p1: {
-        beforeEm:
-          "Sou um engenheiro de software do Brasil e acredito que tecnologia deve resolver problemas reais para pessoas reais. Saí da faculdade de Direito porque eu queria ",
-        em: "construir coisas",
-        afterEm: ", não apenas discutir sobre elas.",
-      },
-      p2: {
-        beforeQuote:
-          "Sou o engenheiro de QA solo na NDG Communications (EUA). Eu cuido da qualidade de ponta a ponta: planejamento de testes, teste manual e uma suíte de automação que construí do zero com Playwright e TypeScript, além dos relatórios e da documentação. A pergunta que eu mantenho é ",
-        quote: "\"O time pode confiar neste release?\"",
-      },
-      p3:
-        "Quando não estou codando, estou jogando basquete, mestrando campanhas de D&D ou correndo atrás da minha filha pela casa. Acredito de verdade que os melhores engenheiros são os que nunca param de ser curiosos.",
-      p4:
-        "Saí da faculdade de Direito para trabalhar com software. A vaga que eu busco é QA ou SDET remoto: planejamento, teste na mão e automação em que o time confia.",
+      p1: "Sou o SDET da NDG Communications (EUA, remoto). Criei do zero o primeiro framework de automação da empresa com Playwright e TypeScript: {count} testes automatizados em 4 superfícies de produto, rodando em GitHub Actions com 4 shards contra staging em cerca de 8 minutos. A cobertura dos fluxos críticos foi de 0% a 65% em seis meses, e os releases passaram de quinzenais para semanais sem nenhum rollback em produção.",
+      p2: "Também cuido do processo de QA em volta disso: planejamento de testes, quality gates, aprovação de release e relatórios publicados via AWS S3 por e-mail e Slack. Agora estou trazendo IA para o fluxo: agentes que transformam requisitos em casos de teste e depois em scripts Playwright, evals de LLM para um chat com IA usado por clientes (em andamento) e um QA Workspace que reúne todos os dados de teste para o time e para agentes de IA.",
+      p3: "Saí da faculdade de Direito para o software em 2021. A pergunta que me guia é: \"o time pode confiar neste release?\"",
       stats: {
         qaYearsLabel: "Anos em QA",
         automatedTestsLabel: "Testes automatizados (Playwright + TS)",
