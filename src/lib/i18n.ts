@@ -35,7 +35,6 @@ export const messages: Record<Locale, Messages> = {
       downloadCv: "Download CV",
       writing: "Writing",
       quality: "Quality",
-      aiTesting: "AI testing",
       playground: "Playground",
     },
     about: {
@@ -175,10 +174,6 @@ export const messages: Record<Locale, Messages> = {
         stale: "Stale",
       },
     },
-    aiTesting: {
-      back: "Back to portfolio",
-      footerHome: "← petersouza.dev",
-    },
     playground: {
       kicker: "Test fixture",
       title: "Bug-bash playground",
@@ -264,7 +259,6 @@ export const messages: Record<Locale, Messages> = {
       downloadCv: "Baixar CV",
       writing: "Textos",
       quality: "Qualidade",
-      aiTesting: "Testes de IA",
       playground: "Playground",
     },
     about: {
@@ -404,10 +398,6 @@ export const messages: Record<Locale, Messages> = {
         startup_failure: "Falha na inicialização",
         stale: "Obsoleto",
       },
-    },
-    aiTesting: {
-      back: "Voltar ao portfólio",
-      footerHome: "← petersouza.dev",
     },
     playground: {
       kicker: "Fixture de teste",
