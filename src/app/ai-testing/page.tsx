@@ -4,12 +4,8 @@ import { AiTestingFooter, AiTestingShowcase } from "@/components/ai-testing/AiTe
 
 export const metadata: Metadata = {
   title: "AI testing",
-  description:
-    "How petersouza.dev tests its own chat: a deterministic suite with fixed API requests and mocked widget responses, no model API key. Results stay unpublished until a real run exists.",
   openGraph: {
     title: "AI testing — Peter Souza",
-    description:
-      "Deterministic checks for the portfolio chat. No model API key. No score until a real run exists.",
     url: "https://petersouza.dev/ai-testing/",
     siteName: "Peter Souza",
     locale: "en_US",
@@ -27,8 +23,6 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "AI testing — Peter Souza",
-    description:
-      "Deterministic checks for the portfolio chat. No model API key. No score until a real run exists.",
     images: ["https://petersouza.dev/og-image.png"],
     creator: "@petersouza",
   },
