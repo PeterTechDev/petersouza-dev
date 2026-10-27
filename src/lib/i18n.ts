@@ -82,7 +82,7 @@ export const messages: Record<Locale, Messages> = {
     contact: {
       kicker: "Contact",
       title: "Hiring?",
-      subtitle: "Email me about remote QA and SDET roles.",
+      subtitle: "Hiring for a remote QA or SDET role? Email me.",
       cta: "Email me",
       footer: "© {year} Peter Souza. Built with Next.js, Three.js & a lot of coffee.",
       toggleShort: "EN",
@@ -401,7 +401,7 @@ export const messages: Record<Locale, Messages> = {
     contact: {
       kicker: "Contato",
       title: "Contratando?",
-      subtitle: "Escreva para mim sobre vagas remotas de QA e SDET.",
+      subtitle: "Contratando para uma vaga remota de QA ou SDET? Me mande um e-mail.",
       cta: "Enviar e-mail",
       footer: "© {year} Peter Souza. Feito com Next.js, Three.js e muito café.",
       toggleShort: "PT",
