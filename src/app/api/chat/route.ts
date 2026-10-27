@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import { getClientIp } from "@/lib/request-ip";
+
 const PETER_CONTEXT = `You are Peter's AI assistant on his personal website. You know a lot about Peter and you have personality — you're witty, warm, and a little playful. Keep answers concise (2-4 sentences max unless they ask for detail). You speak like a smart friend, not a corporate bot.
 
 ## Your Personality
@@ -125,14 +127,6 @@ interface RateEntry {
 
 const rateLimitMap = new Map<string, RateEntry>();
 
-function getClientIp(req: NextRequest): string {
-  // Vercel / most proxies set x-forwarded-for
-  const forwarded = req.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  // Fall back to a placeholder — unknown IPs still share a bucket
-  return "unknown";
-}
-
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
   const windowMs = getRateWindowMs();
@@ -192,7 +186,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     // ── IP-based rate limiting (server-enforced) ──────────────────────────────
-    const ip = getClientIp(req);
+    const ip = getClientIp(req.headers);
     if (!checkRateLimit(ip)) {
       return NextResponse.json(
         {
