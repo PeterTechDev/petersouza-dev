@@ -4,7 +4,7 @@
 
 ## About
 
-Peter Souza is an SDET · QA Automation & AI-assisted Testing based in Linhares, Espírito Santo, Brazil. He is the SDET at NDG Communications (USA, remote): test planning, manual testing, an automation suite built from scratch with Playwright and TypeScript, plus reports and documentation.
+Peter Souza is an SDET (QA Automation & AI-assisted Testing) based in Linhares, Espírito Santo, Brazil. He is the SDET at NDG Communications (USA, remote): test planning, manual testing, an automation suite built from scratch with Playwright and TypeScript, plus reports and documentation.
 
 - **Location:** Linhares, ES, Brazil
 - **Email:** peterleite.dev@gmail.com

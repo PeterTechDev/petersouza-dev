@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     template: "%s — Peter Souza",
   },
   description:
-    "Peter Souza is an SDET · QA Automation & AI-assisted Testing in Brazil (UTC-3) and the SDET at NDG Communications (USA). Playwright and TypeScript, test planning, manual testing, and LLM system testing. Open to remote QA and SDET roles.",
+    "Peter Souza is an SDET (QA Automation & AI-assisted Testing) in Brazil (UTC-3). SDET at NDG Communications (USA). Open to remote QA and SDET roles.",
   keywords: [
     "Peter Souza",
     "QA Automation",
