@@ -55,11 +55,11 @@ export const messages: Record<Locale, Messages> = {
         rollbacksValue: "0",
       },
       timeline: [
-        { year: "2021", event: "Left law school and shipped the first production commit." },
-        { year: "2022", event: "Started a first engineering role and learned the team's code review practice." },
-        { year: "2023", event: "Moved into SDET work." },
-        { year: "2025", event: "Solo QA engineer at NDG Communications (remote, United States)." },
-        { year: "2026", event: "Owning test planning, manual testing, Playwright automation, reports, and documentation." },
+        { year: "2021", event: "Left law school. Frontend Developer / QA Analyst at Fuerza Studio." },
+        { year: "2022", event: "QA Analyst / SRE at CI&T: test automation across 14+ microservices, CI/CD test infrastructure on AWS." },
+        { year: "2024", event: "QA Engineer at WTEC Energy: Playwright + Jest automation, API suites, 35% fewer production bugs, first LangChain + RAG tools for QA." },
+        { year: "2025", event: "SDET at NDG Communications (remote, USA): Playwright + TypeScript framework from scratch." },
+        { year: "2026", event: "AI-assisted QA at NDG: test-generation agents, LLM evals, QA Workspace. Final year of a Systems Analysis degree." },
       ],
       interests: [
         "Basketball (LeBron stan, Celtics fan — yes, both)",
@@ -373,11 +373,11 @@ export const messages: Record<Locale, Messages> = {
         rollbacksValue: "0",
       },
       timeline: [
-        { year: "2021", event: "Saí da faculdade de Direito e fiz o primeiro commit de produção." },
-        { year: "2022", event: "Comecei no primeiro cargo de engenharia e adotei a prática de code review do time." },
-        { year: "2023", event: "Passei a atuar como SDET." },
-        { year: "2025", event: "Engenheiro de QA solo na NDG Communications (remoto, Estados Unidos)." },
-        { year: "2026", event: "Responsável por planejamento de testes, teste manual, automação com Playwright, relatórios e documentação." },
+        { year: "2021", event: "Saí do Direito. Frontend Developer / QA Analyst na Fuerza Studio." },
+        { year: "2022", event: "QA Analyst / SRE na CI&T: automação em 14+ microsserviços, infraestrutura de testes em CI/CD na AWS." },
+        { year: "2024", event: "QA Engineer na WTEC Energy: automação com Playwright + Jest, suítes de API, 35% menos bugs em produção, primeiras ferramentas de QA com LangChain + RAG." },
+        { year: "2025", event: "SDET na NDG Communications (remoto, EUA): framework Playwright + TypeScript do zero." },
+        { year: "2026", event: "QA com IA na NDG: agentes de geração de testes, evals de LLM, QA Workspace. Último ano de Análise de Sistemas." },
       ],
       interests: [
         "Basquete (fã do LeBron e dos Celtics — sim, os dois)",
