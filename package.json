@@ -10,6 +10,7 @@
     "cf:preview": "npx wrangler dev",
     "start": "next start",
     "lint": "eslint",
+    "verify": "tsc --noEmit && npm run lint && npm run build && playwright test",
     "test:e2e": "playwright test",
     "test:e2e:a11y": "playwright test e2e/a11y.spec.ts",
     "test:e2e:i18n": "playwright test e2e/i18n.spec.ts",
