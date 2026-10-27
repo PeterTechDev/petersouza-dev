@@ -44,7 +44,7 @@ export const messages: Record<Locale, Messages> = {
       careerTimeline: "Career Timeline",
       outsideCode: "Outside the Code",
       p1: "I'm the SDET at NDG Communications (USA, remote). I built the company's first test automation framework from scratch with Playwright and TypeScript: {count} automated tests across 4 product surfaces, running in 4× sharded GitHub Actions against staging in about 8 minutes. Critical-path coverage went from 0% to 65% in six months, and releases moved from bi-weekly to weekly with zero production rollbacks.",
-      p2: "I also own the QA process around it: test planning, quality gates, release sign-off, and reports published through AWS S3 to email and Slack. Lately I'm bringing AI into the workflow, with agents that turn requirements into test cases and then into Playwright scripts, LLM evals for an end-user AI chat (in progress), and a QA Workspace that gives the team, and AI agents, one place for all test data.",
+      p2: "I also own the QA process around it: test planning, quality gates, release sign-off, and reports published through AWS S3 to email and Slack. Lately I'm bringing AI into the workflow, with agents that turn requirements into test cases and then into Playwright scripts, LLM evals for an end-user AI chat (in progress), and a QA Workspace (in progress) that gives the team, and AI agents, one place for all test data.",
       p3: "I left law school for software in 2021. The question I keep asking is \"Can the team trust this release?\"",
       stats: {
         qaYearsLabel: "Years in QA",
@@ -59,7 +59,7 @@ export const messages: Record<Locale, Messages> = {
         { year: "2022", event: "QA Analyst / SRE at CI&T: test automation across 14+ microservices, CI/CD test infrastructure on AWS." },
         { year: "2024", event: "QA Engineer at WTEC Energy: Playwright + Jest automation, API suites, 35% fewer production bugs, first LangChain + RAG tools for QA." },
         { year: "2025", event: "SDET at NDG Communications (remote, USA): Playwright + TypeScript framework from scratch." },
-        { year: "2026", event: "AI-assisted QA at NDG: test-generation agents, LLM evals, QA Workspace. Final year of a Systems Analysis degree." },
+        { year: "2026", event: "AI-assisted QA at NDG: test-generation agents, LLM evals, QA Workspace (in progress). Final year of a Systems Analysis degree." },
       ],
       interests: [
         "Basketball (LeBron stan, Celtics fan — yes, both)",
@@ -379,7 +379,7 @@ export const messages: Record<Locale, Messages> = {
       careerTimeline: "Trajetória",
       outsideCode: "Fora do Código",
       p1: "Sou o SDET da NDG Communications (EUA, remoto). Criei do zero o primeiro framework de automação da empresa com Playwright e TypeScript: {count} testes automatizados em 4 superfícies de produto, rodando em GitHub Actions com 4 shards contra staging em cerca de 8 minutos. A cobertura dos fluxos críticos foi de 0% a 65% em seis meses, e os releases passaram de quinzenais para semanais sem nenhum rollback em produção.",
-      p2: "Também cuido do processo de QA em volta disso: planejamento de testes, quality gates, aprovação de release e relatórios publicados via AWS S3 por e-mail e Slack. Agora estou trazendo IA para o fluxo: agentes que transformam requisitos em casos de teste e depois em scripts Playwright, evals de LLM para um chat com IA usado por clientes (em andamento) e um QA Workspace que reúne todos os dados de teste para o time e para agentes de IA.",
+      p2: "Também cuido do processo de QA em volta disso: planejamento de testes, quality gates, aprovação de release e relatórios publicados via AWS S3 por e-mail e Slack. Agora estou trazendo IA para o fluxo: agentes que transformam requisitos em casos de teste e depois em scripts Playwright, evals de LLM para um chat com IA usado por usuários finais (em andamento) e um QA Workspace (em andamento) que reúne todos os dados de teste para o time e para agentes de IA.",
       p3: "Saí da faculdade de Direito para o software em 2021. A pergunta que me guia é: \"o time pode confiar neste release?\"",
       stats: {
         qaYearsLabel: "Anos em QA",
@@ -394,7 +394,7 @@ export const messages: Record<Locale, Messages> = {
         { year: "2022", event: "QA Analyst / SRE na CI&T: automação em 14+ microsserviços, infraestrutura de testes em CI/CD na AWS." },
         { year: "2024", event: "QA Engineer na WTEC Energy: automação com Playwright + Jest, suítes de API, 35% menos bugs em produção, primeiras ferramentas de QA com LangChain + RAG." },
         { year: "2025", event: "SDET na NDG Communications (remoto, EUA): framework Playwright + TypeScript do zero." },
-        { year: "2026", event: "QA com IA na NDG: agentes de geração de testes, evals de LLM, QA Workspace. Último ano de Análise de Sistemas." },
+        { year: "2026", event: "QA com IA na NDG: agentes de geração de testes, evals de LLM, QA Workspace (em andamento). Último ano de Análise de Sistemas." },
       ],
       interests: [
         "Basquete (fã do LeBron e dos Celtics — sim, os dois)",
