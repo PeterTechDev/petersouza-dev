@@ -72,10 +72,11 @@ export const messages: Record<Locale, Messages> = {
       kicker: "What I Work With",
       title: "Skills & Tech",
       categories: {
-        qualityEngineering: "Quality Engineering",
-        aiAutomation: "AI & Automation",
-        frontend: "Frontend",
-        backendCloud: "Backend & Cloud",
+        testAutomation: "Test Automation",
+        apiData: "API & Data",
+        cicdQuality: "CI/CD & Quality",
+        aiAssistedQa: "AI-assisted QA",
+        alsoWorkedWith: "Also worked with",
       },
     },
     contact: {
@@ -390,10 +391,11 @@ export const messages: Record<Locale, Messages> = {
       kicker: "Com o que trabalho",
       title: "Habilidades & Tecnologias",
       categories: {
-        qualityEngineering: "Engenharia de Qualidade",
-        aiAutomation: "IA & Automação",
-        frontend: "Frontend",
-        backendCloud: "Backend & Cloud",
+        testAutomation: "Automação de Testes",
+        apiData: "API e Dados",
+        cicdQuality: "CI/CD e Qualidade",
+        aiAssistedQa: "QA assistido por IA",
+        alsoWorkedWith: "Também trabalhei com",
       },
     },
     contact: {
