@@ -11,9 +11,9 @@ test("home page renders the QA role without console errors", async ({ page }) =>
   });
 
   await page.goto("/");
-  await expect(page).toHaveTitle("Peter Souza — QA Automation & AI Testing Engineer");
+  await expect(page).toHaveTitle("Peter Souza — SDET · QA Automation & AI-assisted Testing");
   await expect(page.getByRole("heading", { level: 1, name: "Peter Souza" })).toBeVisible();
-  await expect(page.getByText("QA Automation & AI Testing Engineer").first()).toBeVisible();
+  await expect(page.getByText("SDET · QA Automation & AI-assisted Testing", { exact: true })).toBeVisible();
   await expect(page.getByText("Open to remote QA/SDET roles")).toBeVisible();
   await expect(page.getByText("peterleite.dev@gmail.com").first()).toBeVisible();
   await expect(page.getByRole("link", { name: "Download CV" }).first()).toHaveAttribute(
