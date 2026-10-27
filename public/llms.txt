@@ -33,7 +33,6 @@ Unified dashboard for monitoring open PRs across GitLab and Bitbucket for NDG Co
 
 - **SDET at NDG Communications** (USA, remote) — owns test planning, manual testing, a Playwright + TypeScript automation suite built from scratch, reports, and documentation
 - **AI Systems Architect** — Designing and shipping production multi-agent systems
-- **Contractor via Athyna** — USD $2,496/month base
 
 ## Content & Writing
 
