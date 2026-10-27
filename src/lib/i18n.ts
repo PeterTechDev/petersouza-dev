@@ -29,8 +29,8 @@ export const messages: Record<Locale, Messages> = {
   en: {
     hero: {
       availability: "Open to remote QA/SDET roles",
-      role: "QA Automation & AI Testing Engineer",
-      credentials: "Playwright/TypeScript · LLM system testing · remote from Brazil (UTC-3)",
+      role: "SDET · QA Automation & AI-assisted Testing",
+      credentials: "Playwright + TypeScript · LLM evals · remote from Brazil (UTC-3)",
       cta: "View My Work",
       downloadCv: "Download CV",
       writing: "Writing",
@@ -358,8 +358,8 @@ export const messages: Record<Locale, Messages> = {
   "pt-BR": {
     hero: {
       availability: "Aberto a vagas remotas de QA/SDET",
-      role: "QA Automation & AI Testing Engineer",
-      credentials: "Playwright/TypeScript · testes de sistemas LLM · remoto desde o Brasil (UTC-3)",
+      role: "SDET · Automação de QA e Testes com IA",
+      credentials: "Playwright + TypeScript · Evals de LLM · remoto do Brasil (UTC-3)",
       cta: "Ver meu trabalho",
       downloadCv: "Baixar CV",
       writing: "Textos",
