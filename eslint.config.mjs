@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Playwright output. Git ignores these; ESLint does not read .gitignore.
     "playwright-report/**",
     "test-results/**",
+    // OpenNext/Cloudflare build output (`npm run cf:build`).
+    ".open-next/**",
   ]),
 ]);
 
