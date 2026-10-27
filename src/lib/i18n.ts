@@ -199,7 +199,7 @@ export const messages: Record<Locale, Messages> = {
       scopeRouteLabel: "Route",
       scopeRoute: "POST /api/chat/ is implemented in src/app/api/chat/route.ts. next.config sets trailingSlash, so every method on /api/chat without the slash answers 308 to /api/chat/. The handler then checks the rate limit, parses JSON, validates messages, and calls a provider only when a key is present.",
       scopeWidgetLabel: "Widget",
-      scopeWidget: "The widget on every page is AskMeAnythingWidget in src/components/AskMeAnythingWidget.tsx, mounted from src/app/layout.tsx. ChatWidget.tsx is not mounted.",
+      scopeWidget: "The widget on every page is AskMeAnythingWidget in src/components/AskMeAnythingWidget.tsx, mounted from src/app/layout.tsx.",
       orderTitle: "What POST does, in order",
       order: [
         "Rate limit runs first, against an in-memory map. A blocked IP receives 429 before the body is parsed.",
@@ -529,7 +529,7 @@ export const messages: Record<Locale, Messages> = {
       scopeRouteLabel: "Rota",
       scopeRoute: "POST /api/chat/ está em src/app/api/chat/route.ts. O next.config liga trailingSlash, então qualquer método em /api/chat sem a barra responde 308 para /api/chat/. O handler aplica o rate limit, faz o parse do JSON, valida messages, e só chama um provedor quando existe chave.",
       scopeWidgetLabel: "Widget",
-      scopeWidget: "O widget presente em todas as páginas é AskMeAnythingWidget, em src/components/AskMeAnythingWidget.tsx, montado por src/app/layout.tsx. ChatWidget.tsx não está montado.",
+      scopeWidget: "O widget presente em todas as páginas é AskMeAnythingWidget, em src/components/AskMeAnythingWidget.tsx, montado por src/app/layout.tsx.",
       orderTitle: "O que o POST faz, em ordem",
       order: [
         "O rate limit roda primeiro, num Map em memória. Um IP bloqueado recebe 429 antes do parse do body.",
